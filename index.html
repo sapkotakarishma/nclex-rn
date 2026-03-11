@@ -1,0 +1,3008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NCLEX-RN Practice Exam</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #e9eef4;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOP BAR ── */
+    .top-bar {
+      background: #003a70;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 52px;
+      flex-shrink: 0;
+    }
+    .top-bar .logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .top-bar .logo span { color: #f0c040; }
+    .top-bar .exam-title {
+      font-size: 0.85rem;
+      opacity: 0.85;
+    }
+    .top-bar .timer-block {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+    .top-bar .timer-block .timer {
+      background: #f0c040;
+      color: #003a70;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 1rem;
+      letter-spacing: 1px;
+    }
+
+    /* ── SECONDARY BAR ── */
+    .secondary-bar {
+      background: #1a5fa8;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 36px;
+      font-size: 0.82rem;
+      flex-shrink: 0;
+    }
+    .secondary-bar .candidate { opacity: 0.9; }
+    .secondary-bar .q-counter {
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .secondary-bar .bar-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.38);
+      color: #fff;
+      padding: 3px 12px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      transition: background 0.2s;
+    }
+    .secondary-bar .bar-btn:hover { background: rgba(255,255,255,0.14); }
+    .secondary-bar .flag-btn {
+      border-color: #f0c040;
+      color: #f0c040;
+    }
+    .secondary-bar .flag-btn:hover { background: rgba(240,192,64,0.15); }
+    .secondary-bar .flag-btn.flagged { background: #f0c040; color: #003a70; }
+    .secondary-bar .switch-mode-btn {
+      border-color: rgba(255,255,255,0.38);
+      color: #fff;
+    }
+    .secondary-bar .switch-mode-btn:hover { background: rgba(255,255,255,0.18); }
+
+    /* ── MAIN LAYOUT ── */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 32px 12px;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap {
+      margin-bottom: 18px;
+    }
+    .progress-label {
+      font-size: 0.78rem;
+      color: #555;
+      margin-bottom: 4px;
+    }
+    .progress-bar {
+      background: #c0cfe0;
+      border-radius: 6px;
+      height: 8px;
+      width: 100%;
+    }
+    .progress-fill {
+      background: #1a5fa8;
+      height: 100%;
+      border-radius: 6px;
+      width: 20%; /* dynamic via JS */
+      transition: width 0.4s;
+    }
+
+    /* ── QUESTION CARD ── */
+    .question-card {
+      background: #fff;
+      border: 1px solid #c8d6e8;
+      border-radius: 6px;
+      padding: 28px 32px;
+      box-shadow: 0 2px 8px rgba(0,58,112,0.08);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .question-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .q-number-badge {
+      background: #003a70;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 4px 12px;
+      border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .q-category {
+      font-size: 0.78rem;
+      color: #1a5fa8;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .q-stem {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: #1a1a1a;
+    }
+    .q-stem strong { color: #003a70; }
+
+    /* ── EXHIBIT / TABS ── */
+    .exhibit-bar {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid #c8d6e8;
+      padding-bottom: 0;
+    }
+    .exhibit-tab {
+      padding: 6px 18px;
+      border: 1px solid #c8d6e8;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      background: #e9eef4;
+      color: #555;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .exhibit-tab.active { background: #fff; color: #003a70; border-bottom: 2px solid #fff; margin-bottom: -2px; }
+    .exhibit-tab:hover:not(.active) { background: #d0dcea; }
+
+    .exhibit-content {
+      background: #f7f9fc;
+      border: 1px solid #c8d6e8;
+      border-radius: 0 4px 4px 4px;
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #333;
+      display: none;
+    }
+    .exhibit-content.visible { display: block; }
+
+    /* ── INSTRUCTION ── */
+    .q-instruction {
+      font-size: 0.85rem;
+      color: #555;
+      font-style: italic;
+    }
+
+    /* ── ANSWER OPTIONS ── */
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      border: 1px solid #c8d6e8;
+      border-radius: 5px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      background: #fff;
+    }
+    .option-item:hover { background: #eef4fb; border-color: #1a5fa8; }
+    .option-item.selected { background: #ddeeff; border-color: #1a5fa8; }
+    .option-item.correct  { background: #d4edda; border-color: #28a745; }
+    .option-item.incorrect{ background: #f8d7da; border-color: #dc3545; }
+
+    .option-item input[type="radio"],
+    .option-item input[type="checkbox"] {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      accent-color: #1a5fa8;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+    .option-letter {
+      font-weight: 700;
+      color: #003a70;
+      min-width: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .option-text { font-size: 0.95rem; line-height: 1.5; }
+
+    /* ── RATIONALE ── */
+    .rationale-box {
+      display: none;
+      background: #f0f7ff;
+      border-left: 4px solid #1a5fa8;
+      border-radius: 4px;
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: #333;
+    }
+    .rationale-box.visible { display: block; }
+    .rationale-box strong { color: #003a70; }
+
+    /* ── AI INSIGHT PANEL ── */
+    .ai-insight-panel {
+      margin-top: 14px;
+      border: 1.5px solid #c3d8f5;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(26,95,168,.08);
+    }
+    .ai-insight-header {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 14px;
+      background: linear-gradient(90deg, #003a70 0%, #1a5fa8 100%);
+      color: #fff;
+      font-size: .82rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    .ai-insight-header svg { width:16px; height:16px; flex-shrink:0; }
+    .ai-insight-header .ai-badge {
+      margin-left: auto;
+      background: rgba(255,255,255,.18);
+      border-radius: 10px;
+      padding: 2px 9px;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .3px;
+    }
+    .ai-insight-body { padding: 0; }
+    .ai-explanation {
+      padding: 12px 16px 10px;
+      font-size: .83rem;
+      line-height: 1.65;
+      color: #1a1a1a;
+      border-bottom: 1px solid #e8ecf0;
+      background: #f7f9fc;
+    }
+    .ai-explanation strong { color: #003a70; }
+    .ai-explanation ul { margin: .4em 0 .3em 1.2em; padding: 0; }
+    .ai-explanation li { margin-bottom: .18em; }
+    /* chat thread */
+    .ai-chat-thread {
+      max-height: 260px;
+      overflow-y: auto;
+      padding: 10px 14px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      scroll-behavior: smooth;
+    }
+    .ai-chat-thread::-webkit-scrollbar { width: 3px; }
+    .ai-chat-thread::-webkit-scrollbar-thumb { background: #c8d4e0; border-radius:3px; }
+    .ai-msg {
+      display: flex;
+      gap: 7px;
+      align-items: flex-end;
+    }
+    .ai-msg.user { flex-direction: row-reverse; }
+    .ai-msg .avt {
+      width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .6rem; font-weight: 700; flex-shrink: 0;
+    }
+    .ai-msg.bot .avt  { background: linear-gradient(135deg,#003a70,#1a5fa8); color:#fff; }
+    .ai-msg.user .avt { background: #e2e8f0; color:#475569; }
+    .ai-msg-bubble {
+      padding: 7px 11px;
+      border-radius: 12px;
+      font-size: .78rem;
+      line-height: 1.55;
+      max-width: 84%;
+      word-break: break-word;
+    }
+    .ai-msg.bot  .ai-msg-bubble { background:#f0f4f9; color:#1a1a1a; border-bottom-left-radius:3px; }
+    .ai-msg.user .ai-msg-bubble { background:linear-gradient(135deg,#1a5fa8,#003a70); color:#fff; border-bottom-right-radius:3px; }
+    .ai-msg-bubble strong { font-weight:700; }
+    .ai-msg-bubble em { font-style:italic; }
+    .ai-msg-bubble ul { margin:.3em 0 .3em 1em; padding:0; }
+    /* typing dots */
+    .ai-typing span {
+      display:inline-block;
+      width:6px; height:6px; border-radius:50%;
+      background:#94a3b8; margin:0 2px;
+      animation: aitdot .85s infinite;
+    }
+    .ai-typing span:nth-child(2){ animation-delay:.13s; }
+    .ai-typing span:nth-child(3){ animation-delay:.26s; }
+    @keyframes aitdot {
+      0%,80%,100%{ transform:translateY(0); opacity:.6; }
+      40%{ transform:translateY(-5px); opacity:1; }
+    }
+    /* input row */
+    .ai-input-row {
+      display: flex;
+      gap: 7px;
+      padding: 8px 12px 10px;
+      border-top: 1px solid #e8ecf0;
+      background: #fff;
+    }
+    .ai-followup-input {
+      flex: 1;
+      border: 1px solid #c8d4e0;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: .78rem;
+      outline: none;
+      font-family: Arial, sans-serif;
+      color: #1a1a1a;
+      background: #f7f9fc;
+      transition: border-color .15s;
+    }
+    .ai-followup-input:focus { border-color: #1a5fa8; background:#fff; }
+    .ai-send-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg,#1a5fa8,#003a70);
+      color: #fff; border: none; cursor: pointer;
+      display: flex; align-items:center; justify-content:center;
+      flex-shrink: 0; transition: opacity .15s;
+    }
+    .ai-send-btn:hover { opacity:.85; }
+    .ai-send-btn:disabled { opacity:.35; cursor:default; }
+    .ai-send-btn svg { width:13px; height:13px; }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      background: #fff;
+      border-top: 2px solid #c8d6e8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 32px;
+      flex-shrink: 0;
+      position: sticky;
+      bottom: 0;
+    }
+    .nav-left, .nav-right { display: flex; gap: 10px; }
+
+    .btn {
+      padding: 9px 26px;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, background 0.2s;
+    }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-prev  { background: #e2e8f0; color: #333; }
+    .btn-prev:hover:not(:disabled) { background: #c8d6e8; }
+    .btn-next  { background: #1a5fa8; color: #fff; }
+    .btn-next:hover:not(:disabled) { background: #154d8a; }
+    .btn-submit { background: #003a70; color: #fff; display: none; }
+    .btn-submit:hover:not(:disabled) { background: #00284f; }
+    .btn-check  { background: #28a745; color: #fff; }
+    .btn-check:hover:not(:disabled) { background: #218838; }
+    .btn-end    { background: #dc3545; color: #fff; }
+    .btn-end:hover { background: #b02a37; }
+
+    /* ── Readiness timing choice ── */
+    .timing-choice { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+    .timing-btn { font-size: 14px !important; padding: 10px 16px !important; }
+    .timing-btn.untimed { background: #5a3e92 !important; }
+    .timing-btn.untimed:hover { background: #472f75 !important; }
+    .resume-notice { margin-top: 8px; font-size: 12px; color: #5a3e92; background: #f3eeff; border-radius: 6px; padding: 7px 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .resume-notice button { background: none; border: 1px solid #5a3e92; color: #5a3e92; border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; }
+    .pause-btn { background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.45); border-radius: 6px; padding: 3px 11px; font-size: 13px; cursor: pointer; margin-left: 10px; vertical-align: middle; }
+    .pause-btn:hover { background: rgba(255,255,255,0.3); }
+    #pause-overlay { display: none; position: fixed; inset: 0; background: rgba(0,30,60,0.93); z-index: 9998; align-items: center; justify-content: center; }
+    #pause-overlay.active { display: flex; }
+
+    /* ── Learning sub-screen ── */
+    #learning-sub { position: fixed; inset: 0; background: linear-gradient(135deg,#f0f9f1 0%,#e8f4fd 100%); z-index: 2001; display: none; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 16px; }
+    #learning-sub.active { display: flex; }
+    .lsub-inner { max-width: 820px; width: 100%; }
+    .lsub-back { background: none; border: none; color: #28a745; font-size: 14px; cursor: pointer; padding: 0 0 24px; display: flex; align-items: center; gap: 6px; font-weight: 600; }
+    .lsub-back:hover { text-decoration: underline; }
+    .lsub-title { font-size: 1.8rem; font-weight: 800; color: #003a70; margin-bottom: 6px; }
+    .lsub-sub { color: #666; font-size: 15px; margin-bottom: 28px; line-height: 1.5; }
+    .lsub-allbtn { display: flex; align-items: center; gap: 16px; background: #28a745; color: #fff; border: none; border-radius: 12px; padding: 20px 28px; font-size: 15px; cursor: pointer; width: 100%; margin-bottom: 32px; text-align: left; }
+    .lsub-allbtn:hover { background: #218838; }
+    .lsub-allbtn-icon { font-size: 32px; flex-shrink: 0; }
+    .lsub-allbtn-text strong { display: block; font-size: 17px; margin-bottom: 3px; }
+    .lsub-allbtn-text span { font-size: 13px; font-weight: 400; opacity: 0.9; }
+    .lsub-divider { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; color: #999; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .lsub-divider::before, .lsub-divider::after { content:''; flex:1; height:1px; background:#ddd; }
+    .lsub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; padding-bottom: 32px; }
+    .lsub-chip { background: #fff; border: 1.5px solid #c8d6e8; border-radius: 10px; padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: border-color .15s, box-shadow .15s; }
+    .lsub-chip:hover { border-color: #28a745; box-shadow: 0 2px 12px rgba(40,167,69,.15); }
+    .lsub-chip-icon { font-size: 24px; flex-shrink: 0; }
+    .lsub-chip-info strong { display: block; font-size: 13.5px; color: #1a2e3b; font-weight: 700; line-height: 1.2; }
+    .lsub-chip-info span { font-size: 12px; color: #888; }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    .stat { font-size: 0.8rem; color: #555; }
+    .stat span { font-weight: 700; color: #003a70; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 8px;
+      padding: 32px 36px;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+    .modal h2 { color: #003a70; margin-bottom: 14px; font-size: 1.3rem; }
+    .modal p  { font-size: 0.93rem; color: #444; margin-bottom: 20px; line-height: 1.6; }
+    .modal-score {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #1a5fa8;
+      margin: 12px 0;
+    }
+    .modal-grade {
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 6px 20px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .grade-pass  { background: #d4edda; color: #155724; }
+    .grade-fail  { background: #f8d7da; color: #721c24; }
+    .modal-actions { display: flex; gap: 12px; justify-content: center; }
+    .btn-restart { background: #1a5fa8; color: #fff; }
+    .btn-restart:hover { background: #154d8a; }
+
+    /* ── QUESTION MAP PANEL ── */
+    .qmap-panel {
+      display: none;
+      position: fixed;
+      top: 88px; right: 0;
+      width: 260px;
+      background: #fff;
+      border: 1px solid #c8d6e8;
+      border-radius: 6px 0 0 6px;
+      padding: 16px;
+      box-shadow: -4px 4px 16px rgba(0,0,0,0.12);
+      z-index: 500;
+    }
+    .qmap-panel.open { display: block; }
+    .qmap-panel h4 { color: #003a70; margin-bottom: 12px; font-size: 0.9rem; }
+    .qmap-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .qmap-cell {
+      width: 32px; height: 32px;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem; font-weight: 700;
+      cursor: pointer;
+      border: 1px solid #c8d6e8;
+      background: #f7f9fc;
+      color: #333;
+      transition: background 0.15s;
+    }
+    .qmap-cell.current  { background: #1a5fa8; color: #fff; border-color: #1a5fa8; }
+    .qmap-cell.answered { background: #d4edda; border-color: #28a745; color: #155724; }
+    .qmap-cell.flagged  { background: #fff3cd; border-color: #f0c040; color: #856404; }
+    .qmap-cell:hover:not(.current) { background: #ddeeff; }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.73rem; color: #555; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 2px; }
+
+    /* ── MODE SELECTOR OVERLAY ── */
+    .mode-selector {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #002a55 0%, #1a5fa8 100%);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .mode-selector.hidden { display: none; }
+    .mode-selector-inner {
+      max-width: 1050px;
+      width: 100%;
+      text-align: center;
+    }
+    .mode-logo {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+    .mode-logo span { color: #f0c040; }
+    .mode-subheading {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+    .mode-heading {
+      color: #fff;
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+    .mode-cards {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .mode-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px 24px;
+      width: 300px;
+      text-align: left;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .mode-card:hover { transform: translateY(-5px); box-shadow: 0 14px 44px rgba(0,0,0,0.4); }
+    .mode-icon { line-height: 0; margin-bottom: 4px; }
+    .mode-card h3 { font-size: 1.3rem; color: #003a70; font-weight: 700; margin: 0; }
+    .mode-card p  { font-size: 0.87rem; color: #555; line-height: 1.6; margin: 0; }
+    .mode-card ul {
+      list-style: none;
+      padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: 7px;
+    }
+    .mode-card ul li {
+      font-size: 0.83rem; color: #333;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .mode-card ul li::before { content: '✓'; color: #28a745; font-weight: 700; font-size: 0.9rem; }
+    .btn-mode {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.3px;
+    }
+    .btn-mode:hover { transform: scale(1.02); }
+    .btn-mode-readiness            { background: #003a70; color: #fff; }
+    .btn-mode-readiness:hover      { background: #00284f; }
+    .btn-mode-learning             { background: #28a745; color: #fff; }
+    .btn-mode-learning:hover       { background: #1e7e34; }
+    .btn-mode-ai                   { background: linear-gradient(135deg,#1a5fa8 0%,#003a70 100%); color: #fff; }
+    .btn-mode-ai:hover             { background: linear-gradient(135deg,#154d8a 0%,#00284f 100%); }
+    .ai-card-dot {
+      display: inline-block;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #48bb78;
+      box-shadow: 0 0 0 2px rgba(72,187,120,.35);
+      animation: ai-dot-pulse 2s infinite;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    @keyframes ai-dot-pulse {
+      0%,100% { box-shadow: 0 0 0 2px rgba(72,187,120,.35); }
+      50%      { box-shadow: 0 0 0 5px rgba(72,187,120,.1); }
+    }
+
+    /* ── LEARNING MODE UI ── */
+    .learning-mode-badge {
+      background: #28a745;
+      color: #fff;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      letter-spacing: 0.5px;
+    }
+    .time-taken-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #e8f5e9;
+      border: 1px solid #a5d6a7;
+      color: #1b5e20;
+      font-size: 0.83rem;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+
+    /* ── CASE STUDY ── */
+
+    /* Split layout wrapper — used when a question has caseIntro */
+    .case-split {
+      display: flex;
+      gap: 0;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* LEFT PANEL — patient info */
+    .case-left {
+      width: 42%;
+      flex-shrink: 0;
+      background: #eaf3fb;
+      border-right: 3px solid #1a5fa8;
+      border-radius: 6px 0 0 6px;
+      padding: 20px 22px;
+      overflow-y: auto;
+      max-height: 68vh;
+    }
+
+    /* RIGHT PANEL — question */
+    .case-right {
+      flex: 1;
+      padding: 20px 24px;
+      overflow-y: auto;
+      max-height: 68vh;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Override question-card padding when in split mode */
+    .question-card.split-mode {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .case-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .case-badge {
+      background: #003a70;
+      color: #f0c040;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    .case-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #003a70;
+      line-height: 1.3;
+    }
+    .case-divider {
+      border: none;
+      border-top: 1px solid #9bbfe0;
+      margin: 10px 0 12px;
+    }
+    .case-section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #1a5fa8;
+      margin-bottom: 6px;
+    }
+    .case-intro-text {
+      font-size: 0.86rem;
+      line-height: 1.72;
+      color: #1a1a1a;
+    }
+    .case-intro-text table {
+      border-collapse: collapse;
+      margin-top: 8px;
+      width: 100%;
+      font-size: 0.82rem;
+    }
+    .case-intro-text th {
+      background: #003a70;
+      color: #fff;
+      padding: 5px 10px;
+      text-align: left;
+    }
+    .case-intro-text td {
+      border: 1px solid #b8cfe8;
+      padding: 5px 10px;
+    }
+    .case-intro-text tr:nth-child(even) td { background: #d9eaf7; }
+
+    /* Sticky label inside right panel */
+    .case-q-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #1a5fa8;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #c8d6e8;
+    }
+  </style>
+</head>
+<body>
+
+<!-- MODE SELECTOR OVERLAY -->
+<div class="mode-selector" id="mode-selector">
+  <div class="mode-selector-inner">
+    <div class="mode-logo">NCLEX<span>-RN</span></div>
+    <p class="mode-subheading">Next Generation NCLEX® — Practice Examination</p>
+    <h2 class="mode-heading">Choose Your Practice Mode</h2>
+    <div class="mode-cards">
+
+      <!-- LEARNING MODE -->
+      <div class="mode-card">
+        <div class="mode-icon"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+        <h3>Learning Mode</h3>
+        <p>No time pressure — learn at your own pace. After answering each question, see exactly how long you took along with a full rationale.</p>
+        <ul>
+          <li>No countdown timer</li>
+          <li>Per-question time tracking</li>
+          <li>Instant rationale after each answer</li>
+          <li>AI insight panel per question</li>
+        </ul>
+        <button class="btn-mode btn-mode-learning" onclick="showLearningSub()">Choose Study Format</button>
+      </div>
+
+      <!-- READINESS ASSESSMENT -->
+      <div class="mode-card">
+        <div class="mode-icon"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#003a70" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h3>Readiness Assessment</h3>
+        <p>Simulate the real NCLEX-RN exam experience. Choose timed or untimed — both track all your answers and give a final score.</p>
+        <ul>
+          <li>Timed: 5-hr countdown, pauseable</li>
+          <li>Untimed: save &amp; resume across sessions</li>
+          <li>Final score &amp; pass/fail grade</li>
+          <li>Question map navigation</li>
+        </ul>
+        <div class="timing-choice">
+          <button class="btn-mode btn-mode-readiness timing-btn" onclick="selectMode('readiness', true)">⏱ Timed — 5-hr countdown</button>
+          <button class="btn-mode btn-mode-readiness timing-btn untimed" onclick="selectMode('readiness', false)">📁 Untimed — Save Progress</button>
+        </div>
+        <div id="resume-notice" class="resume-notice" style="display:none;">
+          <span>Saved untimed progress detected.</span>
+          <button onclick="clearSavedProgress()">Clear</button>
+        </div>
+      </div>
+
+      <!-- AI ASSISTANT -->
+      <div class="mode-card">
+        <div class="mode-icon">
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#1a5fa8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            <circle cx="9" cy="10" r="1" fill="#1a5fa8" stroke="none"/>
+            <circle cx="12" cy="10" r="1" fill="#1a5fa8" stroke="none"/>
+            <circle cx="15" cy="10" r="1" fill="#1a5fa8" stroke="none"/>
+          </svg>
+        </div>
+        <h3>AI Assistant <span class="ai-card-dot"></span></h3>
+        <p>Your always-on study companion. Ask anything about NCLEX-RN concepts — from ABGs to delegation — and get instant, evidence-based explanations.</p>
+        <ul>
+          <li>Ask follow-up questions freely</li>
+          <li>Persistent chat history per session</li>
+          <li>Covers pharmacology, priority &amp; more</li>
+          <li>No need to switch to ChatGPT</li>
+        </ul>
+        <a class="btn-mode btn-mode-ai" href="copilot.html" target="_blank"
+           style="display:block;text-align:center;text-decoration:none;box-sizing:border-box;">
+          Open AI Assistant
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<!-- LEARNING MODE SUB-SCREEN -->
+<div id="learning-sub">
+  <div class="lsub-inner">
+    <button class="lsub-back" onclick="closeLearningSub()">&#8592; Back to Mode Select</button>
+    <div class="lsub-title">How would you like to study?</div>
+    <p class="lsub-sub">Pick a format and dive in. Every question includes instant rationale and an AI-powered insight panel after you answer.</p>
+    <button class="lsub-allbtn" onclick="startLearning(shuffleArray(questions.slice()))">
+      <span class="lsub-allbtn-icon">&#128256;</span>
+      <div class="lsub-allbtn-text">
+        <strong>Shuffle &amp; Study All</strong>
+        <span>All questions in a randomised order &mdash; great for a full comprehensive review.</span>
+      </div>
+    </button>
+    <div class="lsub-divider">or practice by topic</div>
+    <div class="lsub-grid" id="lsub-grid"><!-- populated by showLearningSub() --></div>
+  </div>
+</div>
+
+<div class="top-bar">
+  <div class="logo">NCLEX<span>-RN</span></div>
+  <div class="exam-title">Next Generation NCLEX® — Practice Examination</div>
+  <div class="timer-block" id="timer-block">
+    Time Remaining: <span class="timer" id="timer">05:00:00</span>
+  </div>
+</div>
+
+<!-- SECONDARY BAR -->
+<div class="secondary-bar">
+  <div class="candidate">Candidate: Practice User</div>
+  <div class="q-counter" id="q-counter">Question 1 of 10</div>
+  <div style="display:flex;gap:7px;align-items:center;">
+    <button class="bar-btn flag-btn" id="flag-btn" onclick="toggleFlag()">Flag for Review</button>
+    <a class="bar-btn" id="ai-bar-btn" href="copilot.html" target="_blank" style="text-decoration:none;display:none;align-items:center;gap:6px;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        <circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/>
+        <circle cx="12" cy="10" r="1" fill="currentColor" stroke="none"/>
+        <circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      AI Assistant
+    </a>
+    <button class="bar-btn" onclick="toggleQMap()">Question Map</button>
+    <button class="bar-btn switch-mode-btn" onclick="switchMode()">Switch Mode</button>
+  </div>
+
+</div>
+
+<!-- QUESTION MAP PANEL -->
+<div class="qmap-panel" id="qmap-panel">
+  <h4>Question Map</h4>
+  <div class="qmap-grid" id="qmap-grid"></div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#1a5fa8"></div> Current</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d4edda;border:1px solid #28a745"></div> Answered</div>
+    <div class="legend-item flagged-legend" id="flagged-legend"><div class="legend-dot" style="background:#fff3cd;border:1px solid #f0c040"></div> Flagged</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f7f9fc;border:1px solid #c8d6e8"></div> Unanswered</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-content">
+  <div class="progress-wrap">
+    <div class="progress-label" id="progress-label">Progress: 0 of 10 answered</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div class="question-card" id="question-card">
+    <!-- Rendered by JS -->
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-left">
+    <button class="btn btn-prev" id="btn-prev" onclick="navigate(-1)" disabled>&#8592; Previous</button>
+    <button class="btn btn-end"  onclick="confirmEnd()">End Exam</button>
+  </div>
+  <div class="stats-bar">
+    <div class="stat">Answered: <span id="stat-answered">0</span></div>
+    <div class="stat" id="stat-flagged-wrap">Flagged: <span id="stat-flagged">0</span></div>
+    <div class="stat">Remaining: <span id="stat-remaining">10</span></div>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-check" id="btn-check" onclick="checkAnswer()">Check Answer</button>
+    <button class="btn btn-next"   id="btn-next"   onclick="navigate(1)">Next &#8594;</button>
+    <button class="btn btn-submit" id="btn-submit" onclick="submitExam()">Submit Exam</button>
+  </div>
+</div>
+
+<!-- RESULT MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h2>Exam Complete</h2>
+    <p>Your results for this practice session:</p>
+    <div class="modal-score" id="modal-score">—</div>
+    <div class="modal-grade" id="modal-grade"></div>
+    <p id="modal-detail"></p>
+    <div class="modal-actions">
+      <button class="btn btn-restart" onclick="restartExam()">Restart Exam</button>
+      <button class="btn btn-prev"    onclick="closeModal()">Review Answers</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   QUESTION BANK — replace/extend with real content
+   ═══════════════════════════════════════════════ */
+const questions = [
+  {
+    id: 1,
+    category: "Pharmacology & Medication Administration",
+    type: "single",  // single | multiple | ordered | hotspot
+    stem: `A nurse is preparing to administer <strong>digoxin 0.125 mg PO</strong> to a client with heart failure. Before administering the medication, which assessment finding should prompt the nurse to <strong>hold the dose and notify the provider</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Blood pressure of 118/74 mmHg",
+      "Apical pulse of 54 beats/min",
+      "Serum potassium level of 4.2 mEq/L",
+      "Respiratory rate of 18 breaths/min"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Apical pulse of 54 beats/min.</strong><br><br>
+      Digoxin slows conduction through the AV node and increases vagal tone, which can cause bradycardia. The nurse should hold digoxin and notify the provider if the apical pulse is <strong>less than 60 beats/min</strong> in adults before administration.<br><br>
+      • A normal blood pressure (A) and potassium level (C) are not reasons to hold digoxin.<br>
+      • A respiratory rate of 18 (D) is within normal limits and unrelated to digoxin administration criteria.`
+  },
+  {
+    id: 2,
+    category: "Prioritization & Management of Care",
+    type: "single",
+    stem: `A nurse on a medical-surgical unit receives report on four clients. Which client should the nurse <strong>assess first</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "A client with COPD whose SpO₂ is 91% on 2 L/min O₂ via nasal cannula",
+      "A client post-appendectomy (8 hours ago) reporting pain of 5/10 that is controlled with PO analgesics",
+      "A client with type 2 diabetes whose fasting blood glucose is 148 mg/dL",
+      "A client with heart failure who gained 2.2 lb overnight and has crackles in bilateral lower lobes"
+    ],
+    correct: [3],
+    rationale: `<strong>Correct: D — Heart failure client with overnight weight gain and crackles.</strong><br><br>
+      A sudden weight gain of ≥2 lb in 24 hours with new crackles indicates <strong>worsening pulmonary edema</strong> — a life-threatening emergency requiring immediate assessment and intervention.<br><br>
+      • The COPD client (A) at SpO₂ 91% is at an acceptable baseline for COPD and does not require immediate priority over acute decompensation.<br>
+      • Controlled post-op pain (B) and mild hyperglycemia (C) are concerns but not immediately life-threatening.`
+  },
+  {
+    id: 3,
+    category: "Safe & Effective Care Environment",
+    type: "multiple",
+    stem: `A nurse is caring for a client who is in contact precautions for <em>Clostridioides difficile (C. diff)</em> infection. Which actions by the nurse are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Perform hand hygiene with alcohol-based hand sanitizer before entering the room",
+      "Don gloves and gown before entering the room",
+      "Use soap and water for hand hygiene when leaving the room",
+      "Place the client in a private room with negative pressure airflow",
+      "Use dedicated equipment (e.g., stethoscope, BP cuff) for the client"
+    ],
+    correct: [1, 2, 4],
+    rationale: `<strong>Correct: B, C, E.</strong><br><br>
+      • <strong>B</strong> — Gloves and gown are required for contact precautions.<br>
+      • <strong>C</strong> — <em>C. diff</em> spores are NOT destroyed by alcohol; <strong>soap and water</strong> must be used.<br>
+      • <strong>E</strong> — Dedicated equipment prevents cross-contamination.<br><br>
+      • <strong>A</strong> is INCORRECT — alcohol sanitizer is ineffective against <em>C. diff</em> spores.<br>
+      • <strong>D</strong> is INCORRECT — negative pressure is used for airborne precautions (e.g., TB, measles), not contact precautions.`
+  },
+  {
+    id: 4,
+    category: "Physiological Adaptation",
+    type: "single",
+    stem: `A nurse is caring for a client who was admitted with <strong>acute pancreatitis</strong>. The client's most recent labs show: serum lipase 780 U/L, serum calcium 7.1 mg/dL, blood glucose 210 mg/dL. The client reports <strong>tingling around the mouth and in the fingertips</strong>. Which intervention is the <strong>priority</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Administer sliding-scale insulin per protocol",
+      "Place the client on continuous cardiac monitoring",
+      "Prepare to administer IV calcium gluconate",
+      "Increase the IV fluid infusion rate"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — Prepare to administer IV calcium gluconate.</strong><br><br>
+      The client's serum calcium of <strong>7.1 mg/dL</strong> (normal 8.5–10.5) indicates <strong>hypocalcemia</strong>. Perioral tingling and paresthesias are classic signs of hypocalcemia (Chvostek's/Trousseau's signs). Hypocalcemia in pancreatitis results from saponification of fat by lipases and is a known complication associated with poor prognosis.<br><br>
+      IV calcium gluconate is the priority intervention. Cardiac monitoring (B) is important but is secondary to correcting the electrolyte imbalance. Insulin (A) addresses hyperglycemia, which is less immediately dangerous. Fluids (D) are supportive but do not treat hypocalcemia.`
+  },
+  {
+    id: 5,
+    category: "Reduction of Risk Potential",
+    type: "single",
+    stem: `A nurse is reviewing the arterial blood gas (ABG) results for a client who has been receiving mechanical ventilation. The values are:<br><br>
+      <strong>pH 7.50 | PaCO₂ 28 mmHg | HCO₃⁻ 22 mEq/L | PaO₂ 88 mmHg</strong><br><br>
+      How should the nurse interpret these results?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Respiratory acidosis, uncompensated",
+      "Metabolic alkalosis, partially compensated",
+      "Respiratory alkalosis, uncompensated",
+      "Metabolic acidosis, fully compensated"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — Respiratory alkalosis, uncompensated.</strong><br><br>
+      <strong>Step-by-step ABG interpretation (ROME):</strong><br>
+      • pH 7.50 → <strong>Alkalotic</strong><br>
+      • PaCO₂ 28 (↓) → CO₂ is low → respiratory cause of alkalosis → <strong>Respiratory alkalosis</strong><br>
+      • HCO₃⁻ 22 → Normal (22–26) → <strong>No metabolic compensation yet</strong><br><br>
+      Result: <strong>Respiratory alkalosis, uncompensated.</strong><br>
+      The ventilator rate or tidal volume may need to be reduced to allow CO₂ to rise.`
+  },
+  {
+    id: 6,
+    category: "Pharmacology — Pain Management",
+    type: "single",
+    stem: `A nurse is caring for a postoperative client who received <strong>morphine 4 mg IV</strong> 20 minutes ago. The nurse assesses the client and finds: respiratory rate of <strong>8 breaths/min</strong>, SpO₂ <strong>88%</strong>, and the client is <strong>difficult to arouse</strong>. Which medication should the nurse prepare to administer <strong>first</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Flumazenil (Romazicon) 0.2 mg IV",
+      "Naloxone (Narcan) 0.4 mg IV",
+      "Epinephrine 1 mg IV push",
+      "Atropine 0.5 mg IV"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Naloxone (Narcan) 0.4 mg IV.</strong><br><br>
+      The client is demonstrating classic signs of <strong>opioid-induced respiratory depression</strong>: RR <12, SpO₂ <90%, and altered LOC following morphine administration.<br><br>
+      <strong>Naloxone</strong> is the opioid antagonist of choice. It competitively blocks and reverses opioid receptor effects.<br><br>
+      • Flumazenil (A) reverses benzodiazepines, not opioids.<br>
+      • Epinephrine (C) is used for anaphylaxis/cardiac arrest, not opioid overdose.<br>
+      • Atropine (D) treats bradycardia, not respiratory depression.`
+  },
+  {
+    id: 7,
+    category: "Maternity / OB Nursing",
+    type: "multiple",
+    stem: `A nurse is assessing a client who is 38 weeks pregnant and reports a severe headache, visual changes, and epigastric pain. Vital signs: BP 162/108 mmHg, HR 92/min, SpO₂ 97%. Which findings indicate the client is at risk for <strong>eclampsia</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "BP of 162/108 mmHg",
+      "Headache and visual disturbances",
+      "Epigastric pain",
+      "SpO₂ of 97%",
+      "Heart rate of 92 beats/min"
+    ],
+    correct: [0, 1, 2],
+    rationale: `<strong>Correct: A, B, C.</strong><br><br>
+      These findings represent <strong>severe-range preeclampsia</strong> with impending eclampsia:<br>
+      • <strong>BP ≥160/110</strong> — severe hypertension (A)<br>
+      • <strong>Headache & visual changes</strong> — cerebral involvement (B)<br>
+      • <strong>Epigastric/RUQ pain</strong> — hepatic capsule distension, HELLP syndrome risk (C)<br><br>
+      SpO₂ of 97% (D) is within normal limits. HR of 92 (E) is a normal physiologic response in pregnancy and not a sign of eclampsia.<br><br>
+      Priority interventions: IV magnesium sulfate (seizure prophylaxis), antihypertensives, and preparation for delivery.`
+  },
+  {
+    id: 8,
+    category: "Mental Health Nursing",
+    type: "single",
+    stem: `A nurse is caring for a client with schizophrenia who states, <em>"The television is sending me secret messages telling me I am the chosen one."</em> This statement is <strong>best</strong> described as which type of thought disturbance?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Auditory hallucination",
+      "Ideas of reference",
+      "Grandiose delusion",
+      "Thought broadcasting"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Ideas of reference.</strong><br><br>
+      <strong>Ideas of reference</strong> involve the belief that external events, objects, or other people are conveying special messages directly to or about the individual — such as believing a television broadcast is sending them a personal message.<br><br>
+      • A grandiose delusion (C) involves beliefs of exceptional importance, power, or identity — but the key feature HERE is the external object (TV) as a message source.<br>
+      • Auditory hallucination (A) involves hearing voices with no external stimulus — this is a visual/cognitive perception, not auditory.<br>
+      • Thought broadcasting (D) is the belief that one's thoughts are being transmitted to others.`
+  },
+  {
+    id: 9,
+    category: "Pediatric Nursing",
+    type: "single",
+    stem: `A nurse is caring for a 2-year-old child who is admitted with <strong>croup (laryngotracheobronchitis)</strong>. The child has a barking cough, inspiratory stridor at rest, and is anxious. SpO₂ is 93% on room air. Which intervention is the <strong>nurse's priority</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Administer nebulized racemic epinephrine as ordered",
+      "Place the child in a mist tent with cool humidified air",
+      "Obtain a throat culture before initiating treatment",
+      "Encourage oral fluids and allow the child to rest undisturbed"
+    ],
+    correct: [0],
+    rationale: `<strong>Correct: A — Administer nebulized racemic epinephrine.</strong><br><br>
+      This child has <strong>moderate-to-severe croup</strong>: stridor at rest and SpO₂ 93% indicate significant airway compromise. <strong>Nebulized racemic epinephrine</strong> causes vasoconstriction of the subglottic mucosa, rapidly reducing edema and relieving obstruction — it is the priority intervention.<br><br>
+      • Cool mist (B) is an older comfort measure with limited evidence for moderate/severe croup.<br>
+      • Throat culture (C) is contraindicated — examining the throat in suspected epiglottitis/severe croup can trigger complete airway obstruction; moreover, croup is viral and cultures are not indicated.<br>
+      • Oral fluids (D) are appropriate for mild croup, not for a child with stridor at rest and hypoxia.`
+  },
+  {
+    id: 10,
+    category: "Leadership & Delegation",
+    type: "single",
+    stem: `A registered nurse (RN) is delegating tasks to assistive personnel (AP) on a busy medical-surgical unit. Which task is <strong>appropriate</strong> for the RN to delegate to the AP?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Perform a focused respiratory assessment on a client with new-onset dyspnea",
+      "Ambulate a post-operative hip replacement client for the first time",
+      "Obtain a urine specimen via straight catheter from a client with a UTI",
+      "Measure and record urine output from an indwelling Foley catheter"
+    ],
+    correct: [3],
+    rationale: `<strong>Correct: D — Measure and record urine output from a Foley catheter.</strong><br><br>
+      Delegation must follow the <strong>Five Rights of Delegation</strong>. Measuring and recording output is a routine, non-invasive task within the AP's scope of practice.<br><br>
+      • Assessment (A) requires RN clinical judgment and cannot be delegated.<br>
+      • First-time ambulation (B) after hip replacement requires nursing assessment for pain, stability, and fall risk — must be performed by the RN initially.<br>
+      • Straight catheterization (C) is a sterile invasive procedure typically within LPN/LVN scope, not AP scope.`
+  },
+
+  /* ──────────────────────────────────────────────
+     CASE STUDY 1 — SEPSIS (Questions 11–15)
+  ────────────────────────────────────────────── */
+  {
+    id: 11,
+    caseTitle: "Case Study 1 of 2: Sepsis — Q1 of 5",
+    caseIntro: `
+      <strong>Client Profile:</strong> Mr. James R., a 72-year-old male with a history of type 2 diabetes and BPH, is brought to the ED by his daughter. She reports he has been increasingly confused since this morning, has not eaten in 2 days, and "just doesn't look right." He was treated for a UTI 3 weeks ago but stopped antibiotics after 5 days.<br><br>
+      <table>
+        <tr><th colspan="4">Vital Signs on Arrival</th></tr>
+        <tr><td><strong>Temp</strong></td><td>38.9°C (102°F)</td><td><strong>HR</strong></td><td>118 /min</td></tr>
+        <tr><td><strong>BP</strong></td><td>88/56 mmHg</td><td><strong>RR</strong></td><td>24 /min</td></tr>
+        <tr><td><strong>SpO₂</strong></td><td>94% (room air)</td><td><strong>GCS</strong></td><td>13/15</td></tr>
+      </table><br>
+      <strong>Labs:</strong> WBC 18,200/mm³ | Lactate 3.8 mmol/L | Creatinine 2.1 mg/dL | Glucose 248 mg/dL | Procalcitonin elevated | UA: positive nitrites, >100 WBC/hpf`,
+    category: "Case Study: Sepsis — Priority Interventions",
+    type: "single",
+    stem: `The nurse recognizes that Mr. James meets criteria for <strong>sepsis</strong>. Which bundle of interventions should be initiated within the <strong>first hour</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Blood cultures ×2, broad-spectrum IV antibiotics, 30 mL/kg IV crystalloid bolus, and measure serum lactate",
+      "Urinalysis, oral antibiotics, dietary consult, and repeat vital signs in 4 hours",
+      "CT abdomen/pelvis, NPO status, surgical consult, and IV fluids at 75 mL/hr maintenance",
+      "Chest X-ray, nebulized albuterol, IV corticosteroids, and cardiac monitoring"
+    ],
+    correct: [0],
+    rationale: `<strong>Correct: A — Sepsis 1-Hour Bundle (Surviving Sepsis Campaign).</strong><br><br>
+      Mr. James meets sepsis criteria: altered mentation, fever, tachycardia, hypotension, elevated lactate (>2.0 mmol/L). The <strong>1-hour bundle</strong> includes:<br>
+      • <strong>Blood cultures ×2</strong> before antibiotics (to identify the organism)<br>
+      • <strong>Broad-spectrum IV antibiotics</strong> within 1 hour of recognition<br>
+      • <strong>30 mL/kg IV crystalloid bolus</strong> for sepsis-induced hypoperfusion<br>
+      • <strong>Lactate remeasurement</strong> if initial lactate ≥2 mmol/L<br><br>
+      Oral antibiotics (B) are inappropriate for sepsis with hemodynamic instability. CT scan (C) and albuterol/steroids (D) do not address the sepsis priorities.`
+  },
+  {
+    id: 12,
+    caseTitle: "Case Study 1 of 2: Sepsis — Q2 of 5",
+    caseIntro: `
+      <strong>Client Profile:</strong> Mr. James R., a 72-year-old male with a history of type 2 diabetes and BPH, is brought to the ED by his daughter. She reports he has been increasingly confused since this morning, has not eaten in 2 days, and "just doesn't look right." He was treated for a UTI 3 weeks ago but stopped antibiotics after 5 days.<br><br>
+      <table>
+        <tr><th colspan="4">Vital Signs on Arrival</th></tr>
+        <tr><td><strong>Temp</strong></td><td>38.9°C (102°F)</td><td><strong>HR</strong></td><td>118 /min</td></tr>
+        <tr><td><strong>BP</strong></td><td>88/56 mmHg</td><td><strong>RR</strong></td><td>24 /min</td></tr>
+        <tr><td><strong>SpO₂</strong></td><td>94% (room air)</td><td><strong>GCS</strong></td><td>13/15</td></tr>
+      </table><br>
+      <strong>Labs:</strong> WBC 18,200/mm³ | Lactate 3.8 mmol/L | Creatinine 2.1 mg/dL | Glucose 248 mg/dL | Procalcitonin elevated | UA: positive nitrites, >100 WBC/hpf`,
+    category: "Case Study: Sepsis — Fluid Resuscitation",
+    type: "single",
+    stem: `After receiving 2 L of IV normal saline, Mr. James's BP is now 90/60 mmHg, HR 110/min, and urine output has been <strong>10 mL over the past hour</strong>. The nurse is concerned about organ perfusion. Which assessment finding best indicates that fluid resuscitation is <strong>adequate</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "MAP ≥65 mmHg and urine output ≥0.5 mL/kg/hr",
+      "Systolic BP ≥90 mmHg alone",
+      "Heart rate decrease to <100 bpm regardless of urine output",
+      "Absence of fever after antipyretic administration"
+    ],
+    correct: [0],
+    rationale: `<strong>Correct: A — MAP ≥65 mmHg and UO ≥0.5 mL/kg/hr.</strong><br><br>
+      The Surviving Sepsis Campaign defines adequate resuscitation targets as:<br>
+      • <strong>Mean Arterial Pressure (MAP) ≥65 mmHg</strong> — ensures adequate organ perfusion pressure<br>
+      • <strong>Urine output ≥0.5 mL/kg/hr</strong> — indicates adequate renal perfusion<br>
+      • <strong>Lactate clearance ≥10%</strong> if initial lactate was elevated<br><br>
+      Systolic BP alone (B) does not reflect perfusion pressure. HR trending down (C) is supportive but not the primary resuscitation target. Temperature resolution (D) is not a resuscitation endpoint.`
+  },
+  {
+    id: 13,
+    caseTitle: "Case Study 1 of 2: Sepsis — Q3 of 5",
+    caseIntro: `
+      <strong>Client Profile:</strong> Mr. James R., a 72-year-old male with a history of type 2 diabetes and BPH, is brought to the ED by his daughter. She reports he has been increasingly confused since this morning, has not eaten in 2 days, and "just doesn't look right." He was treated for a UTI 3 weeks ago but stopped antibiotics after 5 days.<br><br>
+      <table>
+        <tr><th colspan="4">Vital Signs on Arrival</th></tr>
+        <tr><td><strong>Temp</strong></td><td>38.9°C (102°F)</td><td><strong>HR</strong></td><td>118 /min</td></tr>
+        <tr><td><strong>BP</strong></td><td>88/56 mmHg</td><td><strong>RR</strong></td><td>24 /min</td></tr>
+        <tr><td><strong>SpO₂</strong></td><td>94% (room air)</td><td><strong>GCS</strong></td><td>13/15</td></tr>
+      </table><br>
+      <strong>Labs:</strong> WBC 18,200/mm³ | Lactate 3.8 mmol/L | Creatinine 2.1 mg/dL | Glucose 248 mg/dL | Procalcitonin elevated | UA: positive nitrites, >100 WBC/hpf`,
+    category: "Case Study: Sepsis — Select All That Apply",
+    type: "multiple",
+    stem: `Mr. James is admitted to the ICU. Which nursing interventions are <strong>appropriate</strong> for this client with septic shock?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Monitor blood glucose and maintain between 140–180 mg/dL with insulin infusion as ordered",
+      "Administer vasopressors (norepinephrine) if MAP remains <65 mmHg despite adequate fluid resuscitation",
+      "Restrict IV fluids strictly to prevent fluid overload",
+      "Reposition client every 2 hours and implement pressure injury prevention measures",
+      "Obtain repeat lactate in 2 hours to assess for clearance"
+    ],
+    correct: [0, 1, 3, 4],
+    rationale: `<strong>Correct: A, B, D, E.</strong><br><br>
+      • <strong>A</strong> — Hyperglycemia is common in sepsis; glucose control (140–180 mg/dL) reduces mortality.<br>
+      • <strong>B</strong> — <strong>Norepinephrine</strong> is the first-line vasopressor when fluids fail to maintain MAP ≥65 mmHg.<br>
+      • <strong>D</strong> — Septic clients are at high risk for pressure injuries due to hypoperfusion and immobility.<br>
+      • <strong>E</strong> — Lactate clearance (>10% reduction) is a goal of resuscitation and indicates improving perfusion.<br><br>
+      • <strong>C is INCORRECT</strong> — fluid restriction is not appropriate in early septic shock; adequate volume resuscitation is essential.`
+  },
+  {
+    id: 14,
+    caseTitle: "Case Study 1 of 2: Sepsis — Q4 of 5",
+    caseIntro: `
+      <strong>Client Profile:</strong> Mr. James R., a 72-year-old male with a history of type 2 diabetes and BPH, is brought to the ED by his daughter. She reports he has been increasingly confused since this morning, has not eaten in 2 days, and "just doesn't look right." He was treated for a UTI 3 weeks ago but stopped antibiotics after 5 days.<br><br>
+      <table>
+        <tr><th colspan="4">Vital Signs on Arrival</th></tr>
+        <tr><td><strong>Temp</strong></td><td>38.9°C (102°F)</td><td><strong>HR</strong></td><td>118 /min</td></tr>
+        <tr><td><strong>BP</strong></td><td>88/56 mmHg</td><td><strong>RR</strong></td><td>24 /min</td></tr>
+        <tr><td><strong>SpO₂</strong></td><td>94% (room air)</td><td><strong>GCS</strong></td><td>13/15</td></tr>
+      </table><br>
+      <strong>Labs:</strong> WBC 18,200/mm³ | Lactate 3.8 mmol/L | Creatinine 2.1 mg/dL | Glucose 248 mg/dL | Procalcitonin elevated | UA: positive nitrites, >100 WBC/hpf`,
+    category: "Case Study: Sepsis — Pharmacology",
+    type: "single",
+    stem: `The provider orders <strong>Piperacillin-tazobactam (Zosyn) 3.375 g IV q6h</strong> for Mr. James. Before administering the first dose, which assessment is <strong>most critical</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Ask the client about allergy to penicillin or cephalosporins",
+      "Confirm the client's most recent blood glucose level",
+      "Verify the client's advance directive is on file",
+      "Ensure the client has received a full meal within the last 6 hours"
+    ],
+    correct: [0],
+    rationale: `<strong>Correct: A — Assess for penicillin/cephalosporin allergy.</strong><br><br>
+      Piperacillin-tazobactam is a <strong>penicillin-class beta-lactam antibiotic</strong>. Before administration, the nurse must assess for:<br>
+      • <strong>Penicillin allergy</strong> — risk of anaphylaxis<br>
+      • <strong>Cephalosporin cross-reactivity</strong> — approximately 1–2% cross-sensitivity<br><br>
+      Culture specimens must also be obtained BEFORE the first antibiotic dose is given. Blood glucose (B), advance directive (C), and food intake (D) are not priorities before antibiotic administration.`
+  },
+  {
+    id: 15,
+    caseTitle: "Case Study 1 of 2: Sepsis — Q5 of 5",
+    caseIntro: `
+      <strong>Client Profile:</strong> Mr. James R., a 72-year-old male with a history of type 2 diabetes and BPH, is brought to the ED by his daughter. She reports he has been increasingly confused since this morning, has not eaten in 2 days, and "just doesn't look right." He was treated for a UTI 3 weeks ago but stopped antibiotics after 5 days.<br><br>
+      <table>
+        <tr><th colspan="4">Vital Signs on Arrival</th></tr>
+        <tr><td><strong>Temp</strong></td><td>38.9°C (102°F)</td><td><strong>HR</strong></td><td>118 /min</td></tr>
+        <tr><td><strong>BP</strong></td><td>88/56 mmHg</td><td><strong>RR</strong></td><td>24 /min</td></tr>
+        <tr><td><strong>SpO₂</strong></td><td>94% (room air)</td><td><strong>GCS</strong></td><td>13/15</td></tr>
+      </table><br>
+      <strong>Labs:</strong> WBC 18,200/mm³ | Lactate 3.8 mmol/L | Creatinine 2.1 mg/dL | Glucose 248 mg/dL | Procalcitonin elevated | UA: positive nitrites, >100 WBC/hpf`,
+    category: "Case Study: Sepsis — Client Education / Discharge",
+    type: "single",
+    stem: `Mr. James improves over 5 days and is preparing for discharge. He admits he stopped his antibiotics early last time because he "felt better." Which statement by the nurse is <strong>most appropriate</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "\"It's okay to stop once symptoms resolve — the important thing is that you felt better.\"",
+      "\"You must complete the full antibiotic course even if you feel well, to prevent drug-resistant infections and recurrence.\"",
+      "\"Ask your doctor to prescribe a shorter course next time so you don't feel the need to stop early.\"",
+      "\"Antibiotics are not that important since sepsis is mostly caused by viruses.\""
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Complete the full antibiotic course.</strong><br><br>
+      Stopping antibiotics early is a <strong>leading cause of antibiotic resistance and treatment failure</strong>. Key teaching points:<br>
+      • Bacteria may not be fully eradicated even when symptoms resolve<br>
+      • Incomplete courses select for <strong>resistant organisms</strong><br>
+      • Recurrent infections may be harder to treat<br><br>
+      Option A contradicts evidence-based practice. Option C is not appropriate without clinical indication. Option D is incorrect — sepsis is predominantly bacterial, not viral.`
+  },
+
+  /* ──────────────────────────────────────────────
+     CASE STUDY 2 — ACUTE ISCHEMIC STROKE (Questions 16–20)
+  ────────────────────────────────────────────── */
+  {
+    id: 16,
+    caseTitle: "Case Study 2 of 2: Acute Ischemic Stroke — Q1 of 5",
+    caseIntro: `
+      <strong>Client Profile:</strong> Mrs. Elena V., a 67-year-old female with a history of hypertension, atrial fibrillation (on warfarin), and hyperlipidemia, is brought to the ED by ambulance. Her husband called 911 after finding her unable to speak and with right arm weakness. Last known well: <strong>1 hour 45 minutes ago.</strong><br><br>
+      <table>
+        <tr><th colspan="4">Vital Signs</th></tr>
+        <tr><td><strong>BP</strong></td><td>188/104 mmHg</td><td><strong>HR</strong></td><td>92 /min (irregular)</td></tr>
+        <tr><td><strong>RR</strong></td><td>18 /min</td><td><strong>SpO₂</strong></td><td>96% (room air)</td></tr>
+        <tr><td><strong>Temp</strong></td><td>37.1°C</td><td><strong>Blood glucose</strong></td><td>118 mg/dL</td></tr>
+      </table><br>
+      <strong>Neuro Assessment:</strong> Right-sided facial droop | Right arm drift/weakness | Global aphasia (cannot speak or follow commands) | NIHSS score: 16`,
+    category: "Case Study: Stroke — Recognition & Priority Action",
+    type: "single",
+    stem: `The nurse performs the initial assessment on Mrs. Elena V. Which action is the nurse's <strong>immediate priority</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Activate the stroke team / code stroke protocol immediately",
+      "Administer aspirin 325 mg PO and obtain a 12-lead ECG",
+      "Insert a Foley catheter and obtain urine for drug screening",
+      "Place the client in Trendelenburg position to improve cerebral perfusion"
+    ],
+    correct: [0],
+    rationale: `<strong>Correct: A — Activate the stroke team / code stroke protocol.</strong><br><br>
+      Mrs. Elena presents with classic large-vessel ischemic stroke signs: sudden facial droop, arm weakness, aphasia (use <strong>BE-FAST</strong>: Balance, Eyes, Face, Arm, Speech, Time). She is within the <strong>4.5-hour tPA window</strong> — <strong>time is brain</strong>.<br><br>
+      Immediate activation of the stroke team triggers:<br>
+      • Urgent non-contrast CT head (to rule out hemorrhage before tPA)<br>
+      • Labs: PT/INR, CBC, BMP, type & screen<br>
+      • Neurology consult<br><br>
+      Aspirin (B) is contraindicated until hemorrhagic stroke is ruled out. Foley insertion (C) can wait. Trendelenburg (D) is contraindicated in stroke — HOB should be flat only if no ICP; 30° is standard during acute evaluation.`
+  },
+  {
+    id: 17,
+    caseTitle: "Case Study 2 of 2: Acute Ischemic Stroke — Q2 of 5",
+    caseIntro: `
+      <strong>Client Profile:</strong> Mrs. Elena V., a 67-year-old female with a history of hypertension, atrial fibrillation (on warfarin), and hyperlipidemia, is brought to the ED by ambulance. Her husband called 911 after finding her unable to speak and with right arm weakness. Last known well: <strong>1 hour 45 minutes ago.</strong><br><br>
+      <table>
+        <tr><th colspan="4">Vital Signs</th></tr>
+        <tr><td><strong>BP</strong></td><td>188/104 mmHg</td><td><strong>HR</strong></td><td>92 /min (irregular)</td></tr>
+        <tr><td><strong>RR</strong></td><td>18 /min</td><td><strong>SpO₂</strong></td><td>96% (room air)</td></tr>
+        <tr><td><strong>Temp</strong></td><td>37.1°C</td><td><strong>Blood glucose</strong></td><td>118 mg/dL</td></tr>
+      </table><br>
+      <strong>CT Head Result:</strong> No hemorrhage identified. <strong>INR: 1.4</strong>. The provider determines Mrs. Elena is eligible for IV alteplase (tPA).`,
+    category: "Case Study: Stroke — tPA Administration",
+    type: "multiple",
+    stem: `The provider orders IV alteplase (tPA) for Mrs. Elena. Which nursing actions are <strong>essential</strong> during and after tPA administration?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Monitor neurological status and vital signs every 15 minutes during infusion and for 2 hours after",
+      "Hold all anticoagulants and antiplatelet agents for 24 hours post-tPA",
+      "Administer aspirin 325 mg immediately after tPA infusion is complete",
+      "Avoid arterial punctures, IM injections, and invasive procedures during and after tPA",
+      "Control BP to keep systolic <185 mmHg and diastolic <110 mmHg during and after tPA"
+    ],
+    correct: [0, 1, 3, 4],
+    rationale: `<strong>Correct: A, B, D, E.</strong><br><br>
+      • <strong>A</strong> — Frequent neuro checks detect hemorrhagic transformation early (q15 min × 2h, q30 min × 6h, q1h × 16h).<br>
+      • <strong>B</strong> — All anticoagulants/antiplatelets must be held for <strong>24 hours</strong> post-tPA to reduce bleeding risk.<br>
+      • <strong>D</strong> — Invasive procedures increase hemorrhage risk; avoid for 24 hours post-tPA.<br>
+      • <strong>E</strong> — Strict BP control (&lt;185/110 mmHg) is required to reduce risk of hemorrhagic conversion.<br><br>
+      • <strong>C is INCORRECT</strong> — aspirin is withheld for 24 hours post-tPA; premature antiplatelet therapy increases intracerebral hemorrhage risk.`
+  },
+  {
+    id: 18,
+    caseTitle: "Case Study 2 of 2: Acute Ischemic Stroke — Q3 of 5",
+    caseIntro: `
+      <strong>Client Profile:</strong> Mrs. Elena V., a 67-year-old female with a history of hypertension, atrial fibrillation (on warfarin), and hyperlipidemia, is brought to the ED by ambulance. Her husband called 911 after finding her unable to speak and with right arm weakness. Last known well: <strong>1 hour 45 minutes ago.</strong><br><br>
+      <table>
+        <tr><th colspan="4">Vital Signs</th></tr>
+        <tr><td><strong>BP</strong></td><td>188/104 mmHg</td><td><strong>HR</strong></td><td>92 /min (irregular)</td></tr>
+        <tr><td><strong>RR</strong></td><td>18 /min</td><td><strong>SpO₂</strong></td><td>96% (room air)</td></tr>
+        <tr><td><strong>Temp</strong></td><td>37.1°C</td><td><strong>Blood glucose</strong></td><td>118 mg/dL</td></tr>
+      </table><br>
+      <strong>24 hours post-tPA:</strong> Mrs. Elena is in the neuro ICU. She remains aphasic but has slight improvement in right arm strength. She is unable to swallow safely per bedside dysphagia screen.`,
+    category: "Case Study: Stroke — Complication Prevention",
+    type: "single",
+    stem: `Mrs. Elena fails the bedside swallow screen. Which nursing intervention is the <strong>highest priority</strong> to prevent aspiration?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Keep the client NPO and request a speech-language pathology (SLP) swallow evaluation",
+      "Offer thin liquids and soft foods, monitoring closely for coughing",
+      "Insert an NG tube without a provider order to ensure nutrition",
+      "Allow the family to feed the client slowly in small bites"
+    ],
+    correct: [0],
+    rationale: `<strong>Correct: A — NPO status and formal SLP swallow evaluation.</strong><br><br>
+      Dysphagia occurs in <strong>50–70% of acute stroke patients</strong> and is a leading cause of <strong>aspiration pneumonia</strong>, which significantly worsens outcomes. Steps:<br>
+      • Keep the client <strong>NPO</strong> until a formal swallow evaluation is completed<br>
+      • Refer to <strong>Speech-Language Pathology</strong> for modified barium swallow or bedside evaluation<br>
+      • If NPO is prolonged, discuss enteral nutrition (NG tube) with the team<br><br>
+      Offering regular foods/liquids (B, D) risks aspiration. The nurse cannot insert an NG tube without a provider order (C).`
+  },
+  {
+    id: 19,
+    caseTitle: "Case Study 2 of 2: Acute Ischemic Stroke — Q4 of 5",
+    caseIntro: `
+      <strong>Client Profile:</strong> Mrs. Elena V., a 67-year-old female with a history of hypertension, atrial fibrillation (on warfarin), and hyperlipidemia, is brought to the ED by ambulance. Her husband called 911 after finding her unable to speak and with right arm weakness. Last known well: <strong>1 hour 45 minutes ago.</strong><br><br>
+      <table>
+        <tr><th colspan="4">Vital Signs</th></tr>
+        <tr><td><strong>BP</strong></td><td>188/104 mmHg</td><td><strong>HR</strong></td><td>92 /min (irregular)</td></tr>
+        <tr><td><strong>RR</strong></td><td>18 /min</td><td><strong>SpO₂</strong></td><td>96% (room air)</td></tr>
+        <tr><td><strong>Temp</strong></td><td>37.1°C</td><td><strong>Blood glucose</strong></td><td>118 mg/dL</td></tr>
+      </table><br>
+      <strong>Day 3:</strong> Mrs. Elena is transferred to the stroke unit. The nurse is performing neurological assessments q4h. During the assessment, the nurse notices that Mrs. Elena suddenly has decreased level of consciousness, her right pupil is 6 mm and non-reactive, and her left arm is now showing new weakness.`,
+    category: "Case Study: Stroke — Deterioration Recognition",
+    type: "single",
+    stem: `The nurse recognizes that Mrs. Elena's new findings indicate a <strong>neurological emergency</strong>. Which action should the nurse take <strong>first</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Reposition the client to the left lateral position and continue monitoring",
+      "Immediately notify the provider and prepare for urgent CT scan and possible intervention",
+      "Administer PRN lorazepam for suspected seizure activity",
+      "Increase IV fluid rate and administer oxygen at 6 L/min via simple mask"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Immediately notify provider and prepare for urgent CT.</strong><br><br>
+      A <strong>blown pupil</strong> (dilated, non-reactive) with sudden LOC change and new focal deficits indicates <strong>herniation or hemorrhagic transformation</strong> — a life-threatening neurological emergency.<br><br>
+      This warrants:<br>
+      • <strong>Immediate provider notification</strong> (activate rapid response/code)<br>
+      • <strong>Urgent non-contrast CT head</strong> to identify hemorrhage or herniation<br>
+      • Potential neurosurgical intervention<br><br>
+      Repositioning (A) alone is insufficient. Lorazepam (C) is not indicated without confirmed seizure. Fluids and O₂ (D) do not address the cause of herniation.`
+  },
+  {
+    id: 20,
+    caseTitle: "Case Study 2 of 2: Acute Ischemic Stroke — Q5 of 5",
+    caseIntro: `
+      <strong>Client Profile:</strong> Mrs. Elena V., a 67-year-old female with a history of hypertension, atrial fibrillation (on warfarin), and hyperlipidemia, is brought to the ED by ambulance. Her husband called 911 after finding her unable to speak and with right arm weakness. Last known well: <strong>1 hour 45 minutes ago.</strong><br><br>
+      <strong>Day 7 — Preparing for Discharge to Inpatient Rehab:</strong> Mrs. Elena has improved significantly. She has mild expressive aphasia and moderate right-sided weakness. She will be discharged on <strong>apixaban (Eliquis)</strong> for stroke prevention in atrial fibrillation.`,
+    category: "Case Study: Stroke — Discharge Education",
+    type: "multiple",
+    stem: `The nurse is providing discharge teaching to Mrs. Elena and her husband regarding her new medication <strong>apixaban (Eliquis)</strong> and stroke prevention. Which teaching points are <strong>correct</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Report any unusual bruising, prolonged bleeding, pink/dark urine, or blood in stool immediately",
+      "Do not skip doses; if a dose is missed, take it as soon as remembered unless it is almost time for the next dose",
+      "Apixaban can be safely reversed with idarucizumab (Praxbind) in case of emergency bleeding",
+      "Avoid NSAIDs and aspirin unless specifically directed by your provider as they increase bleeding risk",
+      "Monitor for signs of stroke recurrence: face drooping, arm weakness, speech difficulty — call 911 immediately"
+    ],
+    correct: [0, 1, 3, 4],
+    rationale: `<strong>Correct: A, B, D, E.</strong><br><br>
+      • <strong>A</strong> — Signs of bleeding complications must be reported immediately.<br>
+      • <strong>B</strong> — Correct instructions for a missed dose of a DOAC; do NOT double dose.<br>
+      • <strong>D</strong> — NSAIDs increase GI bleeding risk when combined with anticoagulants.<br>
+      • <strong>E</strong> — BE-FAST recognition is critical for early stroke intervention.<br><br>
+      • <strong>C is INCORRECT</strong> — Idarucizumab (Praxbind) reverses <strong>dabigatran (Pradaxa)</strong>, NOT apixaban. The reversal agent for apixaban/rivaroxaban is <strong>andexanet alfa (Andexxa)</strong>.`
+  },
+
+  /* ── STANDALONE BRUTALS 21–40 ── */
+  {
+    id: 21,
+    category: "Pharmacology — Antiepileptics",
+    type: "multiple",
+    stem: `A nurse is caring for a client newly prescribed <strong>phenytoin (Dilantin)</strong> for seizure disorder. Which nursing actions are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Administer phenytoin in D5W IV solution",
+      "Monitor serum phenytoin levels (therapeutic range: 10–20 mcg/mL)",
+      "Teach the client to perform meticulous oral hygiene due to risk of gingival hyperplasia",
+      "Instruct the client that urine may turn pink or reddish-brown — this is harmless",
+      "Administer IM phenytoin for rapid seizure control in the field"
+    ],
+    correct: [1, 2, 3],
+    rationale: `<strong>Correct: B, C, D.</strong><br><br>
+      • <strong>B</strong> — Therapeutic range is 10–20 mcg/mL; levels above this cause nystagmus, ataxia, and dysarthria.<br>
+      • <strong>C</strong> — Gingival hyperplasia affects up to 50% of clients; oral hygiene reduces severity.<br>
+      • <strong>D</strong> — Pink/reddish-brown urine is a known, benign side effect.<br><br>
+      • <strong>A is INCORRECT</strong> — Phenytoin must NEVER be mixed with dextrose solutions (precipitates form); use NS only.<br>
+      • <strong>E is INCORRECT</strong> — IM phenytoin causes tissue necrosis and erratic absorption. Use IV fosphenytoin IM for acute control.`
+  },
+  {
+    id: 22,
+    category: "Fluid & Electrolytes — Hyperkalemia",
+    type: "single",
+    stem: `A client with chronic kidney disease has a serum potassium of <strong>6.8 mEq/L</strong> and the following ECG changes: <em>peaked T waves, widened QRS, and a prolonged PR interval</em>. Which medication should the nurse anticipate administering <strong>first</strong> to protect the heart?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Sodium polystyrene sulfonate (Kayexalate) PO",
+      "Regular insulin 10 units IV with D50W",
+      "Calcium gluconate 1 g IV",
+      "Sodium bicarbonate 50 mEq IV"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — Calcium gluconate IV.</strong><br><br>
+      In severe hyperkalemia with cardiac manifestations (peaked T waves, widened QRS, PR prolongation), the <strong>immediate priority is cardiac membrane stabilization</strong>. Calcium gluconate does NOT lower potassium — it raises the threshold potential of myocardial cells, protecting against fatal arrhythmias.<br><br>
+      After cardiac stabilization:<br>
+      • Insulin + D50W (B) — drives K⁺ into cells (onset 15–30 min)<br>
+      • Sodium bicarbonate (D) — shifts K⁺ intracellularly (useful if acidotic)<br>
+      • Kayexalate (A) — removes K⁺ from the body (onset hours; last resort in acute crisis)`
+  },
+  {
+    id: 23,
+    category: "OB Nursing — Fetal Heart Rate Monitoring",
+    type: "single",
+    stem: `A laboring client at 39 weeks is on continuous electronic fetal monitoring. The nurse observes the following pattern: <strong>late decelerations</strong> occurring with every contraction, baseline FHR 155 bpm, and minimal variability. What is the nurse's <strong>priority intervention</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Document the finding and continue to monitor every 30 minutes",
+      "Reposition the client to right lateral and increase IV fluid rate",
+      "Reposition to left lateral, administer O₂ at 8–10 L/min via non-rebreather mask, discontinue oxytocin if infusing, and notify the provider",
+      "Apply fetal scalp electrode and prepare for internal monitoring"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — LION mnemonic for Category III / late decelerations.</strong><br><br>
+      <strong>Late decelerations</strong> = uteroplacental insufficiency = fetal hypoxia. Combined with minimal variability, this is a <strong>Category III (ominous) pattern</strong> requiring immediate action:<br>
+      • <strong>L</strong>ateral (left) position — relieves aortocaval compression<br>
+      • <strong>I</strong>ncrease IV fluids — improves placental perfusion<br>
+      • <strong>O</strong>xygen — 8–10 L/min via NRB (controversial but standard practice)<br>
+      • <strong>N</strong>otify provider + Stop oxytocin immediately<br><br>
+      Continued monitoring only (A) is negligent. Right lateral (B) does not relieve aortocaval compression as effectively. Internal monitoring (D) is secondary to stabilization.`
+  },
+  {
+    id: 24,
+    category: "SATA — Postoperative Care",
+    type: "multiple",
+    stem: `A nurse is caring for a client who is 4 hours post-op from an <strong>abdominal hysterectomy</strong>. Which findings require <strong>immediate intervention</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Urine output of 20 mL over the past 2 hours",
+      "Wound dressing with a 2-cm area of serosanguineous drainage",
+      "HR 118/min and BP 88/60 mmHg",
+      "Client rates pain as 6/10 and requests analgesic",
+      "Client is unable to deep breathe due to incisional pain and SpO₂ dropped to 91%"
+    ],
+    correct: [0, 2, 4],
+    rationale: `<strong>Correct: A, C, E.</strong><br><br>
+      • <strong>A</strong> — Urine output of 20 mL/2 hrs = 10 mL/hr (normal ≥0.5 mL/kg/hr ~30 mL/hr). Indicates possible hemorrhage, hypovolemia, or renal compromise.<br>
+      • <strong>C</strong> — Tachycardia + hypotension → signs of <strong>hemorrhagic shock</strong>; immediate provider notification and intervention required.<br>
+      • <strong>E</strong> — Post-op atelectasis with SpO₂ 91% and inability to deep breathe requires <strong>immediate respiratory intervention</strong> (incentive spirometry, repositioning, analgesia titration, possible O₂).<br><br>
+      • <strong>B</strong> — Small serosanguineous drainage 4 hours post-op is expected; not yet alarming unless expanding rapidly.<br>
+      • <strong>D</strong> — Pain 6/10 requesting analgesic is an expected post-op finding; address after the emergent issues.`
+  },
+  {
+    id: 25,
+    category: "Neurological Nursing — ICP",
+    type: "single",
+    stem: `A nurse is caring for a client with a traumatic brain injury (TBI) and increased intracranial pressure (ICP). The client's ICP reading is <strong>28 mmHg</strong> (normal: 5–15 mmHg). Which nurse action is <strong>contraindicated</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Elevate the head of bed to 30 degrees, keeping the head midline",
+      "Administer mannitol 1 g/kg IV as ordered",
+      "Cluster all nursing care activities together to perform them all at once",
+      "Maintain a quiet, dimly lit environment and minimize stimulation"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — Clustering care activities is CONTRAINDICATED.</strong><br><br>
+      Clustering care (bathing, turning, suctioning, assessments at the same time) causes <strong>cumulative ICP spikes</strong> and can precipitate herniation in unstable TBI clients.<br><br>
+      Best practice: <strong>space activities</strong> with rest periods in between to allow ICP to return to baseline.<br><br>
+      • A — HOB 30° with head midline promotes venous drainage → appropriate.<br>
+      • B — Mannitol creates osmotic gradient → reduces cerebral edema → appropriate.<br>
+      • D — Minimizing stimulation (noise, light, pain) reduces ICP spikes → appropriate.`
+  },
+  {
+    id: 26,
+    category: "SATA — Thyroid Storm",
+    type: "multiple",
+    stem: `A nurse is caring for a client admitted with suspected <strong>thyroid storm (thyrotoxic crisis)</strong>. Vital signs: Temp 40.2°C, HR 148/min, BP 172/88 mmHg, RR 28/min. Which interventions should the nurse anticipate?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Administer propylthiouracil (PTU) or methimazole as ordered",
+      "Apply cooling blankets and administer acetaminophen for hyperthermia",
+      "Administer aspirin 650 mg for fever reduction",
+      "Administer propranolol IV as ordered to control heart rate",
+      "Administer iodine solution (potassium iodide) at least 1 hour AFTER antithyroid medication"
+    ],
+    correct: [0, 1, 3, 4],
+    rationale: `<strong>Correct: A, B, D, E.</strong><br><br>
+      • <strong>A</strong> — PTU/methimazole blocks synthesis of new thyroid hormones (PTU also blocks T4→T3 conversion).<br>
+      • <strong>B</strong> — Cooling blanket + <strong>acetaminophen</strong> (NOT aspirin) for hyperthermia.<br>
+      • <strong>D</strong> — Propranolol (beta-blocker) controls tachycardia and reduces sympathetic hyperactivity.<br>
+      • <strong>E</strong> — Iodine (Lugol's solution/SSKI) blocks thyroid hormone release; MUST be given at least 1 hour AFTER antithyroid meds to prevent using iodine as substrate for new hormone synthesis.<br><br>
+      • <strong>C is INCORRECT</strong> — <strong>Aspirin is contraindicated</strong> in thyroid storm! It displaces thyroid hormone from protein binding sites, worsening the crisis.`
+  },
+  {
+    id: 27,
+    category: "Pharmacology — Lithium Toxicity",
+    type: "single",
+    stem: `A nurse is assessing a client who takes <strong>lithium carbonate</strong> for bipolar disorder. Which assessment finding most indicates <strong>lithium toxicity</strong> requiring immediate action?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Mild hand tremor and increased thirst",
+      "Coarse tremor, confusion, and muscle twitching with serum lithium of 2.4 mEq/L",
+      "Polyuria and weight gain",
+      "Acne and mild nausea after meals"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Coarse tremor, confusion, muscle twitching, lithium level 2.4 mEq/L.</strong><br><br>
+      <strong>Lithium therapeutic range: 0.6–1.2 mEq/L</strong> (maintenance); up to 1.5 mEq/L acute.<br><br>
+      Toxicity levels and signs:<br>
+      • <strong>1.5–2.0 mEq/L</strong> — fine tremor, N/V/D, drowsiness (mild)<br>
+      • <strong>2.0–2.5 mEq/L</strong> — <strong>coarse tremor, confusion, muscle twitching, hyperreflexia</strong> (moderate — HOLD medication, notify provider)<br>
+      • <strong>>2.5 mEq/L</strong> — seizures, coma, cardiac arrhythmias (severe — medical emergency)<br><br>
+      Fine tremor (A), polyuria (C), and acne/nausea (D) are common side effects but not toxicity signs.`
+  },
+  {
+    id: 28,
+    category: "SATA — Heart Failure Management",
+    type: "multiple",
+    stem: `A nurse is caring for a client with <strong>acute decompensated heart failure (ADHF)</strong> with an EF of 30%. Which findings indicate the client is <strong>responding positively</strong> to treatment?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Urine output increased from 20 mL/hr to 60 mL/hr after IV furosemide",
+      "Bilateral crackles resolved on auscultation",
+      "Client reports 3-lb weight gain since yesterday",
+      "BNP decreased from 1,850 pg/mL to 620 pg/mL",
+      "SpO₂ improved from 89% to 96% on 2 L/min O₂"
+    ],
+    correct: [0, 1, 3, 4],
+    rationale: `<strong>Correct: A, B, D, E.</strong><br><br>
+      • <strong>A</strong> — Increased urine output after diuretic = excess fluid being eliminated → desired response.<br>
+      • <strong>B</strong> — Resolution of crackles = reduced pulmonary congestion → improvement.<br>
+      • <strong>D</strong> — BNP (B-type natriuretic peptide) is a biomarker of ventricular stretch; decreasing BNP = reduced cardiac stress → improvement.<br>
+      • <strong>E</strong> — Improved SpO₂ = better oxygenation as pulmonary edema clears → improvement.<br><br>
+      • <strong>C is INCORRECT</strong> — A 3-lb weight gain overnight indicates <strong>worsening fluid retention</strong>, not improvement. Clients with HF are taught to report ≥2 lb/day or ≥5 lb/week weight gain.`
+  },
+  {
+    id: 29,
+    category: "Pharmacology — Heparin Infusion",
+    type: "single",
+    stem: `A client is receiving a <strong>heparin infusion</strong> for deep vein thrombosis. The nurse receives the following lab results: aPTT <strong>210 seconds</strong> (therapeutic: 60–100 seconds), platelet count <strong>48,000/mm³</strong> (was 210,000 two days ago). What is the nurse's <strong>priority action</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Continue the infusion and recheck aPTT in 6 hours per protocol",
+      "Stop the heparin infusion immediately, notify the provider, and prepare for possible argatroban therapy",
+      "Administer protamine sulfate 50 mg IV push stat",
+      "Reduce the heparin infusion rate by 20% and recheck aPTT"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Stop heparin, notify provider, prepare for alternative anticoagulation.</strong><br><br>
+      This client shows classic signs of <strong>Heparin-Induced Thrombocytopenia (HIT)</strong>:<br>
+      • Platelet count drop >50% from baseline (210,000 → 48,000) within 5–10 days of heparin<br>
+      • Supratherapeutic aPTT (though aPTT is unreliable in HIT)<br><br>
+      HIT is a life-threatening, immune-mediated condition causing paradoxical <strong>thrombosis</strong>, not bleeding. All heparin (including flushes) must be <strong>stopped immediately</strong>. Switch to a direct thrombin inhibitor (<strong>argatroban</strong> or bivalirudin).<br><br>
+      Protamine sulfate (C) reverses heparin overdose/bleeding — not appropriate for HIT. Dose adjustment (A, D) is inappropriate when HIT is suspected.`
+  },
+  {
+    id: 30,
+    category: "SATA — Addison's Disease (Adrenal Crisis)",
+    type: "multiple",
+    stem: `A nurse is caring for a client with known <strong>Addison's disease (primary adrenal insufficiency)</strong> who presents with severe weakness, hypotension, and confusion after a recent respiratory infection. Which actions are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Administer IV hydrocortisone 100 mg as ordered immediately",
+      "Provide a high-sodium, low-potassium diet",
+      "Administer IV normal saline rapidly for volume replacement",
+      "Monitor for hyperglycemia — it is the primary metabolic concern in adrenal crisis",
+      "Teach the client to double or triple their steroid dose during times of illness or physical stress"
+    ],
+    correct: [0, 1, 2, 4],
+    rationale: `<strong>Correct: A, B, C, E.</strong><br><br>
+      • <strong>A</strong> — IV hydrocortisone (stress dose steroids) is the cornerstone of adrenal crisis treatment.<br>
+      • <strong>B</strong> — Addison's causes aldosterone deficiency → sodium wasting + potassium retention → high-Na, low-K diet.<br>
+      • <strong>C</strong> — Large volumes of NS correct the sodium deficit and hypovolemia.<br>
+      • <strong>E</strong> — "Sick day rules": clients must increase their steroid dose 2–3× during illness, injury, or surgery to mimic the normal cortisol stress response (failure to do so caused this crisis).<br><br>
+      • <strong>D is INCORRECT</strong> — Adrenal crisis causes <strong>hypoglycemia</strong> (cortisol promotes gluconeogenesis; without it, blood glucose drops), not hyperglycemia. Monitor for and treat low blood glucose.`
+  },
+  {
+    id: 31,
+    category: "Prioritization — Triage",
+    type: "single",
+    stem: `An emergency department nurse is triaging four clients. Using the <strong>START triage system</strong>, which client should be classified as <strong>RED (immediate)</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "A client with a fractured femur, responsive, RR 16/min, strong radial pulse",
+      "A client who is unresponsive with no respirations even after repositioning the airway",
+      "A client with a 4-cm laceration to the forearm, ambulatory, RR 18/min",
+      "A client with RR 28/min, absent radial pulse, and responds to pain only"
+    ],
+    correct: [3],
+    rationale: `<strong>Correct: D — RR 28/min, absent radial pulse, responds to pain only.</strong><br><br>
+      <strong>START Triage criteria for RED (Immediate):</strong><br>
+      • RR >30 or <10 bpm, OR<br>
+      • Radial pulse absent, OR<br>
+      • Unable to follow commands<br><br>
+      Client D has an absent radial pulse (indicating shock/hypoperfusion) and decreased LOC → RED.<br><br>
+      • A — Walking/stable → GREEN (minor)<br>
+      • B — No respiration after airway repositioned → BLACK (expectant/deceased)<br>
+      • C — Ambulatory, stable vitals → GREEN (minor)`
+  },
+  {
+    id: 32,
+    category: "SATA — Acute Liver Failure / Hepatic Encephalopathy",
+    type: "multiple",
+    stem: `A nurse is caring for a client with <strong>hepatic encephalopathy</strong> secondary to end-stage liver disease. Which nursing interventions are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Administer lactulose as ordered and monitor for 2–4 soft stools per day",
+      "Encourage a high-protein diet to prevent muscle wasting",
+      "Implement fall prevention measures and reorient the client frequently",
+      "Monitor ammonia levels and neurological status",
+      "Administer rifaximin (Xifaxan) as ordered to reduce gut bacterial production of ammonia"
+    ],
+    correct: [0, 2, 3, 4],
+    rationale: `<strong>Correct: A, C, D, E.</strong><br><br>
+      • <strong>A</strong> — Lactulose traps NH₃ in the gut as NH₄⁺ and accelerates elimination; goal is 2–4 soft stools/day.<br>
+      • <strong>C</strong> — Encephalopathy causes confusion and fall risk; safety and reorientation are essential.<br>
+      • <strong>D</strong> — Rising ammonia → worsening encephalopathy; neurological changes guide treatment.<br>
+      • <strong>E</strong> — Rifaximin is a non-absorbed antibiotic that reduces ammonia-producing gut bacteria.<br><br>
+      • <strong>B is INCORRECT</strong> — High protein increases ammonia production. These clients need <strong>moderate protein intake</strong> (1.0–1.5 g/kg/day of branched-chain amino acids preferred); severe restriction is no longer recommended but high protein worsens encephalopathy.`
+  },
+  {
+    id: 33,
+    category: "Pharmacology — Warfarin & Antidotes",
+    type: "single",
+    stem: `A client taking <strong>warfarin (Coumadin)</strong> for atrial fibrillation presents to the ED with an INR of <strong>9.2</strong> and active gastrointestinal bleeding. Which intervention is the nurse's <strong>priority</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Hold the next warfarin dose and repeat INR in 24 hours",
+      "Administer vitamin K1 (phytonadione) 10 mg IV and 4-factor prothrombin complex concentrate (4F-PCC) as ordered",
+      "Administer fresh frozen plasma (FFP) 2 units and schedule an upper endoscopy",
+      "Start tranexamic acid IV to control bleeding"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Vitamin K1 IV + 4-Factor PCC.</strong><br><br>
+      This client has <strong>life-threatening warfarin over-anticoagulation</strong> with active bleeding. Current guidelines recommend:<br>
+      • <strong>4-Factor PCC (Kcentra)</strong> — rapidly replaces clotting factors II, VII, IX, X → immediate reversal (minutes) vs. FFP (hours)<br>
+      • <strong>IV Vitamin K₁</strong> — provides sustained reversal (acts over 6–12 hours)<br><br>
+      • Holding warfarin alone (A) is only appropriate for INR elevation without bleeding.<br>
+      • FFP (C) has a slower onset and large volume load — not preferred over 4F-PCC when available.<br>
+      • Tranexamic acid (D) is an antifibrinolytic, not a direct warfarin reversal agent.`
+  },
+  {
+    id: 34,
+    category: "SATA — Mechanical Ventilation",
+    type: "multiple",
+    stem: `A nurse is caring for a client on mechanical ventilation in the ICU. Which interventions are part of the <strong>ventilator-associated pneumonia (VAP) prevention bundle</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Elevate the head of bed to 30–45 degrees",
+      "Perform oral care with chlorhexidine gluconate solution every 2–4 hours",
+      "Change the ventilator circuit tubing every 24 hours",
+      "Maintain endotracheal tube cuff pressure at 20–30 cmH₂O",
+      "Implement a daily sedation vacation and assess readiness to wean"
+    ],
+    correct: [0, 1, 3, 4],
+    rationale: `<strong>Correct: A, B, D, E.</strong><br><br>
+      The <strong>VAP Bundle (IHI)</strong> includes:<br>
+      • <strong>A</strong> — HOB 30–45° reduces microaspiration of oropharyngeal secretions.<br>
+      • <strong>B</strong> — Chlorhexidine oral care reduces oropharyngeal bacterial burden.<br>
+      • <strong>D</strong> — Cuff pressure 20–30 cmH₂O prevents aspiration around the cuff; too low → aspiration, too high → tracheal ischemia.<br>
+      • <strong>E</strong> — Daily sedation vacation + spontaneous breathing trial (SBT) reduces ventilator days and VAP risk.<br><br>
+      • <strong>C is INCORRECT</strong> — Routine ventilator circuit changes are NOT recommended (evidence shows more frequent changes INCREASE VAP risk). Change only when visibly soiled or malfunctioning.`
+  },
+  {
+    id: 35,
+    category: "Pediatric — Epiglottitis",
+    type: "single",
+    stem: `A 4-year-old child is brought to the ED with sudden onset high fever (39.8°C), drooling, <strong>tripod positioning</strong>, and severe inspiratory stridor. The child is frightened and refuses to open the mouth for examination. Which action is the nurse's <strong>immediate priority</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Use a tongue depressor to visualize the oropharynx to confirm epiglottitis",
+      "Place the child supine and prepare for direct laryngoscopy",
+      "Keep the child calm and upright, call the provider immediately, and prepare for emergency airway management",
+      "Obtain a throat culture and administer nebulized racemic epinephrine"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — Keep calm and upright, notify provider, prepare for emergency airway.</strong><br><br>
+      This child presents with classic <strong>epiglottitis</strong> signs: sudden onset, high fever, drooling (dysphagia), tripod position, stridor. This is a <strong>life-threatening airway emergency</strong>.<br><br>
+      Critical nursing actions:<br>
+      • <strong>Do NOT examine the throat</strong> — stimulating a child with epiglottitis can trigger complete airway obstruction (laryngospasm)<br>
+      • Keep child <strong>calm and in preferred position</strong> (usually upright/tripod)<br>
+      • Have <strong>crash cart, intubation equipment, and surgical airway supplies</strong> at bedside<br>
+      • Allow parent to stay with child to reduce agitation<br><br>
+      A (tongue depressor) and B (supine positioning/laryngoscopy) can precipitate complete airway obstruction. Racemic epi (D) is for croup, not epiglottitis.`
+  },
+  {
+    id: 36,
+    category: "SATA — COPD Exacerbation",
+    type: "multiple",
+    stem: `A client with a history of severe COPD is admitted in acute exacerbation. ABGs: pH 7.31, PaCO₂ 62 mmHg, HCO₃⁻ 30 mEq/L, PaO₂ 54 mmHg. Which interventions are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Administer O₂ at 1–2 L/min via nasal cannula and titrate to maintain SpO₂ 88–92%",
+      "Administer O₂ at 10 L/min via non-rebreather mask to aggressively correct hypoxemia",
+      "Prepare for possible non-invasive positive pressure ventilation (BiPAP)",
+      "Administer inhaled bronchodilators (albuterol + ipratropium) and systemic corticosteroids as ordered",
+      "Administer IV magnesium sulfate for severe bronchospasm unresponsive to initial bronchodilators"
+    ],
+    correct: [0, 2, 3, 4],
+    rationale: `<strong>Correct: A, C, D, E.</strong><br><br>
+      ABG interpretation: pH 7.31 (acidotic), PaCO₂ 62 (elevated → respiratory cause), HCO₃⁻ 30 (elevated → compensatory metabolic alkalosis) = <strong>Partially compensated respiratory acidosis</strong> — consistent with acute-on-chronic COPD.<br><br>
+      • <strong>A</strong> — COPD clients rely on <strong>hypoxic drive</strong>; target SpO₂ 88–92% to avoid eliminating the drive to breathe.<br>
+      • <strong>C</strong> — BiPAP reduces work of breathing and CO₂ retention in COPD exacerbations; may prevent intubation.<br>
+      • <strong>D</strong> — Bronchodilators + steroids are mainstays of COPD exacerbation treatment.<br>
+      • <strong>E</strong> — Magnesium sulfate IV is used for severe refractory bronchospasm.<br><br>
+      • <strong>B is INCORRECT</strong> — High-flow O₂ in COPD can suppress hypoxic drive, worsen hypoventilation, and cause CO₂ narcosis.`
+  },
+  {
+    id: 37,
+    category: "Pharmacology — MAOIs",
+    type: "single",
+    stem: `A client taking <strong>phenelzine (Nardil)</strong>, an MAOI, for depression is brought to the ED with a severe throbbing headache, BP 218/124 mmHg, diaphoresis, and palpitations after dining at a restaurant. Which food most likely triggered this reaction?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Grilled chicken breast and steamed rice",
+      "Aged cheddar cheese and a glass of red wine",
+      "Fresh fruit salad with orange juice",
+      "Scrambled eggs and toast with butter"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Aged cheddar cheese and red wine.</strong><br><br>
+      This client is experiencing a <strong>hypertensive crisis</strong> (tyramine reaction) — a life-threatening interaction between MAOIs and tyramine-rich foods.<br><br>
+      MAOIs inhibit monoamine oxidase, which normally breaks down tyramine in the gut. Excess tyramine → massive norepinephrine release → severe hypertension.<br><br>
+      <strong>High-tyramine foods to AVOID on MAOIs:</strong><br>
+      • Aged cheeses (cheddar, blue, brie)<br>
+      • Fermented/cured meats (salami, pepperoni)<br>
+      • Red wine, beer, tap beer<br>
+      • Soy sauce, miso, tofu<br>
+      • Overripe/fermented foods<br><br>
+      Fresh foods (A, C, D) are low in tyramine and safe.`
+  },
+  {
+    id: 38,
+    category: "SATA — Newborn Assessment",
+    type: "multiple",
+    stem: `A nurse is performing the initial assessment on a newborn delivered at 38 weeks gestation. Which findings require <strong>immediate intervention</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Respiratory rate of 65 breaths/min with mild intercostal retractions and grunting",
+      "Acrocyanosis (blue hands and feet) at 5 minutes of life",
+      "Apgar score of 4 at 1 minute",
+      "Caput succedaneum over the left parietal area",
+      "Blood glucose of 38 mg/dL at 30 minutes of life"
+    ],
+    correct: [0, 2, 4],
+    rationale: `<strong>Correct: A, C, E.</strong><br><br>
+      • <strong>A</strong> — RR >60 + intercostal retractions + grunting = signs of <strong>respiratory distress syndrome (RDS)</strong>; requires immediate intervention (O₂, CPAP, surfactant).<br>
+      • <strong>C</strong> — Apgar 4 at 1 min = <strong>depressed newborn</strong>; requires stimulation, O₂, and preparation for resuscitation.<br>
+      • <strong>E</strong> — Neonatal hypoglycemia is &lt;45 mg/dL; 38 mg/dL requires immediate feeding or IV dextrose to prevent neurological damage.<br><br>
+      • <strong>B</strong> — Acrocyanosis at 5 minutes is <strong>normal</strong> (peripheral vasoconstriction); central cyanosis would be abnormal.<br>
+      • <strong>D</strong> — Caput succedaneum (soft tissue edema crossing suture lines) is a <strong>normal birth injury</strong> that resolves within days; no intervention needed.`
+  },
+  {
+    id: 39,
+    category: "Mental Health — Serotonin Syndrome",
+    type: "single",
+    stem: `A client is admitted with agitation, diaphoresis, <strong>clonus</strong>, hyperthermia (40.1°C), and diarrhea. The client's medication list includes <strong>sertraline (Zoloft), tramadol, and linezolid</strong>. The nurse suspects serotonin syndrome. Which intervention is the <strong>priority</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Administer IV diphenhydramine (Benadryl) to treat the allergic reaction",
+      "Discontinue all serotonergic agents, provide supportive care, and administer cyproheptadine as ordered",
+      "Administer acetaminophen 650 mg PO for fever management",
+      "Apply physical restraints to prevent injury from agitation"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Discontinue serotonergic agents + cyproheptadine + supportive care.</strong><br><br>
+      <strong>Serotonin syndrome triad:</strong> altered mental status + autonomic instability + <strong>neuromuscular abnormalities (clonus, hyperreflexia)</strong>. Caused by excess serotonergic activity.<br><br>
+      This client has three serotonergic agents:<br>
+      • <strong>Sertraline</strong> — SSRI<br>
+      • <strong>Tramadol</strong> — weak serotonin reuptake inhibitor<br>
+      • <strong>Linezolid</strong> — MAO inhibitor activity<br><br>
+      Treatment:<br>
+      • <strong>Discontinue all serotonergic drugs immediately</strong><br>
+      • <strong>Cyproheptadine</strong> — serotonin antagonist (antidote)<br>
+      • Benzodiazepines for agitation/seizures; active cooling for hyperthermia<br><br>
+      Diphenhydramine (A) is incorrect — this is not an allergic reaction. Acetaminophen (C) is ineffective for the hyperthermia of serotonin syndrome (external cooling is used). Restraints (D) worsen hyperthermia and rhabdomyolysis.`
+  },
+  {
+    id: 40,
+    category: "SATA — Hyponatremia",
+    type: "multiple",
+    stem: `A nurse is caring for a client with a serum sodium of <strong>118 mEq/L</strong> (critical value). The client is confused, has a headache, and is experiencing nausea. Which actions are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Administer 3% hypertonic saline IV slowly as ordered, with frequent neurological assessments",
+      "Correct the sodium rapidly to normal levels within 4 hours to prevent brain damage",
+      "Restrict free water intake as ordered",
+      "Monitor for seizures and institute seizure precautions",
+      "Notify the provider immediately — serum sodium of 118 mEq/L is a critical value"
+    ],
+    correct: [0, 2, 3, 4],
+    rationale: `<strong>Correct: A, C, D, E.</strong><br><br>
+      • <strong>A</strong> — 3% hypertonic saline is used for severe symptomatic hyponatremia; administer slowly via IV pump with close monitoring.<br>
+      • <strong>C</strong> — Free water restriction reduces further dilution of sodium.<br>
+      • <strong>D</strong> — Severe hyponatremia (Na &lt;120) can cause cerebral edema and seizures.<br>
+      • <strong>E</strong> — Na 118 is critically low; provider must be notified immediately.<br><br>
+      • <strong>B is INCORRECT and DANGEROUS</strong> — Rapid correction of chronic hyponatremia (>48 hrs) causes <strong>osmotic demyelination syndrome (ODS/central pontine myelinolysis)</strong> — a devastating neurological complication. Safe correction rate: <strong>no more than 8–10 mEq/L in 24 hours</strong>.`
+  },
+
+  /* ── QUESTIONS 41–60 ── */
+  {
+    id: 41,
+    category: "Cardiovascular — Myocardial Infarction",
+    type: "single",
+    stem: `A client arrives in the ED reporting crushing substernal chest pain radiating to the left jaw, rated 9/10, with diaphoresis and nausea for the past 45 minutes. A 12-lead ECG shows <strong>ST elevation in leads II, III, and aVF</strong>. Which intervention is the nurse's <strong>immediate priority</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Administer morphine 4 mg IV and reassess pain in 15 minutes",
+      "Obtain IV access, apply oxygen if SpO₂ <90%, administer aspirin 325 mg chewable, and activate the cardiac catheterization lab",
+      "Perform a complete head-to-toe assessment and notify the provider",
+      "Place the client in Trendelenburg and obtain a portable chest X-ray"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — MONA-BASH initiation and cath lab activation.</strong><br><br>
+      ST elevation in II, III, aVF = <strong>Inferior STEMI</strong> (RCA territory). This is a time-critical emergency. First-line actions follow <strong>MONA</strong>:<br>
+      • <strong>M</strong>orphine (pain relief — use cautiously)<br>
+      • <strong>O</strong>xygen only if SpO₂ &lt;90% (unnecessary O₂ can worsen outcomes)<br>
+      • <strong>N</strong>itrates (avoid in inferior MI with suspected RV involvement until RV infarct ruled out)<br>
+      • <strong>A</strong>spirin 325 mg chewable — immediate antiplatelet effect<br><br>
+      The <strong>door-to-balloon time goal is ≤90 minutes</strong> — cath lab must be activated immediately. Morphine alone (A) delays definitive care. Head-to-toe assessment (C) wastes critical time. Trendelenburg + CXR (D) is not indicated.`
+  },
+  {
+    id: 42,
+    category: "SATA — Blood Transfusion Reactions",
+    type: "multiple",
+    stem: `A nurse initiated a packed red blood cell (pRBC) transfusion 10 minutes ago. The client now reports low back pain, chills, and facial flushing. VS: Temp 38.9°C, BP 88/56 mmHg, HR 118/min. Which nursing actions are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Stop the transfusion immediately",
+      "Slow the infusion rate and monitor closely for the next 30 minutes",
+      "Keep the IV line patent with normal saline using new IV tubing",
+      "Notify the provider and blood bank immediately",
+      "Send the blood bag and a new blood sample to the blood bank for analysis"
+    ],
+    correct: [0, 2, 3, 4],
+    rationale: `<strong>Correct: A, C, D, E.</strong><br><br>
+      This presentation — <strong>low back pain, fever, hypotension, tachycardia</strong> within the first 15 minutes of transfusion — is the classic presentation of an <strong>acute hemolytic transfusion reaction (AHTR)</strong>, a life-threatening ABO incompatibility emergency.<br><br>
+      • <strong>A</strong> — Stop the transfusion IMMEDIATELY — do not slow it (B).<br>
+      • <strong>C</strong> — Keep IV open with <strong>normal saline via NEW tubing</strong> (not the existing blood tubing, which could infuse more incompatible blood).<br>
+      • <strong>D</strong> — Provider and blood bank notification is immediate and mandatory.<br>
+      • <strong>E</strong> — Return blood bag + patient blood sample to blood bank to confirm incompatibility.<br><br>
+      • <strong>B is INCORRECT</strong> — Slowing the transfusion is appropriate for febrile non-hemolytic reactions; AHTR requires complete cessation.`
+  },
+  {
+    id: 43,
+    category: "Pharmacology — Insulin Types",
+    type: "single",
+    stem: `A nurse is preparing morning medications for a client with type 1 diabetes. The order reads: <em>insulin glargine (Lantus) 24 units subcutaneous at bedtime</em> and <em>insulin lispro (Humalog) per sliding scale with meals</em>. The client asks why they need two types of insulin. Which explanation is <strong>most accurate</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Glargine covers mealtime spikes and lispro provides 24-hour background coverage",
+      "Glargine provides a steady 24-hour basal insulin level; lispro is rapid-acting and covers blood glucose rises from meals",
+      "Both insulins work the same way but are given at different times to avoid hypoglycemia",
+      "Lispro is less expensive so it is used first; glargine is added when lispro is insufficient"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Basal-bolus insulin therapy explanation.</strong><br><br>
+      <strong>Insulin glargine (Lantus)</strong>:<br>
+      • Long-acting (24 hours), peakless<br>
+      • Provides steady <strong>basal</strong> background insulin suppressing hepatic glucose output between meals and overnight<br><br>
+      <strong>Insulin lispro (Humalog)</strong>:<br>
+      • Rapid-acting (onset 15 min, peak 30–90 min, duration 3–5 hrs)<br>
+      • Covers <strong>postprandial</strong> glucose rises — given within 15 minutes of a meal<br><br>
+      This <strong>basal-bolus regimen</strong> best mimics the normal physiologic insulin secretion pattern and is the gold standard for type 1 diabetes management.`
+  },
+  {
+    id: 44,
+    category: "SATA — Pulmonary Embolism",
+    type: "multiple",
+    stem: `A nurse is caring for a client who is 48 hours post–total knee replacement. The client suddenly develops <strong>sharp pleuritic chest pain, dyspnea, tachycardia (HR 122/min), and a SpO₂ of 89%</strong>. The nurse suspects a pulmonary embolism (PE). Which actions are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Administer oxygen and position the client upright to optimize breathing",
+      "Notify the provider immediately and anticipate orders for CT pulmonary angiography (CTPA)",
+      "Encourage the client to ambulate to promote circulation",
+      "Establish IV access and anticipate anticoagulation therapy",
+      "Prepare for possible thrombolytic (tPA) therapy if hemodynamic instability develops"
+    ],
+    correct: [0, 1, 3, 4],
+    rationale: `<strong>Correct: A, B, D, E.</strong><br><br>
+      • <strong>A</strong> — O₂ addresses hypoxia; upright positioning improves respiratory mechanics.<br>
+      • <strong>B</strong> — CTPA is the gold-standard diagnostic test for PE; notify provider immediately.<br>
+      • <strong>D</strong> — Anticoagulation (unfractionated heparin or LMWH) prevents clot extension.<br>
+      • <strong>E</strong> — Massive PE with hemodynamic collapse (systolic BP &lt;90) is an indication for systemic thrombolysis.<br><br>
+      • <strong>C is INCORRECT</strong> — Ambulation is <strong>contraindicated</strong> with suspected PE; movement could dislodge additional thrombus. Place the client on bed rest.`
+  },
+  {
+    id: 45,
+    category: "Renal — Acute Kidney Injury",
+    type: "single",
+    stem: `A client with acute kidney injury (AKI) has the following lab values: BUN 68 mg/dL, creatinine 4.2 mg/dL, potassium 6.2 mEq/L, sodium 129 mEq/L, and pH 7.28 with HCO₃⁻ 14 mEq/L. The client is producing 15 mL of urine per hour. Which intervention addresses the <strong>most life-threatening</strong> complication?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Restrict dietary sodium to address hyponatremia",
+      "Administer sodium bicarbonate to correct metabolic acidosis",
+      "Initiate cardiac monitoring and treat hyperkalemia per protocol",
+      "Insert a Foley catheter to accurately measure urine output"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — Cardiac monitoring and treat hyperkalemia.</strong><br><br>
+      Of all the abnormal values, <strong>hyperkalemia (K⁺ 6.2 mEq/L)</strong> is the most immediately life-threatening because it causes fatal cardiac arrhythmias (peaked T waves → widened QRS → ventricular fibrillation → asystole).<br><br>
+      Priority treatment ladder:<br>
+      1. <strong>Calcium gluconate IV</strong> — cardiac membrane stabilization<br>
+      2. <strong>Insulin + dextrose</strong> — shift K⁺ into cells<br>
+      3. <strong>Sodium bicarbonate</strong> — shifts K⁺ intracellularly (if acidotic)<br>
+      4. <strong>Kayexalate or patiromer</strong> — remove K⁺ from body<br>
+      5. <strong>Dialysis</strong> — definitive treatment<br><br>
+      While metabolic acidosis (B) and hyponatremia (A) need addressing, the cardiac danger of hyperkalemia takes priority.`
+  },
+  {
+    id: 46,
+    category: "SATA — Wound Care & Infection",
+    type: "multiple",
+    stem: `A nurse is preparing to perform a dressing change on a stage 3 pressure injury on the sacrum of a client who has been bedbound for 6 weeks. Which actions are <strong>correct</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Use sterile gloves when performing the dressing change",
+      "Irrigate the wound with normal saline using 8–15 psi pressure (e.g., 35 mL syringe with 19-gauge angiocath)",
+      "Pack the wound tightly with dry gauze to absorb drainage",
+      "Document the wound's length, width, depth, tissue type, exudate, and surrounding skin",
+      "Reposition the client off the sacrum at least every 2 hours"
+    ],
+    correct: [1, 3, 4],
+    rationale: `<strong>Correct: B, D, E.</strong><br><br>
+      • <strong>B</strong> — Wound irrigation at 8–15 psi removes debris without damaging tissue. A 35 mL syringe with 19G angiocath delivers ~8 psi — the standard recommendation.<br>
+      • <strong>D</strong> — Complete wound documentation (MEASURE: Measure, Exudate, Appearance, Suffering/pain, Undermining, Reassess, Edge) is essential for tracking healing and guiding treatment.<br>
+      • <strong>E</strong> — Offloading pressure every 2 hours is foundational to pressure injury treatment and prevention.<br><br>
+      • <strong>A is INCORRECT</strong> — Stage 3 pressure injuries use <strong>clean (non-sterile) technique</strong>, not sterile. Sterile technique is reserved for surgical wounds or immunocompromised clients per agency policy.<br>
+      • <strong>C is INCORRECT</strong> — Tightly packing dry gauze causes trauma and desiccation. Wounds should be lightly packed with a moist dressing (e.g., saline-moistened gauze or foam dressing).`
+  },
+  {
+    id: 47,
+    category: "Pharmacology — ACE Inhibitors",
+    type: "single",
+    stem: `A client with hypertension and type 2 diabetes has been taking <strong>lisinopril 10 mg daily</strong> for 3 months. The client calls the clinic reporting a persistent dry cough that began 2 weeks ago. The nurse reviews the client's labs: K⁺ 5.4 mEq/L, creatinine 1.8 mg/dL (baseline 1.0 mg/dL). What is the nurse's <strong>priority action</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Reassure the client that a dry cough is expected and will resolve on its own",
+      "Advise the client to take the medication with plenty of water to reduce cough",
+      "Notify the provider — the dry cough is a known ACE inhibitor side effect, and the rising creatinine and hyperkalemia require evaluation for a medication change",
+      "Hold the lisinopril and switch the client to a calcium channel blocker without notifying the provider"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — Notify the provider for full evaluation.</strong><br><br>
+      This client has two concerning ACE inhibitor–related issues:<br>
+      1. <strong>Dry cough</strong> — a known ACE inhibitor class effect from bradykinin accumulation (affects 10–20% of patients). An <strong>ARB (e.g., losartan)</strong> is typically substituted as it doesn't cause cough.<br>
+      2. <strong>Rising creatinine (1.0 → 1.8) + hyperkalemia (K⁺ 5.4)</strong> — suggests possible <strong>renal artery stenosis</strong> or excessive ACE inhibitor effect on renal perfusion. This requires immediate provider evaluation as it may indicate medication should be stopped or dose adjusted.<br><br>
+      The nurse cannot independently switch medications (D) — this requires a provider order.`
+  },
+  {
+    id: 48,
+    category: "SATA — Suicide Risk Assessment",
+    type: "multiple",
+    stem: `A nurse is performing a mental health assessment on a client in the ED who made a superficial wrist laceration. Which findings indicate an <strong>elevated risk for completed suicide</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "The client has a specific, detailed plan (e.g., has access to a firearm at home)",
+      "The client expresses relief that they are in the hospital and feels safe",
+      "The client has a history of a prior suicide attempt",
+      "The client is male, age 68, lives alone, and has recently lost their spouse",
+      "The client states, \"I'll be fine, I just wanted attention\""
+    ],
+    correct: [0, 2, 3],
+    rationale: `<strong>Correct: A, C, D.</strong><br><br>
+      High-risk factors for completed suicide (SAD PERSONS mnemonic):<br>
+      • <strong>A</strong> — Specific lethal plan + access to means (firearm) = <strong>highest risk factor</strong>; lethal means counseling and restriction are critical.<br>
+      • <strong>C</strong> — Prior attempt is the <strong>strongest single predictor</strong> of future completed suicide.<br>
+      • <strong>D</strong> — Male gender, older age, social isolation, and <strong>recent significant loss</strong> (bereavement) are all major risk factors.<br><br>
+      • <strong>B</strong> — Feeling safe and relieved in the hospital is a protective finding, not a risk factor.<br>
+      • <strong>E</strong> — "I wanted attention" statements should not be dismissed, but do not in themselves indicate elevated completed-suicide risk. Do not minimize any attempt, but statements of intent and plan carry more weight.`
+  },
+  {
+    id: 49,
+    category: "Oncology Nursing — Chemotherapy",
+    type: "single",
+    stem: `A client receiving <strong>cisplatin-based chemotherapy</strong> for lung cancer reports ringing in the ears and difficulty hearing in crowded rooms. The nurse notes a creatinine of 2.4 mg/dL (baseline 0.9 mg/dL). Which action is the <strong>priority</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Document the findings and plan to reassess at the next chemotherapy cycle",
+      "Encourage the client to increase fluid intake to 3 L/day to protect the kidneys",
+      "Hold the next cisplatin dose, notify the oncologist immediately, and anticipate audiometry and nephrology consult",
+      "Administer ondansetron (Zofran) for nausea and reassess hearing after antiemetic therapy"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — Hold cisplatin, notify oncologist, arrange audiometry and nephrology.</strong><br><br>
+      Cisplatin has two major dose-limiting toxicities:<br>
+      • <strong>Nephrotoxicity</strong> — creatinine doubled from 0.9 → 2.4 mg/dL indicates significant renal injury. Cisplatin accumulates in renal tubular cells causing proximal tubule damage.<br>
+      • <strong>Ototoxicity</strong> — tinnitus and high-frequency hearing loss are early signs of cisplatin-induced cochlear damage, which can be <strong>permanent and irreversible</strong>.<br><br>
+      Both toxicities are <strong>cumulative and potentially irreversible</strong> — continuing cisplatin without evaluation is unsafe. The oncologist must be notified immediately to evaluate whether to hold, dose-reduce, or discontinue the drug.`
+  },
+  {
+    id: 50,
+    category: "SATA — Nasogastric Tube",
+    type: "multiple",
+    stem: `A nurse is preparing to administer medications and a tube feeding through a nasogastric (NG) tube. Which actions reflect <strong>safe practice</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Verify tube placement by checking the pH of aspirated gastric contents (pH ≤5.5 confirms gastric placement)",
+      "Verify NG tube placement by auscultating while injecting 10 mL of air (\"whoosh\" test)",
+      "Hold the tube feeding if the gastric residual volume (GRV) is >500 mL and notify the provider",
+      "Flush the NG tube with 30 mL of water before and after each medication",
+      "Crush all medications together and dissolve in water before administering through the NG tube"
+    ],
+    correct: [0, 2, 3],
+    rationale: `<strong>Correct: A, C, D.</strong><br><br>
+      • <strong>A</strong> — pH ≤5.5 of aspirated content reliably indicates gastric placement. X-ray is the gold standard, but pH testing is an accepted bedside method.<br>
+      • <strong>C</strong> — GRV >500 mL is a threshold to hold tube feeding and notify the provider (per most current guidelines).<br>
+      • <strong>D</strong> — Flushing with 30 mL water before and after each medication maintains tube patency and separates incompatible medications.<br><br>
+      • <strong>B is INCORRECT</strong> — The "whoosh" auscultation air test is <strong>no longer considered reliable</strong> and has been associated with feeding into the lungs — it must NOT be used as the sole placement verification method.<br>
+      • <strong>E is INCORRECT</strong> — Not all medications can be crushed (e.g., extended-release, enteric-coated). Each medication must be checked individually for crushability and administered <strong>separately</strong> to avoid interactions.`
+  },
+  {
+    id: 51,
+    category: "Cardiovascular — Hemodynamic Monitoring",
+    type: "single",
+    stem: `A nurse is caring for a client in the ICU with a pulmonary artery catheter (Swan-Ganz). The following readings are obtained: <strong>PAWP 22 mmHg, CO 2.8 L/min, SVR 1,800 dynes·sec·cm⁻⁵</strong> (normal SVR: 800–1,200). Which condition do these findings most likely indicate?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Hypovolemic shock",
+      "Septic shock (hyperdynamic phase)",
+      "Left-sided heart failure with cardiogenic shock",
+      "Neurogenic shock"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — Left-sided heart failure / cardiogenic shock.</strong><br><br>
+      Interpret each value:<br>
+      • <strong>PAWP 22 mmHg</strong> (normal: 6–12) = <strong>elevated</strong> → fluid backing up into pulmonary circulation → left heart failure<br>
+      • <strong>CO 2.8 L/min</strong> (normal: 4–8) = <strong>reduced</strong> → poor cardiac output → heart not pumping effectively<br>
+      • <strong>SVR 1,800</strong> (normal: 800–1,200) = <strong>elevated</strong> → compensatory vasoconstriction trying to maintain BP<br><br>
+      This triad = <strong>cardiogenic shock</strong>: high filling pressures, low output, high resistance.<br><br>
+      • Hypovolemic (A): low PAWP, low CO, high SVR (but no fluid overload)<br>
+      • Septic (B): low PAWP, high CO, low SVR (vasodilation)<br>
+      • Neurogenic (D): low PAWP, low CO, low SVR (loss of sympathetic tone)`
+  },
+  {
+    id: 52,
+    category: "SATA — Peritoneal Dialysis",
+    type: "multiple",
+    stem: `A nurse is caring for a client receiving continuous ambulatory peritoneal dialysis (CAPD). Which findings should the nurse report to the provider <strong>immediately</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Cloudy peritoneal dialysis effluent (dialysate outflow)",
+      "Weight gain of 0.5 kg from yesterday",
+      "Client reports abdominal pain and tenderness",
+      "Blood-tinged effluent on the first exchange after catheter insertion",
+      "Exit site with purulent drainage and surrounding erythema"
+    ],
+    correct: [0, 2, 4],
+    rationale: `<strong>Correct: A, C, E.</strong><br><br>
+      • <strong>A</strong> — <strong>Cloudy effluent</strong> is the hallmark sign of <strong>peritonitis</strong> — the most serious complication of peritoneal dialysis. Requires immediate culture and antibiotics.<br>
+      • <strong>C</strong> — Abdominal pain + tenderness accompanies peritonitis and requires immediate provider notification.<br>
+      • <strong>E</strong> — Purulent exit site drainage with erythema = <strong>catheter exit-site infection</strong> — a precursor to tunnel infection and peritonitis; requires prompt treatment.<br><br>
+      • <strong>B</strong> — Small weight fluctuations (0.5 kg) are expected between exchanges; not immediately reportable.<br>
+      • <strong>D</strong> — Blood-tinged effluent in the <strong>first 1–2 exchanges after catheter insertion</strong> is a <strong>normal, expected finding</strong> due to minor insertion trauma; it resolves quickly.`
+  },
+  {
+    id: 53,
+    category: "OB — Postpartum Hemorrhage",
+    type: "single",
+    stem: `A nurse is assessing a client 1 hour after a vaginal delivery. The fundus is <strong>boggy, displaced to the right of midline</strong>, and the perineal pad is saturated in 10 minutes. Blood pressure is 88/52 mmHg and HR is 126/min. What is the nurse's <strong>first action</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Assist the client to the bathroom to void, then reassess the fundus",
+      "Massage the fundus vigorously and administer oxytocin as ordered",
+      "Notify the provider and prepare for blood transfusion",
+      "Apply a pressure dressing to the perineum"
+    ],
+    correct: [0],
+    rationale: `<strong>Correct: A — Assist to void first.</strong><br><br>
+      A <strong>boggy fundus displaced to the right of midline</strong> is the classic sign of a <strong>distended bladder</strong> preventing uterine contraction. The bladder pushes the uterus out of midline and prevents it from clamping down on bleeding vessels.<br><br>
+      <strong>First action: Empty the bladder</strong> (assist to void or catheterize if unable to void). Once the bladder is emptied, the fundus should return to midline and firm up.<br><br>
+      Then if the fundus remains boggy → uterine atony — then proceed with:<br>
+      • Fundal massage (B)<br>
+      • Oxytocin administration<br>
+      • Escalate to provider if hemorrhage continues (C)<br><br>
+      Aggressive fundal massage before emptying the bladder (B) is premature and will not be effective.`
+  },
+  {
+    id: 54,
+    category: "SATA — End-of-Life / Palliative Care",
+    type: "multiple",
+    stem: `A nurse is caring for a client in hospice with terminal cancer who has a <strong>Do-Not-Resuscitate (DNR) order</strong>. The client's family is at bedside. Physical signs of imminent death are noted. Which nursing actions are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Administer prescribed opioids to ensure the client is comfortable and free from pain",
+      "Educate the family that increased opioid doses to control pain are hastening death",
+      "Provide mouth care, position changes for comfort, and keep the room quiet and peaceful",
+      "Explain to the family expected signs of active dying (e.g., Cheyne-Stokes respirations, mottling, cooling extremities)",
+      "Ensure the client's spiritual and cultural needs are addressed and chaplaincy is offered"
+    ],
+    correct: [0, 2, 3, 4],
+    rationale: `<strong>Correct: A, C, D, E.</strong><br><br>
+      • <strong>A</strong> — Pain and dyspnea relief via opioids is the priority in hospice. The principle of <strong>double effect</strong> supports adequate symptom management even if it incidentally may hasten death — comfort is the goal.<br>
+      • <strong>C</strong> — Comfort care: oral hygiene prevents discomfort; repositioning prevents skin breakdown and discomfort.<br>
+      • <strong>D</strong> — Families need education about what to expect during active dying to reduce fear and feel prepared — this is a core hospice nursing competency.<br>
+      • <strong>E</strong> — Spiritual and cultural care is a core domain of palliative/hospice nursing.<br><br>
+      • <strong>B is INCORRECT</strong> — This statement is <strong>harmful and inaccurate</strong>. Research does not support that adequate opioid dosing for pain control meaningfully hastens death. Making this statement undermines appropriate end-of-life care and causes family distress.`
+  },
+  {
+    id: 55,
+    category: "Neurology — Guillain-Barré Syndrome",
+    type: "single",
+    stem: `A 34-year-old client admitted with <strong>Guillain-Barré Syndrome (GBS)</strong> has ascending paralysis now affecting the lower extremities and abdomen. During the nurse's assessment, the client's <strong>vital capacity is 900 mL</strong> (normal: >1,500 mL for intubation safety). Which action is the nurse's <strong>priority</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Encourage the client to perform incentive spirometry exercises every hour",
+      "Position the client in high Fowler's and administer oxygen at 2 L/min via nasal cannula",
+      "Notify the provider immediately — the client is at high risk for respiratory failure requiring mechanical ventilation",
+      "Prepare to administer IV immunoglobulin (IVIG) as the priority treatment"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — Notify provider; impending respiratory failure.</strong><br><br>
+      In GBS, the ascending paralysis eventually reaches the <strong>respiratory muscles</strong> — this is the primary cause of death. Respiratory monitoring is the <strong>most critical</strong> nursing priority.<br><br>
+      <strong>Intubation criteria in GBS (Rule of 20-30-40):</strong><br>
+      • Vital capacity &lt;20 mL/kg (or &lt;1,000–1,500 mL)<br>
+      • Maximum inspiratory pressure &lt;30 cmH₂O<br>
+      • Maximum expiratory pressure &lt;40 cmH₂O<br><br>
+      Vital capacity of 900 mL = <strong>below threshold</strong> → imminent respiratory failure → provider must be notified immediately for elective intubation before emergent respiratory arrest.<br><br>
+      IVIG (D) is an appropriate disease-modifying treatment but is not the immediate priority when respiratory failure is impending.`
+  },
+  {
+    id: 56,
+    category: "SATA — Pediatric — Febrile Seizure",
+    type: "multiple",
+    stem: `A nurse is caring for a 2-year-old child who experienced a <strong>simple febrile seizure</strong> lasting 90 seconds that has self-terminated on arrival to the ED. Temperature is 39.4°C. The child is now drowsy but arousable. Which nursing actions are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Administer acetaminophen or ibuprofen to reduce fever",
+      "Position the child in lateral (recovery) position to prevent aspiration",
+      "Prepare to administer diazepam IV immediately to prevent recurrence",
+      "Assess the child's neurological status and monitor closely for recurrence",
+      "Educate the parents that simple febrile seizures do not cause brain damage and recurrence risk is 30–50%"
+    ],
+    correct: [0, 1, 3, 4],
+    rationale: `<strong>Correct: A, B, D, E.</strong><br><br>
+      • <strong>A</strong> — Antipyretics provide comfort and reduce fever (though evidence is mixed on preventing seizure recurrence, they are still standard of care).<br>
+      • <strong>B</strong> — Lateral position reduces aspiration risk in the drowsy post-ictal period.<br>
+      • <strong>D</strong> — Neurological monitoring and seizure precautions are essential.<br>
+      • <strong>E</strong> — Parent education is critical: simple febrile seizures are <strong>benign</strong>, do not cause intellectual disability or epilepsy, and have a 30–50% recurrence risk with subsequent febrile illnesses.<br><br>
+      • <strong>C is INCORRECT</strong> — Prophylactic anticonvulsants are <strong>NOT routinely recommended</strong> for simple febrile seizures. The seizure has already resolved. Diazepam is used only for active, prolonged (>5 min) febrile seizures.`
+  },
+  {
+    id: 57,
+    category: "Pharmacology — Antibiotic Stewardship",
+    type: "single",
+    stem: `A client is prescribed <strong>vancomycin 1,250 mg IV q12h</strong> for MRSA bacteremia. Which nursing monitoring parameters are <strong>essential</strong> with vancomycin therapy?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Monitor liver function tests (AST, ALT) weekly and urine color daily",
+      "Monitor serum vancomycin trough levels, BUN, creatinine, and auditory function",
+      "Monitor blood glucose every 6 hours and platelet count every other day",
+      "Monitor stool cultures and administer probiotics concurrently"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Trough levels, renal function, and auditory monitoring.</strong><br><br>
+      Vancomycin has two major adverse effects that require monitoring:<br>
+      • <strong>Nephrotoxicity</strong> — vancomycin causes renal tubular injury; monitor BUN, creatinine, and urine output daily<br>
+      • <strong>Ototoxicity</strong> — cochlear and vestibular damage; risk increases with high trough levels; assess for tinnitus, hearing changes<br><br>
+      <strong>AUC/MIC-guided dosing</strong> (or trough target 15–20 mcg/mL for serious infections) requires regular serum level monitoring to ensure efficacy and minimize toxicity.<br><br>
+      Also watch for <strong>Red Man Syndrome</strong> (flushing, erythema from rapid infusion — slow infusion rate; not a true allergy). This is NOT the same as an IgE-mediated allergic reaction.`
+  },
+  {
+    id: 58,
+    category: "SATA — Burns Nursing",
+    type: "multiple",
+    stem: `A client is admitted with <strong>35% total body surface area (TBSA) partial and full-thickness burns</strong> from a house fire. Which interventions are <strong>priorities in the first 24 hours</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Initiate aggressive IV fluid resuscitation using the Parkland formula (4 mL × kg × %TBSA burned)",
+      "Apply ice or cold water compresses directly to burned areas to reduce pain",
+      "Insert a Foley catheter and maintain urine output at 0.5–1 mL/kg/hr",
+      "Monitor for inhalation injury: hoarseness, singed nasal hairs, carbonaceous sputum, stridor",
+      "Administer tetanus prophylaxis per immunization history"
+    ],
+    correct: [0, 2, 3, 4],
+    rationale: `<strong>Correct: A, C, D, E.</strong><br><br>
+      • <strong>A</strong> — <strong>Parkland formula</strong>: 4 mL × kg × % TBSA = total fluid in 24 hrs. Give ½ in first 8 hrs (from time of burn), ½ in next 16 hrs. Use lactated Ringer's.<br>
+      • <strong>C</strong> — Urine output is the best clinical indicator of adequate fluid resuscitation in burns; goal: 0.5–1 mL/kg/hr (30–50 mL/hr in adults).<br>
+      • <strong>D</strong> — Inhalation injury is present in up to 30% of burn admissions and is a leading cause of burn mortality. Signs: stridor, hoarseness, soot in airway, carbonaceous sputum → prepare for early intubation.<br>
+      • <strong>E</strong> — Open wounds significantly increase tetanus risk; prophylaxis is standard.<br><br>
+      • <strong>B is INCORRECT and HARMFUL</strong> — Ice or cold water causes <strong>vasoconstriction, hypothermia, and deepens the burn wound</strong>. Cool (not cold) running water for 10–20 minutes in minor burns is appropriate but contraindicated in large TBSA burns.`
+  },
+  {
+    id: 59,
+    category: "Leadership — Ethical Dilemma",
+    type: "single",
+    stem: `A nurse is caring for a 45-year-old client with a new diagnosis of terminal pancreatic cancer. The oncologist has not yet disclosed the diagnosis to the client. The client directly asks the nurse, <em>"Do I have cancer? Just tell me the truth."</em> Which response by the nurse is <strong>most appropriate</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "\"Yes, you have pancreatic cancer. I felt you deserved to know.\"",
+      "\"No, the tests were inconclusive — we're still waiting on results.\"",
+      "\"I understand how important this is to you. I want to make sure you get the most complete and accurate information. Let me contact your doctor so they can speak with you right away.\"",
+      "\"I'm not allowed to discuss your diagnosis — please ask your family.\""
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — Facilitate provider communication while honoring the client's autonomy.</strong><br><br>
+      This scenario involves a conflict between the client's right to know (<strong>autonomy</strong>) and the provider's undisclosed diagnosis. The nurse's role:<br><br>
+      • The nurse should <strong>NOT disclose the diagnosis unilaterally</strong> (A) — this is the provider's responsibility and breaks team communication.<br>
+      • The nurse should <strong>NEVER lie</strong> (B) — this violates the ANA Code of Ethics (veracity) and the nurse-client trust relationship.<br>
+      • Option D dismisses the client's right to information and is non-therapeutic.<br><br>
+      <strong>C</strong> validates the client's need for information, maintains honesty without overstepping, and appropriately escalates to the provider. The nurse should also advocate strongly for timely provider disclosure.`
+  },
+  {
+    id: 60,
+    category: "SATA — Safe Medication Administration",
+    type: "multiple",
+    stem: `A nurse is administering medications on a busy medical unit. Which actions demonstrate adherence to the <strong>Rights of Medication Administration</strong> and safe practice?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Scan the client's armband barcode and confirm using two patient identifiers before giving each medication",
+      "Document medication administration immediately after it is given",
+      "Crush an extended-release metoprolol succinate tablet because the client has difficulty swallowing",
+      "Question an order for metformin in a client scheduled for IV contrast dye the following morning",
+      "Hold a prescribed beta-blocker and notify the provider when the client's heart rate is 52 bpm prior to administration"
+    ],
+    correct: [0, 1, 3, 4],
+    rationale: `<strong>Correct: A, B, D, E.</strong><br><br>
+      • <strong>A</strong> — Two patient identifiers (name + DOB or MRN) + barcode scanning are the standard for safe administration.<br>
+      • <strong>B</strong> — Documenting <strong>immediately after</strong> administration prevents double-dosing errors and accurately reflects timing.<br>
+      • <strong>D</strong> — Metformin must be <strong>held 24–48 hours before and after IV iodinated contrast</strong> due to risk of contrast-induced nephropathy leading to metformin-associated lactic acidosis. Questioning this order is correct clinical practice.<br>
+      • <strong>E</strong> — HR 52 bpm meets most institutional parameters for holding a beta-blocker (HR &lt;60); notifying the provider is appropriate.<br><br>
+      • <strong>C is INCORRECT</strong> — Extended-release (ER/XL/SR) tablets <strong>must NEVER be crushed</strong>. Crushing destroys the extended-release mechanism, causing immediate release of the full dose → potential overdose and toxicity.`
+  }
+];
+
+/* ═══════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════ */
+let mode        = null;   // 'readiness' | 'learning'
+let current     = 0;
+let selected    = Array(questions.length).fill(null).map(() => []);
+let checked     = Array(questions.length).fill(false);
+let flagged     = Array(questions.length).fill(false);
+let timerSecs   = 5 * 60 * 60;
+let timerHandle = null;
+let readinessTimed  = true;   // true = 5-hr countdown, false = untimed (save progress)
+let paused          = false;
+let questionViewStart = Array(questions.length).fill(null); // per-question start timestamp
+let questionTimes     = Array(questions.length).fill(null); // ms taken per question
+let qChats            = Array(questions.length).fill(null).map(() => []); // per-question AI chat history
+let activeQ           = null; // filtered/shuffled subset for Learning Mode (null = all questions)
+
+function qs() { return activeQ || questions; } // always returns the active question list
+
+/* ═══════════════════════════════════════════════
+   TIMER
+   ═══════════════════════════════════════════════ */
+function startTimer() {
+  if (mode !== 'readiness') return;
+  timerHandle = setInterval(() => {
+    if (timerSecs <= 0) { clearInterval(timerHandle); submitExam(); return; }
+    timerSecs--;
+    const h = String(Math.floor(timerSecs / 3600)).padStart(2,'0');
+    const m = String(Math.floor((timerSecs % 3600) / 60)).padStart(2,'0');
+    const s = String(timerSecs % 60).padStart(2,'0');
+    document.getElementById('timer').textContent = `${h}:${m}:${s}`;
+  }, 1000);
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER
+   ═══════════════════════════════════════════════ */
+function render() {
+  const q   = qs()[current];
+  const sel = selected[current];
+  const chk = checked[current];
+
+  // Learning mode: record when a user first views this question
+  if (mode === 'learning' && !chk && questionViewStart[current] === null) {
+    questionViewStart[current] = Date.now();
+  }
+
+  // Header
+  document.getElementById('q-counter').textContent = `Question ${current + 1} of ${qs().length}`;
+  const flagBtn = document.getElementById('flag-btn');
+  const aiBarBtn = document.getElementById('ai-bar-btn');
+  if (mode === 'learning') {
+    flagBtn.style.display = '';
+    flagBtn.classList.toggle('flagged', flagged[current]);
+    flagBtn.textContent = flagged[current] ? 'Flagged' : 'Flag for Review';
+    aiBarBtn.style.display = 'flex';
+  } else {
+    flagBtn.style.display = 'none';
+    aiBarBtn.style.display = 'none';
+  }
+
+  // Build card HTML
+  let optionsHTML = q.options.map((opt, i) => {
+    let cls = 'option-item';
+    if (sel.includes(i))  cls += ' selected';
+    if (chk) {
+      if (q.correct.includes(i)) cls += ' correct';
+      else if (sel.includes(i))  cls += ' incorrect';
+    }
+    const inputType = q.type === 'multiple' ? 'checkbox' : 'radio';
+    const isChecked = sel.includes(i) ? 'checked' : '';
+    const letter    = String.fromCharCode(65 + i);
+    return `
+      <li class="${cls}" onclick="selectOption(${i})" data-idx="${i}">
+        <input type="${inputType}" name="q${q.id}" ${isChecked} ${chk ? 'disabled' : ''} />
+        <span class="option-letter">${letter}.</span>
+        <span class="option-text">${opt}</span>
+      </li>`;
+  }).join('');
+
+  const rationaleVisible = chk ? 'visible' : '';
+
+  const card = document.getElementById('question-card');
+
+  if (q.caseIntro) {
+    // ── SPLIT LAYOUT for case study questions ──
+    card.classList.add('split-mode');
+    card.innerHTML = `
+      <div class="case-split">
+        <div class="case-left">
+          <div class="case-banner">
+            <span class="case-badge">Case Study</span>
+            <span class="case-title">${q.caseTitle || ''}</span>
+          </div>
+          <hr class="case-divider">
+          <div class="case-section-label">Patient Information</div>
+          <div class="case-intro-text">${q.caseIntro}</div>
+        </div>
+        <div class="case-right">
+          <div class="case-q-label">${q.category}</div>
+          <div class="question-header">
+            <div class="q-number-badge">Q ${current + 1}</div>
+            <div class="q-stem">${q.stem}</div>
+          </div>
+          <div class="q-instruction">${q.instruction}</div>
+          <ul class="options-list">${optionsHTML}</ul>
+          <div class="rationale-box ${rationaleVisible}">${q.rationale}</div>
+          ${timeTakenHTML(current)}
+          ${aiPanelHTML(current)}
+        </div>
+      </div>`;
+  } else {
+    // ── STANDARD LAYOUT ──
+    card.classList.remove('split-mode');
+    card.innerHTML = `
+      <div class="question-header">
+        <div class="q-number-badge">Q ${current + 1}</div>
+        <div>
+          <div class="q-category">${q.category}</div>
+          <div class="q-stem">${q.stem}</div>
+        </div>
+      </div>
+      <div class="q-instruction">${q.instruction}</div>
+      <ul class="options-list">${optionsHTML}</ul>
+      <div class="rationale-box ${rationaleVisible}">${q.rationale}</div>
+      ${timeTakenHTML(current)}
+      ${aiPanelHTML(current)}`;
+  }
+
+  // Buttons
+  document.getElementById('btn-prev').disabled   = current === 0;
+  document.getElementById('btn-next').style.display   = current < qs().length - 1 ? 'inline-block' : 'none';
+  document.getElementById('btn-submit').style.display = current === qs().length - 1 ? 'inline-block' : 'none';
+  document.getElementById('btn-check').style.display  = mode === 'learning' ? 'inline-block' : 'none';
+  document.getElementById('btn-check').disabled  = chk || sel.length === 0;
+
+  updateStats();
+  updateQMap();
+  updateProgress();
+}
+
+/* ═══════════════════════════════════════════════
+   INTERACTION
+   ═══════════════════════════════════════════════ */
+function selectOption(i) {
+  if (checked[current]) return;
+  const q   = qs()[current];
+  const sel = selected[current];
+  if (q.type === 'multiple') {
+    const idx = sel.indexOf(i);
+    if (idx === -1) sel.push(i);
+    else sel.splice(idx, 1);
+  } else {
+    selected[current] = [i];
+  }
+  document.getElementById('btn-check').disabled = mode !== 'learning' || selected[current].length === 0;
+  render();
+}
+
+function checkAnswer() {
+  if (checked[current] || selected[current].length === 0) return;
+  // Learning mode: record how long the user took on this question
+  if (mode === 'learning' && questionViewStart[current] !== null) {
+    questionTimes[current] = Date.now() - questionViewStart[current];
+  }
+  checked[current] = true;
+  render();
+  saveProgress();
+}
+
+function navigate(dir) {
+  const next = current + dir;
+  if (next < 0 || next >= qs().length) return;
+  current = next;
+  render();
+  saveProgress();
+}
+
+function toggleFlag() {
+  flagged[current] = !flagged[current];
+  render();
+}
+
+function toggleQMap() {
+  document.getElementById('qmap-panel').classList.toggle('open');
+}
+
+function jumpTo(i) {
+  current = i;
+  document.getElementById('qmap-panel').classList.remove('open');
+  render();
+}
+
+/* ═══════════════════════════════════════════════
+   STATS / MAP / PROGRESS
+   ═══════════════════════════════════════════════ */
+function updateStats() {
+  const answered = checked.filter(Boolean).length;
+  const flagCnt  = flagged.filter(Boolean).length;
+  document.getElementById('stat-answered').textContent  = answered;
+  document.getElementById('stat-flagged').textContent   = flagCnt;
+  document.getElementById('stat-remaining').textContent = qs().length - answered;
+  const showFlag = mode === 'learning';
+  document.getElementById('stat-flagged-wrap').style.display = showFlag ? '' : 'none';
+  const fl = document.getElementById('flagged-legend');
+  if (fl) fl.style.display = showFlag ? '' : 'none';
+}
+
+function updateProgress() {
+  const answered = checked.filter(Boolean).length;
+  const pct = (answered / qs().length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `Progress: ${answered} of ${qs().length} answered`;
+}
+
+function updateQMap() {
+  const grid = document.getElementById('qmap-grid');
+  grid.innerHTML = qs().map((_, i) => {
+    let cls = 'qmap-cell';
+    if (i === current)       cls += ' current';
+    else if (checked[i])     cls += ' answered';
+    else if (mode === 'learning' && flagged[i]) cls += ' flagged';
+    return `<div class="${cls}" onclick="jumpTo(${i})">${i + 1}</div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   SUBMIT / END
+   ═══════════════════════════════════════════════ */
+function confirmEnd() {
+  if (confirm('Are you sure you want to end the exam? Unanswered questions will be marked incorrect.')) {
+    submitExam();
+  }
+}
+
+function submitExam() {
+  clearInterval(timerHandle);
+  let correct = 0;
+  qs().forEach((q, i) => {
+    const sel = selected[i];
+    const ans = q.correct.slice().sort().join(',');
+    const got = sel.slice().sort().join(',');
+    if (ans === got) correct++;
+  });
+  const pct   = Math.round((correct / qs().length) * 100);
+  const pass  = pct >= 70;
+  document.getElementById('modal-score').textContent  = `${pct}%`;
+  document.getElementById('modal-detail').innerHTML   =
+    `You answered <strong>${correct}</strong> of <strong>${qs().length}</strong> questions correctly.`;
+  const gradeEl = document.getElementById('modal-grade');
+  gradeEl.textContent  = pass ? '✔ PASS' : '✘ NEEDS IMPROVEMENT';
+  gradeEl.className    = 'modal-grade ' + (pass ? 'grade-pass' : 'grade-fail');
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function restartExam() {
+  activeQ           = null;
+  const n           = questions.length;
+  selected          = Array(n).fill(null).map(() => []);
+  checked           = Array(n).fill(false);
+  flagged           = Array(n).fill(false);
+  questionViewStart = Array(n).fill(null);
+  questionTimes     = Array(n).fill(null);
+  qChats            = Array(n).fill(null).map(() => []);
+  current           = 0;
+  timerSecs         = 5 * 60 * 60;
+  mode              = null;
+  readinessTimed    = true;
+  paused            = false;
+  closeModal();
+  clearInterval(timerHandle);
+  document.getElementById('pause-overlay').classList.remove('active');
+  document.getElementById('learning-sub').classList.remove('active');
+  // Restore default timer-block so readiness mode works after re-selection
+  document.getElementById('timer-block').innerHTML =
+    'Time Remaining: <span class="timer" id="timer">05:00:00</span>';
+  document.querySelector('.btn-end').textContent = 'End Exam';
+  document.getElementById('mode-selector').classList.remove('hidden');
+}
+
+/* ═══════════════════════════════════════════════
+   MODE SELECTION
+   ═══════════════════════════════════════════════ */
+function selectMode(m, timed) {
+  if (mode !== null) return; // guard against double-fire
+  mode = m;
+  readinessTimed = (timed !== false);
+  document.getElementById('mode-selector').classList.add('hidden');
+
+  if (mode === 'readiness') {
+    if (readinessTimed) {
+      document.getElementById('timer-block').innerHTML =
+        'Time Remaining: <span class="timer" id="timer">05:00:00</span>' +
+        '<button class="pause-btn" id="pause-btn" onclick="pauseExam()">⏸ Pause</button>';
+      startTimer();
+    } else {
+      document.getElementById('timer-block').innerHTML =
+        '<span class="learning-mode-badge" style="background:#5a3e92;">UNTIMED ASSESSMENT</span>';
+      loadProgress();
+    }
+    document.querySelector('.btn-end').textContent = 'End Assessment';
+  } else {
+    document.getElementById('timer-block').innerHTML =
+      '<span class="learning-mode-badge">LEARNING MODE</span>';
+    document.querySelector('.btn-end').textContent = 'End Session';
+  }
+
+  render();
+}
+
+/* Returns the time-taken badge HTML for learning mode */
+/* ── AI Insight panel ─────────────────────────── */
+function stripHtml(h) { return h.replace(/<[^>]+>/g, ' ').replace(/\s+/g,' ').trim(); }
+
+function aiMsgBubble(role, text) {
+  const esc = t => t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  function md(t){
+    return esc(t)
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g,'<em>$1</em>')
+      .replace(/(?:^|\n)[-•] (.+)/g,'<br><li>$1</li>');
+  }
+  const avt = role === 'bot' ? 'AI' : 'You';
+  const content = role === 'bot' ? md(text) : esc(text);
+  return `<div class="ai-msg ${role}">
+    <div class="avt">${avt}</div>
+    <div class="ai-msg-bubble">${content}</div>
+  </div>`;
+}
+
+function aiPanelHTML(idx) {
+  if (mode !== 'learning' || !checked[idx]) return '';
+  const q = questions[idx];
+  const explanation = getAIExplanation(q);
+  const chatHTML = qChats[idx].map(m => aiMsgBubble(m.role, m.text)).join('');
+  return `
+  <div class="ai-insight-panel" id="ai-panel-${idx}">
+    <div class="ai-insight-header" onclick="toggleAIPanel(${idx})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        <circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/>
+        <circle cx="12" cy="10" r="1" fill="currentColor" stroke="none"/>
+        <circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      AI Insight &amp; Follow-up
+      <span class="ai-badge">Ask anything</span>
+    </div>
+    <div class="ai-insight-body" id="ai-body-${idx}">
+      <div class="ai-explanation">${explanation}</div>
+      <div class="ai-chat-thread" id="ai-thread-${idx}">${chatHTML}</div>
+      <div class="ai-input-row">
+        <input class="ai-followup-input" id="ai-input-${idx}"
+          type="text" placeholder="Ask a follow-up about this question…"
+          onkeydown="if(event.key==='Enter') sendFollowUpQ(${idx})"/>
+        <button class="ai-send-btn" id="ai-sendbtn-${idx}" onclick="sendFollowUpQ(${idx})" title="Send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleAIPanel(idx) {
+  const body = document.getElementById('ai-body-' + idx);
+  if (body) body.style.display = body.style.display === 'none' ? '' : 'none';
+}
+
+function sendFollowUpQ(idx) {
+  const input   = document.getElementById('ai-input-' + idx);
+  const sendBtn = document.getElementById('ai-sendbtn-' + idx);
+  const thread  = document.getElementById('ai-thread-' + idx);
+  if (!input || !thread) return;
+  const text = input.value.trim();
+  if (!text) return;
+
+  // Push & render user bubble
+  qChats[idx].push({ role: 'user', text });
+  thread.insertAdjacentHTML('beforeend', aiMsgBubble('user', text));
+  input.value = '';
+  sendBtn.disabled = true;
+
+  // Typing indicator
+  const typingId = 'ai-typing-' + Date.now();
+  thread.insertAdjacentHTML('beforeend',
+    `<div class="ai-msg bot" id="${typingId}">
+       <div class="avt">AI</div>
+       <div class="ai-msg-bubble ai-typing"><span></span><span></span><span></span></div>
+     </div>`);
+  thread.scrollTop = thread.scrollHeight;
+
+  setTimeout(() => {
+    const typingEl = document.getElementById(typingId);
+    if (typingEl) typingEl.remove();
+    const reply = getFollowUpResponse(questions[idx], text);
+    qChats[idx].push({ role: 'bot', text: reply });
+    thread.insertAdjacentHTML('beforeend', aiMsgBubble('bot', reply));
+    thread.scrollTop = thread.scrollHeight;
+    sendBtn.disabled = false;
+    input.focus();
+  }, 600 + Math.random() * 600);
+}
+
+function getAIExplanation(q) {
+  const cat  = q.category.toLowerCase();
+  const stem = stripHtml(q.stem).toLowerCase();
+  const correctOpts = q.correct.map(i => q.options[i]).join(', ');
+  const esc = t => t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  if (/digoxin|heart failure.*hold|hold.*heart failure/i.test(stem))
+    return `<strong>Why this matters:</strong> Digoxin has a <strong>narrow therapeutic window</strong> (0.5–2 ng/mL). A pulse below 60 bpm (bradycardia) signals toxicity risk — always take an apical pulse for a <em>full minute</em> before giving digoxin, and hold if &lt;60 bpm.<br><br><strong>Key mnemonic:</strong> <em>"Dig the Dig — HR under 60, you let it go."</em>`;
+
+  if (/assess first|which client|four client|triage/i.test(stem))
+    return `<strong>Priority Strategy — ABC + Acute over Chronic:</strong><ul><li>Always address the <strong>most unstable</strong> or <strong>life-threatening</strong> condition first</li><li>Airway → Breathing → Circulation before anything else</li><li>New/acute findings trump existing chronic conditions</li><li>The correct answer here is: <em>${esc(correctOpts)}</em></li></ul>`;
+
+  if (/c.\s*diff|clostridi|contact precaution|isolation/i.test(stem))
+    return `<strong>C. difficile Isolation — Key Points:</strong><ul><li>Use <strong>Contact Precautions</strong>: gown + gloves for every entry</li><li>Use <strong>soap and water</strong> — alcohol-based hand sanitizer does NOT kill C. diff spores</li><li>Private room preferred; dedicated equipment</li><li>Discontinue precautions 48–72 hrs after diarrhea resolves</li></ul>`;
+
+  if (/pancreatitis|calcium|tingling|chvostek|trousseau/i.test(stem))
+    return `<strong>Acute Pancreatitis + Hypocalcemia:</strong> Pancreatitis can cause <strong>hypocalcemia</strong> (Ca&lt;8.5). Fat saponification sequesters calcium.<br><br>Tingling around the mouth and fingers = <strong>Trousseau/Chvostek signs</strong> — prepare IV calcium gluconate immediately. This is a <em>life-threatening electrolyte emergency</em>.`;
+
+  if (/abg|arterial blood gas|ph 7\.|paco|hco3|rome|respiratory alkal/i.test(stem))
+    return `<strong>ABG Interpretation — ROME Method:</strong><ul><li><strong>R</strong>espiratory <strong>O</strong>pposite: pH↑ + PaCO₂↓ = Resp. Alkalosis; pH↓ + PaCO₂↑ = Resp. Acidosis</li><li><strong>M</strong>etabolic <strong>E</strong>qual: pH↑ + HCO₃↑ = Met. Alkalosis; pH↓ + HCO₃↓ = Met. Acidosis</li></ul>Normal: pH 7.35–7.45 | PaCO₂ 35–45 | HCO₃ 22–26.<br>If both systems move abnormally = <em>compensation</em>.`;
+
+  if (/morphine|naloxone|narcan|opioid|respiratory rate.*8|rr.*8/i.test(stem))
+    return `<strong>Opioid Toxicity — Priority Action:</strong> RR &lt;12, SpO₂ &lt;90%, difficult to arouse = <strong>opioid-induced respiratory depression</strong>. First action: <strong>Naloxone (Narcan)</strong> IV.<br><br><ul><li>Assess airway/breathing <em>before</em> the antidote</li><li>Narcan onset: 1–2 min IV; duration shorter than most opioids — monitor for re-narcotization</li><li>Have resuscitation equipment ready</li></ul>`;
+
+  if (/eclampsia|preeclampsia|headache.*pregnant|bp.*16|seizure.*pregnan/i.test(stem))
+    return `<strong>Preeclampsia → Eclampsia Warning Signs:</strong><ul><li>BP ≥160/110 on 2 readings →  <em>severe feature</em></li><li>Severe headache, visual changes (phosphenes), epigastric/RUQ pain (HELLP risk)</li><li>Priority med: <strong>Magnesium sulfate</strong> (seizure prophylaxis); monitor for toxicity (RR, urine output, reflexes)</li><li>Antidote for Mg toxicity: <strong>Calcium gluconate</strong></li></ul>`;
+
+  if (/delegat|lpn|cna|uap|unlicensed/i.test(stem + cat))
+    return `<strong>Delegation Framework:</strong><ul><li><strong>RN only</strong>: initial assessment, care planning, patient teaching, unstable patients</li><li><strong>LPN/LVN</strong>: stable patients, routine meds, wound care, reinforcing teaching</li><li><strong>UAP/CNA</strong>: ADLs, vitals on stable patients, positioning, I&amp;O</li></ul><em>5 Rights:</em> Right task → Right circumstance → Right person → Right communication → Right supervision.`;
+
+  if (/pharm|medication|drug|dose/i.test(cat))
+    return `<strong>Pharmacology Approach:</strong> Focus on the drug <em>class</em> before the individual agent. For this question the correct answer is <strong>${esc(correctOpts)}</strong>.<br><br>Always verify: allergies → 6 rights → assessment parameters (e.g., pulse for digoxin, BP for antihypertensives) → patient teaching → documentation.`;
+
+  // Generic fallback
+  return `<strong>AI Insight — ${esc(q.category)}:</strong><br>The correct answer for this question is <strong>${esc(correctOpts)}</strong>.<br><br>Review the rationale above carefully and ask a follow-up below if any part of the reasoning is unclear — especially around priority principles, pharmacology actions, or patient safety steps.`;
+}
+
+function getFollowUpResponse(q, userQ) {
+  const t   = userQ.toLowerCase();
+  const cat = q.category.toLowerCase();
+  const stem = stripHtml(q.stem).toLowerCase();
+
+  if (/why|reason|explain|how come/i.test(t)) {
+    if (/digoxin|pulse|hr|heart rate|bradycard/i.test(stem + t))
+      return "**Digoxin slows conduction** through the AV node. If the patient already has bradycardia (HR <60), giving digoxin can dangerously slow the heart further — even down to heart block or asystole. That's why an apical pulse is your #1 assessment before administration.";
+    if (/naloxone|narcan|morphine|opioid/i.test(stem + t))
+      return "**Naloxone (Narcan) works by competitively blocking opioid receptors** in the CNS within 1–2 minutes IV. Because its half-life is shorter than most opioids, the patient can become re-narcotized — always monitor and be ready to redose.";
+    if (/calcium|pancreatitis/i.test(stem + t))
+      return "**In acute pancreatitis**, activated pancreatic enzymes cause fat necrosis. Calcium binds to the free fatty acids formed, effectively 'trapping' calcium (saponification) → hypocalcemia. This can trigger neuromuscular irritability and lethal cardiac arrhythmias if untreated.";
+    if (/eclampsia|magnesium|seizure/i.test(stem + t))
+      return "**Magnesium sulfate** raises the seizure threshold by blocking NMDA receptors and stabilizing neuronal membranes. In severe preeclampsia it's the drug of choice for prophylaxis — not an anticonvulsant in the traditional sense, but highly effective for obstetric seizures.";
+  }
+
+  if (/wrong|why not|incorrect|distractor/i.test(t))
+    return `Great critical thinking! Distractors in NCLEX questions are usually **almost correct** — they involve the right topic but wrong priority, wrong timing, or wrong scope of practice. Try re-reading each option and ask: *Is this safe? Is this the nurse's role? Is this the correct sequence?*`;
+
+  if (/what.*next|after|then|follow.*up/i.test(t))
+    return `After answering this question type correctly, the **next nursing action** usually follows the same logic:
+- Reassess the patient response to any intervention
+- Document findings
+- Notify the provider if the patient's status changes
+- Educate the patient once they're stable`;
+
+  if (/mnemonic|remember|trick|tip/i.test(t))
+    return `Here are some memory tricks for **${q.category}**:
+- **ROME** for ABGs (Respiratory Opposite, Metabolic Equal)
+- **ABC** for priority (Airway → Breathing → Circulation)
+- **"Dig the Dig"** — hold digoxin when HR <60
+- **SATA = True/False** — treat each option independently
+- **RACE** for delegation (Right task, Right person, Right circumstance, Evaluate)`;
+
+  if (/sata|select all/i.test(t + stem))
+    return `**SATA Strategy:** Think of each option as a **True/False statement** — your job is to select ALL true ones.
+- Read every option independently
+- Don't anchor on the number of answers you've already selected
+- Look for absolute language (always/never) as red flags
+- Evidence-based guidelines and nursing standards = reliable anchors`;
+
+  if (/pharm|drug|med|dose|side effect|adverse/i.test(t))
+    return `**Pharmacology Quick Tips:**
+- Learn by **drug class**, not individual drugs
+- Always check: allergies → 6 rights → vitals pre-administration
+- Know the **antidotes**: opioids → Narcan | benzodiazepines → Flumazenil | warfarin → Vit K & FFP | heparin → Protamine sulfate
+- High-alert meds: insulin, anticoagulants, opioids, concentrated electrolytes`;
+
+  if (/priorit|first|urgent|emergenc/i.test(t))
+    return `**Priority Framework:**
+- **ABC** (Airway > Breathing > Circulation) always trumps everything
+- Acute/new onset > chronic/expected
+- Actual problems > potential problems
+- Physiological needs (Maslow) > psychosocial needs
+- Unstable patient > stable patient`;
+
+  if (/delegate|lpn|cna|unlicensed/i.test(t))
+    return `**Delegation Rule of Thumb:**
+- The RN **delegates tasks, not accountability**
+- LPNs: stable, predictable patients
+- UAPs: tasks requiring no nursing judgment (vitals on stable pts, hygiene, ambulating)
+- NEVER delegate: assessment, teaching, care planning, unstable or newly admitted patients`;
+
+  // Generic
+  return `Great follow-up question about **${q.category}**!
+
+This is a UI demo — in the full version I'd pull from a clinical knowledge base to give you a precise, guideline-based answer.
+
+For now, try asking about: why the correct answer is right, why distractors are wrong, mnemonics to remember this concept, or what happens next in patient care.`;
+}
+
+function timeTakenHTML(idx) {
+  if (mode !== 'learning' || !checked[idx] || questionTimes[idx] === null) return '';
+  const totalSec = Math.floor(questionTimes[idx] / 1000);
+  const mins     = Math.floor(totalSec / 60);
+  const secs     = totalSec % 60;
+  const label    = mins > 0 ? `${mins} min ${secs} sec` : `${secs} sec`;
+  return `<div class="time-taken-badge">Time taken: <strong>${label}</strong></div>`;
+}
+
+function switchMode() {
+  const otherMode = mode === 'readiness' ? 'Learning Mode' : 'Readiness Test';
+  if (!confirm(`Switch to ${otherMode}?\n\nYour current progress will be reset.`)) return;
+  restartExam();
+}
+
+/* ═══════════════════════════════════════════════
+   LEARNING SUB-SCREEN — topic / random selection
+   ═══════════════════════════════════════════════ */
+const LEARNING_TOPICS = [
+  { name: 'Cardiovascular',     icon: '\u{1FAC0}', kw: ['Cardiovascular','Myocardial Infarction','Hemodynamic','Heart Failure'] },
+  { name: 'Respiratory',        icon: '\u{1FAC1}', kw: ['COPD','Pulmonary Embolism','Mechanical Ventilation','Epiglottitis'] },
+  { name: 'Neurological',       icon: '\uD83E\uDDE0', kw: ['Neurological','Neurology','ICP','Stroke','Guillain','Seizure'] },
+  { name: 'Renal & Fluids',     icon: '\uD83D\uDCA7', kw: ['Renal','Kidney','Fluid','Electrolyte','Hyperkalemia','Hyponatremia','Dialysis'] },
+  { name: 'Pharmacology',       icon: '\uD83D\uDC8A', kw: ['Pharmacology'] },
+  { name: 'Mental Health',      icon: '\uD83E\uDDE9', kw: ['Mental Health','Serotonin','Suicide','Lithium','MAOI'] },
+  { name: 'OB & Maternity',     icon: '\uD83C\uDF7C', kw: ['OB','Maternity','Postpartum','Fetal'] },
+  { name: 'Pediatric',          icon: '\uD83D\uDC76', kw: ['Pediatric','Newborn','Febrile'] },
+  { name: 'Endocrine',          icon: '\u2697\uFE0F',  kw: ['Thyroid','Addison','Insulin','Endocrine','Diabetes'] },
+  { name: 'Oncology',           icon: '\uD83D\uDD2C', kw: ['Oncology','Chemotherapy'] },
+  { name: 'Infection & Safety', icon: '\uD83D\uDEE1\uFE0F', kw: ['Safe','Infection','Transfusion','Burns','Wound','Antibiotic','Isolation'] },
+  { name: 'Leadership',         icon: '\uD83D\uDCCB', kw: ['Leadership','Delegation','Prioritization','Triage','Management of Care','Ethical'] },
+  { name: 'GI & Hepatic',       icon: '\uD83E\uDEB9', kw: ['Liver','Hepatic','Nasogastric','Peritoneal'] },
+  { name: 'End-of-Life Care',   icon: '\uD83D\uDDA4', kw: ['Palliative','End-of-Life'] },
+  { name: 'Case Studies',       icon: '\uD83D\uDCD1', kw: ['Case Study'] },
+];
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function showLearningSub() {
+  const grid = document.getElementById('lsub-grid');
+  grid.innerHTML = LEARNING_TOPICS.map((t, ti) => {
+    const count = questions.filter(q => t.kw.some(kw => q.category.includes(kw))).length;
+    if (count === 0) return '';
+    return `<div class="lsub-chip" onclick="startLearningByTopic(${ti})">
+      <span class="lsub-chip-icon">${t.icon}</span>
+      <div class="lsub-chip-info">
+        <strong>${t.name}</strong>
+        <span>${count} question${count === 1 ? '' : 's'}</span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('learning-sub').classList.add('active');
+}
+
+function closeLearningSub() {
+  document.getElementById('learning-sub').classList.remove('active');
+}
+
+function startLearningByTopic(ti) {
+  const t = LEARNING_TOPICS[ti];
+  startLearning(questions.filter(q => t.kw.some(kw => q.category.includes(kw))));
+}
+
+function startLearning(subset) {
+  activeQ = subset;
+  const n = activeQ.length;
+  selected          = Array(n).fill(null).map(() => []);
+  checked           = Array(n).fill(false);
+  flagged           = Array(n).fill(false);
+  questionViewStart = Array(n).fill(null);
+  questionTimes     = Array(n).fill(null);
+  qChats            = Array(n).fill(null).map(() => []);
+  current           = 0;
+  document.getElementById('learning-sub').classList.remove('active');
+  selectMode('learning');
+}
+
+/* ═══════════════════════════════════════════════
+   PAUSE / RESUME  (timed readiness only)
+   ═══════════════════════════════════════════════ */
+function pauseExam() {
+  clearInterval(timerHandle);
+  document.getElementById('pause-overlay').classList.add('active');
+}
+
+function resumeExam() {
+  document.getElementById('pause-overlay').classList.remove('active');
+  startTimer();
+}
+
+/* ═══════════════════════════════════════════════
+   SAVE / LOAD PROGRESS  (untimed readiness)
+   ═══════════════════════════════════════════════ */
+const NCLEX_PROGRESS_KEY = 'nclex_untimed_progress';
+
+function saveProgress() {
+  if (mode !== 'readiness' || readinessTimed) return;
+  localStorage.setItem(NCLEX_PROGRESS_KEY, JSON.stringify({
+    selected, checked, flagged, current,
+    questionViewStart, questionTimes
+  }));
+}
+
+function loadProgress() {
+  const raw = localStorage.getItem(NCLEX_PROGRESS_KEY);
+  if (!raw) return;
+  try {
+    const s = JSON.parse(raw);
+    selected          = s.selected          || Array(questions.length).fill(null).map(() => []);
+    checked           = s.checked           || Array(questions.length).fill(false);
+    flagged           = s.flagged           || Array(questions.length).fill(false);
+    current           = s.current           || 0;
+    questionViewStart = s.questionViewStart || Array(questions.length).fill(null);
+    questionTimes     = s.questionTimes     || Array(questions.length).fill(null);
+  } catch(e) { /* corrupted — start fresh */ }
+}
+
+function clearSavedProgress() {
+  localStorage.removeItem(NCLEX_PROGRESS_KEY);
+  const el = document.getElementById('resume-notice');
+  if (el) el.style.display = 'none';
+}
+
+/* ═══════════════════════════════════════════════
+   INIT — exam starts after mode is selected via landing screen
+   ═══════════════════════════════════════════════ */
+// selectMode() is called by the landing screen buttons; nothing auto-starts.
+</script>
+
+<!-- PAUSE OVERLAY -->
+<div id="pause-overlay">
+  <div style="background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+    <div style="font-size:52px;margin-bottom:16px;">⏸</div>
+    <h2 style="color:#003a70;margin:0 0 12px;">Exam Paused</h2>
+    <p style="color:#666;margin:0 0 28px;line-height:1.5;">Your timer is paused. Take a break — your answers are safe.</p>
+    <button onclick="resumeExam()" style="background:#003a70;color:#fff;border:none;border-radius:8px;padding:14px 40px;font-size:16px;font-weight:700;cursor:pointer;width:100%;">▶ Resume Exam</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  if (localStorage.getItem('nclex_untimed_progress')) {
+    var el = document.getElementById('resume-notice');
+    if (el) el.style.display = 'flex';
+  }
+})();
+</script>
+
+</body>
+</html>
