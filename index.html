@@ -2330,6 +2330,445 @@ const questions = [
       • <strong>D</strong> — Metformin must be <strong>held 24–48 hours before and after IV iodinated contrast</strong> due to risk of contrast-induced nephropathy leading to metformin-associated lactic acidosis. Questioning this order is correct clinical practice.<br>
       • <strong>E</strong> — HR 52 bpm meets most institutional parameters for holding a beta-blocker (HR &lt;60); notifying the provider is appropriate.<br><br>
       • <strong>C is INCORRECT</strong> — Extended-release (ER/XL/SR) tablets <strong>must NEVER be crushed</strong>. Crushing destroys the extended-release mechanism, causing immediate release of the full dose → potential overdose and toxicity.`
+  },
+
+  /* ── QUESTIONS 61–80 ── */
+  {
+    id: 61,
+    category: "Cardiovascular — Cardiac Tamponade",
+    type: "single",
+    stem: `A nurse is caring for a client who underwent <strong>open-heart surgery 6 hours ago</strong>. The client suddenly becomes restless and reports difficulty breathing. The nurse assesses the following: <strong>BP 82/64 mmHg</strong>, <strong>HR 134/min</strong>, <strong>JVD present bilaterally</strong>, <strong>muffled heart sounds</strong>, and the mediastinal chest tube is draining <strong>less than 10 mL/hr</strong> (previously 80 mL/hr). The nurse suspects <strong>cardiac tamponade</strong>. Which action is the nurse's <strong>immediate priority</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Increase the IV fluid rate to 200 mL/hr to improve preload and cardiac output",
+      "Notify the surgeon immediately, prepare for emergency pericardiocentesis or surgical re-exploration",
+      "Administer dopamine 5 mcg/kg/min IV per cardiac surgery standing orders",
+      "Position the client in Trendelenburg to enhance venous return to the right heart"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Notify the surgeon and prepare for emergency intervention.</strong><br><br>
+      The classic <strong>Beck's Triad</strong> of cardiac tamponade is present:<br>
+      • <strong>Hypotension</strong> (BP 82/64)<br>
+      • <strong>Jugular venous distension (JVD)</strong> — backs up into venous system<br>
+      • <strong>Muffled heart sounds</strong> — fluid surrounding the heart<br><br>
+      The sudden decrease in chest tube output (clotted or kinked tube trapping blood in the pericardium) post-cardiac surgery is highly suspicious for <strong>hemopericardium and tamponade</strong>. Compression of the heart prevents filling, causing obstructive shock.<br><br>
+      This is a <strong>surgical emergency</strong> — the provider must be notified immediately for pericardiocentesis or return to the OR for re-exploration. Fluids and vasopressors (A, C) are temporizing measures only. Trendelenburg (D) is not indicated in tamponade.`
+  },
+  {
+    id: 62,
+    category: "Pharmacology — Antihypertensives",
+    type: "single",
+    stem: `A 58-year-old client with a history of <strong>chronic kidney disease (stage 3), type 2 diabetes, and hypertension</strong> is seen in the outpatient clinic. Current BP is 158/96 mmHg on three separate readings. Urine albumin-to-creatinine ratio (UACR) is 320 mg/g (elevated). The provider is considering adding an antihypertensive agent. The nurse understands that which medication class is considered <strong>first-line</strong> for this client's specific profile, offering both blood pressure control AND renoprotection?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Amlodipine (calcium channel blocker) — proven superiority in DKD",
+      "Metoprolol succinate (beta-blocker) — reduces cardiac workload and protects the kidnneys",
+      "An ACE inhibitor (e.g., ramipril) or ARB (e.g., losartan) — reduces intraglomerular pressure and protects against proteinuria progression",
+      "Hydrochlorothiazide (thiazide diuretic) — lowers BP and reduces proteinuria in CKD"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — ACE inhibitor or ARB.</strong><br><br>
+      In clients with <strong>diabetic kidney disease (DKD) and albuminuria</strong>, ACE inhibitors and ARBs are the <strong>first-line antihypertensive agents</strong> per ADA, KDIGO, and JNC guidelines because they:<br>
+      • Dilate the <strong>efferent</strong> arteriole → reduce intraglomerular hypertension<br>
+      • Decrease proteinuria progression<br>
+      • Slow the decline of GFR<br>
+      • Provide cardiovascular protection<br><br>
+      The nurse should monitor: serum potassium (hyperkalemia risk), BUN/creatinine (a mild rise of up to 30% is acceptable), and blood pressure.<br><br>
+      • CCBs (A) are useful adjuncts but not renoprotective as first-line.<br>
+      • Beta-blockers (B) are not first-line for DKD.<br>
+      • Thiazides (D) are less effective in GFR &lt;30 mL/min and do not provide direct renoprotection.`
+  },
+  {
+    id: 63,
+    category: "SATA — Spinal Cord Injury",
+    type: "multiple",
+    stem: `A nurse is caring for a client who sustained a <strong>complete cervical spinal cord injury at C5</strong> three days ago. The client suddenly becomes diaphoretic above the level of injury, flushed, and is reporting a severe pounding headache. Vital signs: BP <strong>218/116 mmHg</strong>, HR <strong>48/min</strong>. The nurse suspects <strong>autonomic dysreflexia</strong>. Which nursing actions are <strong>correct</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Sit the client upright immediately to lower blood pressure via orthostatic effect",
+      "Check for and relieve the most common triggers: bladder distension (kinked/full catheter) and bowel impaction",
+      "Loosen any tight clothing, constrictive devices, or abdominal binders",
+      "Administer an antihypertensive agent as ordered (e.g., nifedipine SL or nitroglycerine) if BP remains critically elevated",
+      "Place the client in Trendelenburg position to improve cerebral perfusion"
+    ],
+    correct: [0, 1, 2, 3],
+    rationale: `<strong>Correct: A, B, C, D.</strong><br><br>
+      <strong>Autonomic dysreflexia (AD)</strong> is a life-threatening hypertensive emergency occurring in spinal cord injuries at <strong>T6 or above</strong>. It results from an uncontrolled sympathetic response to a noxious stimulus below the injury level.<br><br>
+      Management steps (in order):<br>
+      1. <strong>Sit the client upright</strong> (A) — orthostatic drop lowers BP immediately<br>
+      2. <strong>Identify and remove the trigger</strong> (B) — bladder distension (most common, 75–85%) and bowel impaction are the top causes; check Foley for kinks, drain the bladder<br>
+      3. <strong>Loosen tight clothing/binders</strong> (C) — any pressure below the injury can trigger AD<br>
+      4. <strong>Antihypertensives</strong> (D) — if BP is critically elevated and the trigger cannot be quickly found; nifedipine SL or topical nitroglycerine are rapid options<br><br>
+      • <strong>E is INCORRECT</strong> — Trendelenburg INCREASES venous return and worsens hypertension in AD; it is absolutely contraindicated.`
+  },
+  {
+    id: 64,
+    category: "OB Nursing — Placenta Previa vs. Abruption",
+    type: "single",
+    stem: `A nurse in a labor and delivery unit is assessing two clients who both present with <strong>vaginal bleeding in the third trimester</strong>. <em>Client A</em> has <strong>painless, bright red vaginal bleeding</strong> and a soft, non-tender abdomen; ultrasound shows a low-lying placenta. <em>Client B</em> has <strong>sudden-onset, severe abdominal pain described as "board-like rigidity"</strong> with dark red vaginal bleeding and fetal heart rate decelerations. Which statement correctly differentiates these two clients and guides the nurse's priority?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Both clients should receive oxytocin to stimulate contractions and deliver the placenta quickly",
+      "Client A likely has placenta previa (painless bleeding); Client B likely has abruptio placentae (painful, sudden, emergency). Client B requires immediate emergency intervention and delivery",
+      "Client B's dark red blood indicates venous origin and is less urgent than Client A's arterial bright red blood",
+      "Both clients should undergo a digital vaginal exam to assess cervical dilation before notifying the provider"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Distinguish previa from abruption and prioritize Client B.</strong><br><br>
+      <strong>Placenta Previa (Client A):</strong><br>
+      • <em>Painless</em>, bright red bleeding — placenta covers the cervical os<br>
+      • Soft uterus, normal FHR typically<br>
+      • Management: avoid digital exam (can trigger massive hemorrhage), bed rest, steroids if preterm<br><br>
+      <strong>Abruptio Placentae (Client B):</strong><br>
+      • Sudden severe abdominal pain + <em>board-like uterus</em> + FHR decelerations<br>
+      • Blood may be concealed or dark red<br>
+      • Life-threatening risk of DIC, fetal hypoxia, maternal hemorrhagic shock<br>
+      • Priority: IV access ×2, CBC/coagulation studies, continuous FHR monitoring, prepare for emergency cesarean<br><br>
+      <strong>CRITICAL:</strong> Digital vaginal exam (D) is contraindicated in placenta previa — it can cause catastrophic hemorrhage.`
+  },
+  {
+    id: 65,
+    category: "Pharmacology — Antipsychotics & EPS",
+    type: "single",
+    stem: `A nurse is caring for a client with schizophrenia who has been receiving <strong>haloperidol (Haldol) 10 mg PO twice daily</strong> for the past 3 weeks. During the morning assessment, the nurse observes the client's <strong>neck arching backward (opisthotonus), jaw locked and deviated to one side, and the client is visibly distressed and unable to speak clearly</strong>. The nurse recognizes this is an acute <strong>extrapyramidal reaction</strong>. Which medication should the nurse prepare to administer <strong>immediately</strong> as ordered?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Lorazepam (Ativan) 2 mg IV to relieve muscle spasm from anxiety",
+      "Diphenhydramine (Benadryl) 50 mg IV or benztropine (Cogentin) 2 mg IM to treat acute dystonia",
+      "Haloperidol 5 mg IM stat to control the behavioral emergency",
+      "Clonazepam (Klonopin) 1 mg PO to reduce extrapyramidal symptoms"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Diphenhydramine IV or Benztropine IM.</strong><br><br>
+      The client is experiencing an <strong>acute dystonic reaction</strong> — a type of extrapyramidal side effect (EPS) caused by typical antipsychotics (like haloperidol) that block dopamine D2 receptors in the basal ganglia. Features include:<br>
+      • <strong>Oculogyric crisis</strong> (eyes rolling up)<br>
+      • <strong>Torticollis</strong> (neck twisting)<br>
+      • <strong>Opisthotonus</strong> (backward arching of the body)<br>
+      • <strong>Trismus</strong> (jaw clenching/locking)<br><br>
+      <strong>Treatment:</strong> Anticholinergic agents rapidly reverse acute dystonia:<br>
+      • <strong>Diphenhydramine (Benadryl) 25–50 mg IV</strong> — rapid relief within 5–15 minutes<br>
+      • <strong>Benztropine (Cogentin) 1–2 mg IM/IV</strong> — alternative<br><br>
+      Additional EPS types to know: akathisia (restlessness), pseudoparkinsonism, tardive dyskinesia (late-onset, potentially irreversible — lip smacking, tongue thrusting).`
+  },
+  {
+    id: 66,
+    category: "SATA — Diabetes Insipidus",
+    type: "multiple",
+    stem: `A nurse is caring for a client in the ICU who underwent <strong>transsphenoidal pituitary surgery</strong> 18 hours ago. The client reports intense thirst and has had a urine output of <strong>800 mL/hr for the past 2 hours</strong>. Labs show: serum sodium <strong>154 mEq/L</strong>, serum osmolality <strong>320 mOsm/kg</strong>, urine specific gravity <strong>1.001</strong>, urine osmolality <strong>90 mOsm/kg</strong>. The nurse recognizes clinical signs of <strong>central diabetes insipidus (DI)</strong>. Which nursing interventions are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Administer desmopressin (DDAVP) intranasally or IV as ordered to replace ADH",
+      "Restrict oral fluid intake to prevent further dilution of serum sodium",
+      "Monitor hourly urine output and specific gravity",
+      "Replace urine output volume with hypotonic IV fluids (e.g., 0.45% NaCl or D5W) as ordered",
+      "Maintain strict intake and output records and monitor serum sodium every 2–4 hours"
+    ],
+    correct: [0, 2, 3, 4],
+    rationale: `<strong>Correct: A, C, D, E.</strong><br><br>
+      Post-pituitary surgery DI results from disruption of ADH (vasopressin) secretion from the posterior pituitary → the kidneys cannot concentrate urine → massive dilute polyuria → hypernatremia and dehydration.<br><br>
+      • <strong>A</strong> — DDAVP (synthetic ADH analog) is the definitive treatment for central DI.<br>
+      • <strong>C</strong> — Hourly urine output and specific gravity trending is critical to monitor DI severity and treatment response (SG <1.005 = very dilute = DI).<br>
+      • <strong>D</strong> — Hypotonic fluids replace free water lost in urine; normal saline would worsen hypernatremia.<br>
+      • <strong>E</strong> — Na must be corrected slowly (no faster than 0.5–1 mEq/L/hr) to prevent cerebral edema.<br><br>
+      • <strong>B is INCORRECT</strong> — Fluid restriction is used for <em>SIADH</em> (too much ADH), not DI. In DI, clients are severely dehydrated; restricting fluids can cause life-threatening hypernatremia and hyperosmolarity.`
+  },
+  {
+    id: 67,
+    category: "Pharmacology — Anticoagulation",
+    type: "single",
+    stem: `A nurse is preparing to administer <strong>enoxaparin (Lovenox) 80 mg subcutaneous</strong> to a client with a confirmed deep vein thrombosis. During the pre-administration assessment, the nurse notes: weight <strong>52 kg</strong>, height <strong>152 cm</strong>, creatinine clearance (CrCl) <strong>24 mL/min</strong>, and the client reports she had a <strong>spontaneous nosebleed lasting 20 minutes yesterday</strong>. Which action is the nurse's <strong>priority before administering the medication</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Administer the dose as ordered and document the nosebleed as an incidental finding",
+      "Hold the dose, notify the provider immediately, and report the CrCl and recent spontaneous bleeding",
+      "Reduce the dose by half independently since the client is small and has renal impairment",
+      "Apply pressure to the client's nose before and after administering the medication"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Hold and notify the provider.</strong><br><br>
+      There are <strong>two critical red flags</strong> prior to LMWH administration:<br><br>
+      1. <strong>CrCl 24 mL/min</strong> — Enoxaparin is renally cleared. When CrCl &lt;30 mL/min, LMWH accumulates → significantly increased bleeding risk. Dose reduction (to 1 mg/kg q24h) or switching to unfractionated heparin (UFH, not renally cleared) is required — but this requires a <strong>provider order</strong>.<br><br>
+      2. <strong>Spontaneous prolonged nosebleed (20 min)</strong> — suggests the client may already be over-anticoagulated or has an underlying bleeding disorder. Anti-Xa levels may need to be checked.<br><br>
+      The nurse cannot independently change or reduce the dose (C) — this requires a provider order. Administering the dose (A) could cause life-threatening hemorrhage. Holding and notifying the provider is the only safe action.`
+  },
+  {
+    id: 68,
+    category: "SATA — Increased Intracranial Pressure Monitoring",
+    type: "multiple",
+    stem: `A nurse is caring for a client with a <strong>severe traumatic brain injury (GCS 7)</strong> who has an <strong>intracranial pressure (ICP) monitor</strong> in place. The current ICP is <strong>32 mmHg</strong>. The nurse calculates a <strong>cerebral perfusion pressure (CPP)</strong> of <strong>48 mmHg</strong> (MAP 80 − ICP 32 = CPP 48). Which nursing interventions are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Notify the provider — ICP >20 mmHg and CPP <50 mmHg are abnormal and require intervention",
+      "Maintain the head of bed at 30 degrees with the head in a neutral midline position",
+      "Suction the client's airway every 30 minutes regardless of secretions to prevent aspiration",
+      "Administer hyperosmolar therapy (3% NS or mannitol) as ordered to reduce cerebral edema",
+      "Minimize environmental stimulation, cluster care with rest periods to prevent ICP spikes"
+    ],
+    correct: [0, 1, 3, 4],
+    rationale: `<strong>Correct: A, B, D, E.</strong><br><br>
+      • <strong>A</strong> — Normal ICP: 5–15 mmHg; treat if >20. Normal CPP: 60–70 mmHg; CPP 48 is critically low — the brain is underperfused.<br>
+      • <strong>B</strong> — HOB 30° promotes venous drainage from the cranium; neutral head position prevents jugular venous occlusion.<br>
+      • <strong>D</strong> — Hyperosmolar therapy draws fluid out of brain cells via osmotic gradient; mannitol or 3% NS reduces cerebral edema.<br>
+      • <strong>E</strong> — Clustering care causes cumulative ICP spikes; spacing activities with rest periods between allows ICP to normalize (see also Q25).<br><br>
+      • <strong>C is INCORRECT</strong> — Routine suctioning (even necessary suctioning) is one of the <strong>most potent triggers of ICP spikes</strong>. Suction only when clinically necessary, and pre-oxygenate before suctioning to minimize hypoxia-induced ICP rises. Never suction on a schedule in TBI.`
+  },
+  {
+    id: 69,
+    category: "Renal — Chronic Kidney Disease & Nutrition",
+    type: "single",
+    stem: `A nurse is providing dietary teaching to a client with <strong>end-stage renal disease (ESRD) on hemodialysis three times per week</strong>. The client's most recent labs show: Potassium <strong>5.8 mEq/L</strong>, Phosphorus <strong>7.2 mg/dL</strong>, BUN <strong>82 mg/dL</strong>, and Albumin <strong>2.9 g/dL</strong>. The client has been eating a diet heavy in bananas, milk, nuts, and whole-grain bread. Which dietary recommendation is the nurse's <strong>priority teaching point</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Increase protein intake to at least 1.5 g/kg/day using dairy products to correct the low albumin",
+      "Restrict potassium and phosphorus — avoid bananas, nuts, dairy, whole grains; take phosphate binders with meals as prescribed",
+      "Increase fluid intake to 2–3 L/day to flush out the high BUN and phosphorus",
+      "Switch to a vegetarian diet to reduce BUN from protein metabolism"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Restrict potassium and phosphorus; take phosphate binders.</strong><br><br>
+      The client's diet contains multiple <strong>high-potassium and high-phosphorus foods</strong> that are dangerous in ESRD. Failed kidneys cannot excrete these electrolytes.<br><br>
+      <strong>Priority restrictions:</strong><br>
+      • <strong>High-K⁺ foods to avoid:</strong> bananas, oranges, potatoes, tomatoes, nuts, dried fruits<br>
+      • <strong>High-phosphorus foods to avoid:</strong> dairy, nuts, whole grains, colas, processed foods<br>
+      • <strong>Phosphate binders</strong> (e.g., sevelamer, calcium carbonate) must be taken <em>with each meal</em> to bind dietary phosphorus in the GI tract<br><br>
+      Hyperkalemia (K 5.8) causes fatal arrhythmias; hyperphosphatemia (Phos 7.2) causes secondary hyperparathyroidism, calcification, and renal osteodystrophy.<br><br>
+      • A — Dairy increases phosphorus further; protein needs in HD are ~1.2 g/kg/day (higher than CKD non-dialysis), but dairy is not the right source.<br>
+      • C — Fluid restriction (typically 500–1,000 mL/day) is needed in ESRD, not increased fluids.<br>
+      • D — Vegetarian protein sources (beans, nuts) are also high in potassium and phosphorus.`
+  },
+  {
+    id: 70,
+    category: "SATA — Post-Operative Thoracic Surgery & Chest Tubes",
+    type: "multiple",
+    stem: `A nurse is caring for a client who had a <strong>right lower lobe lobectomy</strong> 8 hours ago and has a <strong>right-sided chest tube</strong> connected to water-seal drainage. During the assessment, the nurse observes <strong>tidaling</strong> in the water-seal chamber and <strong>continuous bubbling in the water-seal chamber</strong> (not the suction control chamber). Which nursing actions are <strong>correct</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Recognize that tidaling (fluctuation) in the water-seal chamber is expected and indicates the system is patent",
+      "Recognize that continuous bubbling in the water-seal chamber indicates an air leak — assess for the source",
+      "Clamp the chest tube immediately and notify the provider",
+      "Inspect all connections and tubing junctions systematically from the client to the drainage unit to locate the air leak",
+      "Document the amount, color, and consistency of drainage and compare with last assessment"
+    ],
+    correct: [0, 1, 3, 4],
+    rationale: `<strong>Correct: A, B, D, E.</strong><br><br>
+      • <strong>A</strong> — <strong>Tidaling</strong> (fluid rising with inspiration and falling with expiration) = the system is patent and functioning correctly. It stops when the lung is fully expanded.<br>
+      • <strong>B</strong> — <strong>Continuous bubbling in the water-seal chamber</strong> (NOT the suction chamber) = <strong>air leak</strong>. This is abnormal (intermittent bubbling only during coughing/expiration is acceptable early post-op).<br>
+      • <strong>D</strong> — Systematically "march" connections from client → tubing → drainage system to pinpoint the source (client's lung vs. tubing connection leak).<br>
+      • <strong>E</strong> — Drainage monitoring: immediate post-thoracotomy drainage >200 mL/hr for 2+ hours or >1,500 mL total = notify provider (hemorrhage).<br><br>
+      • <strong>C is INCORRECT</strong> — <strong>Never clamp a chest tube</strong> (except briefly during system change per policy). Clamping can cause tension pneumothorax, a life-threatening emergency.`
+  },
+  {
+    id: 71,
+    category: "Pharmacology — Corticosteroids",
+    type: "single",
+    stem: `A nurse is caring for a client with <strong>rheumatoid arthritis</strong> who has been taking <strong>prednisone 20 mg PO daily</strong> for the past 6 months. The client has been prescribed a new antifungal medication by a dentist and asks if it is okay to stop the prednisone suddenly since she "does not like all the side effects." Which response by the nurse is <strong>most appropriate</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "\"Yes, stopping the prednisone is a great idea. The benefits rarely outweigh the risks with long-term use.\"",
+      "\"Do not stop prednisone suddenly — your body has reduced its own cortisol production. Abrupt discontinuation can cause an adrenal crisis, characterized by severe hypotension, weakness, and shock. The dose must be tapered slowly by your provider.\"",
+      "\"You can stop prednisone immediately if you replace it with an over-the-counter NSAID like ibuprofen for your joint pain.\"",
+      "\"The antifungal medication will interact with prednisone, so it is safe to stop the steroid for the duration of the antifungal course.\""
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Never stop corticosteroids abruptly; taper is required.</strong><br><br>
+      Long-term corticosteroid therapy (generally >2 weeks at pharmacologic doses) causes <strong>hypothalamic-pituitary-adrenal (HPA) axis suppression</strong>. The adrenal glands stop producing endogenous cortisol because they receive a negative feedback signal from the exogenous steroid.<br><br>
+      <strong>Abrupt discontinuation can cause:</strong><br>
+      • <strong>Adrenal crisis (acute adrenal insufficiency)</strong>: severe hypotension, hyponatremia, hyperkalemia, hypoglycemia, weakness, shock — potentially fatal<br><br>
+      <strong>Correct management:</strong> Gradual dose tapering (weeks to months depending on duration of use) to allow the adrenal axis to recover. Always refer to the prescribing provider.<br><br>
+      Key side effects of long-term steroids to teach: hyperglycemia, weight gain, moon face, buffalo hump, osteoporosis, immunosuppression, increased infection risk, cataracts, peptic ulcer disease.`
+  },
+  {
+    id: 72,
+    category: "SATA — Myasthenia Gravis",
+    type: "multiple",
+    stem: `A nurse is admitting a client with a known history of <strong>myasthenia gravis (MG)</strong> who reports progressive worsening of <strong>facial ptosis, difficulty chewing, dysphagia, and increasing weakness</strong> over the past 3 days following a respiratory infection. Respiratory rate is <strong>26/min</strong>, SpO₂ <strong>93%</strong>, and the client has a <strong>weak, ineffective cough</strong>. Which nursing actions are <strong>priorities</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Assess vital capacity and negative inspiratory force (NIF) and notify the provider of results",
+      "Administer pyridostigmine (Mestinon) per scheduled dose",
+      "Administer the client's prescribed antibiotics if an infection is present, as infection is a common MG crisis trigger",
+      "Keep the client NPO given the dysphagia and prepare for potential intubation if respiratory status deteriorates",
+      "Position the client flat to reduce respiratory workload"
+    ],
+    correct: [0, 1, 2, 3],
+    rationale: `<strong>Correct: A, B, C, D.</strong><br><br>
+      This client may be in a <strong>myasthenic crisis</strong> — life-threatening weakness of respiratory muscles requiring immediate assessment.<br><br>
+      • <strong>A</strong> — Vital capacity &lt;1 L and NIF less negative than -20 cmH₂O indicate impending respiratory failure requiring intubation. This is the priority assessment.<br>
+      • <strong>B</strong> — Pyridostigmine (acetylcholinesterase inhibitor) is the maintenance medication for MG; give scheduled doses unless a cholinergic crisis is suspected (excessive secretions, bradycardia, miosis differ from myasthenic crisis).<br>
+      • <strong>C</strong> — Infections, surgeries, and certain medications (aminoglycosides, beta-blockers, fluoroquinolones) precipitate myasthenic crises; treating the infection is essential.<br>
+      • <strong>D</strong> — Dysphagia creates aspiration risk; NPO status and readiness for intubation are critical.<br><br>
+      • <strong>E is INCORRECT</strong> — Flat positioning worsens respiratory mechanics by increasing diaphragm workload and reducing lung expansion. Head of bed elevated (30–45°) is the correct position.`
+  },
+  {
+    id: 73,
+    category: "Pharmacology — Opioid Equianalgesic Conversion",
+    type: "single",
+    stem: `A client with advanced cancer is receiving <strong>morphine 30 mg PO every 4 hours (around the clock)</strong> for pain management. The client can no longer tolerate oral medications and the provider orders conversion to IV morphine. The nurse knows that the <strong>oral-to-IV morphine conversion ratio is 3:1</strong> (30 mg PO = 10 mg IV). The provider writes orders for "IV morphine — convert current PO dose." Which IV dose and frequency represents the <strong>correct equianalgesic conversion</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Morphine 30 mg IV every 4 hours — same dose, different route",
+      "Morphine 10 mg IV every 4 hours — equivalent to 30 mg PO using 3:1 ratio",
+      "Morphine 5 mg IV every 2 hours — reduce by 50% and halve the interval",
+      "Morphine 15 mg IV every 4 hours — reduce by half as a safety measure"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Morphine 10 mg IV every 4 hours.</strong><br><br>
+      <strong>Equianalgesic conversion — Oral-to-IV Morphine:</strong><br>
+      • Oral morphine has approximately <strong>30% bioavailability</strong> (significant first-pass hepatic metabolism)<br>
+      • IV morphine is 3 times more potent than oral morphine<br>
+      • Formula: PO dose ÷ 3 = IV dose equivalent<br>
+      • 30 mg PO ÷ 3 = <strong>10 mg IV</strong><br><br>
+      <strong>Critical concept:</strong> Routes of administration significantly alter drug potency. The nurse must understand equianalgesic conversions to:<br>
+      • Prevent under-treatment of pain (inadequate dosing → suffering)<br>
+      • Prevent overdose (same PO dose IV would be 3× the intended analgesic effect → respiratory depression)<br><br>
+      Administering 30 mg IV (A) would be a <strong>3-fold overdose</strong> — a potentially lethal high-alert medication error.`
+  },
+  {
+    id: 74,
+    category: "SATA — Peripheral Vascular Disease",
+    type: "multiple",
+    stem: `A nurse is performing a vascular assessment on a client with a history of <strong>peripheral arterial disease (PAD)</strong> who reports cramping pain in the right calf when walking two blocks that is relieved with rest (claudication). Assessment findings: right foot is cool, pale, and has <strong>diminished posterior tibial and dorsalis pedis pulses bilaterally</strong>; ABI (ankle-brachial index) is <strong>0.55</strong>. Which nursing interventions are <strong>appropriate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Instruct the client to elevate the legs above heart level when resting to improve arterial flow",
+      "Encourage a supervised walking program — walk until pain, rest until resolved, repeat",
+      "Inspect the feet daily for breaks in skin integrity, blisters, or wounds",
+      "Emphasize smoking cessation as the most modifiable risk factor for PAD progression",
+      "Teach the client to avoid constricting footwear, extreme temperatures, and crossing the legs"
+    ],
+    correct: [1, 2, 3, 4],
+    rationale: `<strong>Correct: B, C, D, E.</strong><br><br>
+      ABI of 0.55 confirms <strong>moderate-to-severe PAD</strong> (normal: 0.9–1.3; ≤0.4 = critical limb ischemia).<br><br>
+      • <strong>B</strong> — Supervised exercise (walking until claudication pain, resting, repeating) is the <strong>most effective non-invasive treatment</strong> for claudication — it promotes collateral vessel development.<br>
+      • <strong>C</strong> — PAD clients have impaired wound healing; even minor foot trauma can lead to non-healing ulcers and amputation. Daily foot inspection is essential.<br>
+      • <strong>D</strong> — Smoking causes vasoconstriction and accelerates atherosclerosis — <strong>smoking cessation is the single most important intervention</strong> to slow PAD progression.<br>
+      • <strong>E</strong> — Tight shoes, extreme cold, and leg crossing impair already-compromised blood flow.<br><br>
+      • <strong>A is INCORRECT</strong> — Leg elevation is appropriate for <em>venous</em> insufficiency. In arterial disease, elevation <strong>worsens perfusion</strong> (decreases arterial flow to the extremity) and can worsen ischemia. Position legs at or slightly below heart level (dependent position) to use gravity to aid arterial flow.`
+  },
+  {
+    id: 75,
+    category: "Pharmacology — Medication Reconciliation & Polypharmacy",
+    type: "single",
+    stem: `A nurse is conducting a medication reconciliation interview with a <strong>78-year-old client</strong> admitted for a hip fracture. The client's home medication list includes: <strong>warfarin 5 mg daily, furosemide 40 mg daily, digoxin 0.125 mg daily, metformin 1,000 mg twice daily, and calcium carbonate 500 mg with meals</strong>. Pre-operative labs show: INR <strong>3.8</strong>, creatinine <strong>2.6 mg/dL</strong>, potassium <strong>3.1 mEq/L</strong>. Which combination of medication management issues requires the nurse to <strong>immediately notify the provider</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "The calcium carbonate should be discontinued — calcium supplements increase fracture risk",
+      "Warfarin should be held (INR 3.8 is supratherapeutic and dangerous pre-operatively), metformin held (creatinine 2.6 — renal clearance compromised; lactic acidosis risk), and hypokalemia (K 3.1) must be corrected before administering digoxin to prevent toxicity",
+      "Furosemide should be increased to lower blood pressure before surgery",
+      "Digoxin dose should be increased because the heart rate may be high from pain and anxiety"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Three urgent medication issues requiring immediate provider notification.</strong><br><br>
+      This question tests recognition of <strong>multiple simultaneous high-risk medication concerns</strong> in an elderly surgical patient:<br><br>
+      1. <strong>INR 3.8</strong> — Supratherapeutic (therapeutic usually 2–3 for Afib; 2.5–3.5 for mechanical valves). Surgery cannot proceed safely; warfarin must be held ± Vitamin K reversal.<br><br>
+      2. <strong>Metformin + CrCl impaired (Cr 2.6)</strong> — Metformin is contraindicated when CrCl &lt;30 mL/min or with contrast; accumulates → risk of life-threatening lactic acidosis. HOLD metformin and consult nephrology.<br><br>
+      3. <strong>Hypokalemia (K 3.1) + Digoxin</strong> — Low potassium potentiates digoxin toxicity by competing for Na/K-ATPase pump binding sites. Can cause fatal arrhythmias (V-fib) even with "therapeutic" digoxin levels. Potassium must be repleted BEFORE digoxin is given.`
+  },
+  {
+    id: 76,
+    category: "SATA — HIV & Opportunistic Infections",
+    type: "multiple",
+    stem: `A nurse is caring for a client with <strong>HIV/AIDS</strong> whose most recent labs show a <strong>CD4+ count of 68 cells/mm³</strong> (normal: >500) and a <strong>viral load of 285,000 copies/mL</strong>. The client presents with a 3-week history of progressively worsening <strong>shortness of breath, a nonproductive cough, low-grade fever, and bilateral diffuse infiltrates on chest X-ray</strong>. Which nursing actions and conclusions are <strong>correct</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Recognize that the clinical presentation is most consistent with Pneumocystis jirovecii pneumonia (PCP) — the most common AIDS-defining opportunistic infection",
+      "Anticipate orders for trimethoprim-sulfamethoxazole (TMP-SMX, Bactrim) as first-line treatment for PCP",
+      "Administer high-flow oxygen via non-rebreather mask at 15 L/min regardless of SpO₂",
+      "Maintain droplet precautions because PCP is highly contagious to other immunocompromised clients",
+      "Reinforce antiretroviral therapy (ART) adherence education — CD4 <200 indicates AIDS and risk for multiple OIs"
+    ],
+    correct: [0, 1, 4],
+    rationale: `<strong>Correct: A, B, E.</strong><br><br>
+      • <strong>A</strong> — CD4 &lt;200 + bilateral infiltrates + subacute presentation in HIV = classic <strong>PCP (Pneumocystis jirovecii pneumonia)</strong>. It is the most common AIDS-defining opportunistic infection in the US.<br>
+      • <strong>B</strong> — <strong>TMP-SMX (Bactrim)</strong> is first-line treatment AND prophylaxis for PCP (when CD4 &lt;200, prophylaxis with Bactrim DS prevents PCP).<br>
+      • <strong>E</strong> — ART adherence is critical: uncontrolled viral replication → immune destruction → AIDS-defining OIs. Teach importance of consistent ART, regular CD4/viral load monitoring.<br><br>
+      • <strong>C is INCORRECT</strong> — Administer oxygen to target SpO₂ ≥92–95%; high-flow O₂ without indication can be harmful (though PCP clients often require supplemental O₂). Titrate to clinical need.<br>
+      • <strong>D is INCORRECT</strong> — PCP is <strong>NOT transmitted person-to-person</strong> in immunocompetent hosts; it is <em>Pneumocystis</em> activation from latent infection. Standard precautions are sufficient.`
+  },
+  {
+    id: 77,
+    category: "Pharmacology — Nitroglycerine",
+    type: "single",
+    stem: `A client with a history of stable angina calls the nurse in the cardiac step-down unit and reports substernal chest pain rated <strong>6/10</strong>, onset 3 minutes ago. The nurse assists the client to rest in bed, applies supplemental oxygen (SpO₂ 91%), notifies the provider, and administers the first dose of <strong>sublingual nitroglycerin (NTG) 0.4 mg</strong> as per standing orders for angina. Five minutes later, the client reports ongoing chest pain at <strong>4/10</strong> and a new complaint of a <strong>"pounding headache."</strong> Blood pressure is now <strong>94/58 mmHg</strong> (previously 136/82 mmHg). What is the nurse's <strong>priority action</strong>?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Administer a second sublingual NTG tablet because the pain has not fully resolved after 5 minutes",
+      "Hold further NTG doses, notify the provider immediately, obtain a 12-lead ECG, and treat hypotension with IV fluids as ordered",
+      "Administer oral aspirin 325 mg and continue to monitor the patient for another 20 minutes",
+      "Reassure the client that headache is a normal NTG side effect and administer acetaminophen"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Hold NTG, notify provider, 12-lead ECG, treat hypotension.</strong><br><br>
+      The standing order for SL NTG typically allows repeat dosing every 5 minutes up to <strong>3 doses if BP remains adequate</strong>. However, this client's BP has dropped significantly to <strong>94/58 mmHg</strong> — administering more NTG would be dangerous.<br><br>
+      <strong>Priority concerns:</strong><br>
+      • <strong>Hypotension</strong> after NTG: NTG is a potent vasodilator — it reduces preload (venous dilation) and afterload; excessive drop in BP can reduce coronary perfusion and precipitate MI<br>
+      • The <strong>headache</strong> is a known NTG vasodilatory side effect (meningeal vasodilation)<br>
+      • Ongoing chest pain despite NTG + hemodynamic changes → possible <strong>NSTEMI/STEMI</strong> → 12-lead ECG is urgently needed<br><br>
+      <strong>Also contraindicated with NTG:</strong> Phosphodiesterase-5 inhibitors (sildenafil, tadalafil) taken within 24–48 hours → severe refractory hypotension; always ask.`
+  },
+  {
+    id: 78,
+    category: "SATA — Cleft Lip & Palate — Infant Feeding",
+    type: "multiple",
+    stem: `A nurse is preparing to provide feeding education to the parents of a <strong>newborn diagnosed with cleft lip and unilateral cleft palate</strong>. The surgical repair is planned for 3–6 months of age. The parents are anxious about how to feed their infant and are asking about breastfeeding. Which teaching points are <strong>accurate</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Breastfeeding may be attempted but is often difficult with cleft palate due to the infant's inability to create adequate suction",
+      "Expressed breast milk can be delivered using a specialized cleft palate nurser (e.g., Haberman feeder or Pigeon bottle) to support adequate nutrition",
+      "Position the infant upright (semi-vertical at 45–90°) during feeding to reduce nasal regurgitation and aspiration risk",
+      "Feed the baby as quickly as possible to minimize fatigue and caloric expenditure",
+      "Burp the infant frequently (every 15–30 mL) because cleft infants swallow more air"
+    ],
+    correct: [0, 1, 2, 4],
+    rationale: `<strong>Correct: A, B, C, E.</strong><br><br>
+      • <strong>A</strong> — Direct breastfeeding is <em>often</em> ineffective with cleft palate because the infant cannot generate negative pressure for suction; however, should be attempted with lactation support if parents desire.<br>
+      • <strong>B</strong> — Specialized feeders with squeezable nipples or one-way valves (Haberman/Pigeon) compensate for poor suction; expressed breast milk is optimal nutrition.<br>
+      • <strong>C</strong> — Upright positioning reduces milk flowing from the mouth into the nasal cavity (nasal regurgitation) — a common feeding complication with cleft palate.<br>
+      • <strong>E</strong> — Increased air swallowing during feeding → more gas, discomfort, and spitting; frequent burping every 15–30 mL is recommended.<br><br>
+      • <strong>D is INCORRECT</strong> — Feeding should be paced, not rushed. Infants with cleft lip/palate fatigue easily and rapid feeding increases aspiration and reflux risk. Allow adequate rest breaks during feedings.`
+  },
+  {
+    id: 79,
+    category: "Pharmacology — Chemotherapy Safety",
+    type: "single",
+    stem: `A nurse is preparing to administer <strong>IV vincristine (Oncovin)</strong> to a client with non-Hodgkin lymphoma on an oncology unit. The pharmacy delivers a 50 mL minibag containing vincristine 2 mg in 50 mL NS labeled for IV piggyback infusion. A second nurse, serving as a double-check, notices the label and immediately calls the pharmacy. Why is this preparation <strong>immediately dangerous</strong>, and what should the nurse do?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Vincristine has a short stability window and must be used within 30 minutes of preparation — administer immediately",
+      "Vincristine prepared in a minibag (≥25 mL) is at high risk for accidental intrathecal administration, which is universally fatal. The preparation violates a mandatory safety requirement. Return to pharmacy; vincristine must be dispensed in a syringe labeled 'For IV Use Only — Fatal if Given Intrathecally'",
+      "The 50 mL volume is too large and risks fluid overload — request a smaller volume from the pharmacy",
+      "The issue is an incorrect concentration — the correct dose should be in 100 mL NS to reduce vein irritation"
+    ],
+    correct: [1],
+    rationale: `<strong>Correct: B — Return to pharmacy; vincristine minibag is a recognized patient safety sentinel event.</strong><br><br>
+      <strong>This is a well-documented, historically fatal medication safety issue:</strong><br>
+      Vincristine administered <strong>intrathecally (into the spinal canal)</strong> — even a single dose — causes <strong>irreversible ascending myeloencephalopathy and death</strong>. Dozens of fatalities have occurred globally when vincristine minibags were confused with intrathecal medications (e.g., methotrexate) and injected spinally.<br><br>
+      <strong>ISMP (Institute for Safe Medication Practices) and WHO mandate:</strong><br>
+      • Vincristine must ONLY be dispensed as an <strong>IV syringe</strong> (not minibag) clearly labeled <em>"For Intravenous Use Only — Fatal if Given by Other Routes"</em><br>
+      • Intrathecal chemotherapy should be prepared, transported, and administered separately from vincristine<br>
+      • The nurse who catches this is performing a <strong>critical safety function</strong> by refusing to administer the minibag format<br><br>
+      This question reflects <strong>The Joint Commission's National Patient Safety Goals</strong> for high-alert medications.`
+  },
+  {
+    id: 80,
+    category: "SATA — Postpartum Care — BUBBLE-HE Assessment",
+    type: "multiple",
+    stem: `A nurse is performing a <strong>postpartum assessment (BUBBLE-HE)</strong> on a client who is 24 hours post-cesarean section. Assessment findings include: fundus firm at the umbilicus and midline; lochia rubra, moderate amount; cesarean incision approximated with mild erythema at the edges; bilateral lower extremity <strong>2+ pitting edema</strong>; client rates pain 7/10 at incision; episiotomy is intact; she reports she has not yet voided since Foley catheter was removed 2 hours ago; breastfeeding has not been initiated. Which findings require <strong>immediate nursing intervention</strong>?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Pain 7/10 at incision — administer prescribed analgesics and reassess in 30–60 minutes",
+      "Has not voided 2 hours after Foley removal — assess for bladder distension and encourage voiding; catheterize if unable by 4–6 hours",
+      "Bilateral 2+ pitting edema — apply compression stockings and elevate legs; this is expected post-operatively",
+      "Mild erythema at incision edges — notify the provider, as this may indicate early wound infection or dehiscence",
+      "Breastfeeding not initiated — consult lactation specialist and initiate breastfeeding within first 1–2 hours post-birth if possible (delayed at 24 hours — begin immediately)"
+    ],
+    correct: [0, 1, 3, 4],
+    rationale: `<strong>Correct: A, B, D, E.</strong><br><br>
+      • <strong>A</strong> — Pain 7/10 after cesarean section requires prompt analgesic administration; uncontrolled pain limits ambulation, deep breathing, and breastfeeding initiation — all critical post-op goals.<br>
+      • <strong>B</strong> — Post-removal urinary retention is common after Foley catheterization; a distended bladder displaces the uterus and impairs contractility (risk for PPH). Bladder scan and voiding trial are required; catheterize by 4–6 hours if unable.<br>
+      • <strong>D</strong> — Mild incisional erythema within 24 hours may indicate early <strong>SIRS response or surgical site infection</strong>; provider notification is warranted for assessment and possible culture.<br>
+      • <strong>E</strong> — Early breastfeeding (ideally within 1 hour of birth per WHO/AAP) promotes milk supply establishment, oxytocin release (uterine involution), and infant bonding. At 24 hours, immediate initiation with lactation support is needed.<br><br>
+      • <strong>C</strong> — Bilateral edema post-cesarean is <em>expected</em> due to IV fluid administration and the physiologic shifts of pregnancy resolving. While it should be monitored, moderate bilateral dependent edema alone at 24 hours post-op does not require immediate intervention beyond elevation and compression unless accompanied by signs of DVT (unilateral, warmth, pain).`
   }
 ];
 
