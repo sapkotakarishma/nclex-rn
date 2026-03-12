@@ -553,6 +553,166 @@
     .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.73rem; color: #555; }
     .legend-dot { width: 12px; height: 12px; border-radius: 2px; }
 
+    /* ── FAQ MODAL ── */
+    .faq-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .faq-overlay.open { display: flex; }
+    .faq-modal {
+      background: #fff;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 720px;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 16px 60px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+    .faq-modal-header {
+      background: linear-gradient(90deg, #003a70 0%, #1a5fa8 100%);
+      color: #fff;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .faq-modal-header h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .faq-modal-header p {
+      margin: 4px 0 0;
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+    .faq-close-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .faq-close-btn:hover { background: rgba(255,255,255,0.28); }
+    .faq-search-bar {
+      padding: 14px 20px;
+      border-bottom: 1px solid #e8ecf0;
+      flex-shrink: 0;
+      background: #f7f9fc;
+    }
+    .faq-search-input {
+      width: 100%;
+      border: 1px solid #c8d4e0;
+      border-radius: 20px;
+      padding: 8px 16px 8px 38px;
+      font-size: 0.87rem;
+      outline: none;
+      font-family: Arial, sans-serif;
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 13px center;
+      transition: border-color 0.15s;
+    }
+    .faq-search-input:focus { border-color: #1a5fa8; }
+    .faq-body {
+      overflow-y: auto;
+      flex: 1;
+      padding: 10px 0 20px;
+    }
+    .faq-body::-webkit-scrollbar { width: 4px; }
+    .faq-body::-webkit-scrollbar-thumb { background: #c8d4e0; border-radius: 4px; }
+    .faq-section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      color: #1a5fa8;
+      padding: 14px 24px 6px;
+    }
+    .faq-item {
+      border-bottom: 1px solid #eef1f5;
+    }
+    .faq-item.hidden { display: none; }
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 24px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1a2e3b;
+      gap: 12px;
+      transition: background 0.12s;
+      user-select: none;
+    }
+    .faq-question:hover { background: #f0f6ff; }
+    .faq-chevron {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      color: #1a5fa8;
+      transition: transform 0.22s;
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      display: none;
+      padding: 0 24px 14px 24px;
+      font-size: 0.855rem;
+      line-height: 1.72;
+      color: #333;
+    }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-answer strong { color: #003a70; }
+    .faq-answer ul { margin: 6px 0 4px 16px; padding: 0; }
+    .faq-answer li { margin-bottom: 4px; }
+    .faq-no-results {
+      text-align: center;
+      padding: 40px 24px;
+      color: #888;
+      font-size: 0.88rem;
+      display: none;
+    }
+    .faq-footer {
+      padding: 14px 24px;
+      border-top: 1px solid #e8ecf0;
+      background: #f7f9fc;
+      font-size: 0.78rem;
+      color: #888;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    /* FAQ trigger link on mode selector */
+    .faq-trigger-row {
+      margin-top: 28px;
+      text-align: center;
+    }
+    .faq-trigger-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.85);
+      border-radius: 20px;
+      padding: 8px 22px;
+      font-size: 0.83rem;
+      cursor: pointer;
+      transition: background 0.18s;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+    .faq-trigger-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+
     /* ── MODE SELECTOR OVERLAY ── */
     .mode-selector {
       position: fixed;
@@ -859,6 +1019,322 @@
       </div>
 
     </div>
+    <div class="faq-trigger-row">
+      <button class="faq-trigger-btn" onclick="openFaq()">&#10067; Frequently Asked Questions</button>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ MODAL -->
+<div class="faq-overlay" id="faq-overlay" onclick="closeFaqOnBg(event)">
+  <div class="faq-modal">
+    <div class="faq-modal-header">
+      <div>
+        <h2>&#10067; Frequently Asked Questions</h2>
+        <p>NCLEX-RN Practice Tool &mdash; Common Questions Answered</p>
+      </div>
+      <button class="faq-close-btn" onclick="closeFaq()" title="Close">&#10005;</button>
+    </div>
+    <div class="faq-search-bar">
+      <input class="faq-search-input" id="faq-search" type="text"
+        placeholder="Search questions&hellip;" oninput="filterFaq(this.value)" />
+    </div>
+    <div class="faq-body" id="faq-body">
+
+      <!-- SECTION 1 -->
+      <div class="faq-section-label" data-section>About the NCLEX-RN Exam</div>
+
+      <div class="faq-item" data-q="what is the nclex-rn exam used for">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          What is the NCLEX-RN exam and what is it used for?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          The <strong>National Council Licensure Examination for Registered Nurses (NCLEX-RN)</strong> is a standardized, computer-adaptive exam administered by the <strong>National Council of State Boards of Nursing (NCSBN)</strong>. It is required by all U.S. states and territories for licensure as a Registered Nurse (RN). The exam tests the minimum competency needed to practice nursing safely and effectively at the entry level.<br><br>
+          <strong>Key facts:</strong>
+          <ul>
+            <li>Administered via Computerized Adaptive Testing (CAT) — questions adjust to your ability level</li>
+            <li>Minimum 85 questions, maximum 150 questions (Next Generation NCLEX format)</li>
+            <li>Maximum time: 5 hours</li>
+            <li>Pass/fail determined by the NCSBN Passing Standard</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item" data-q="what is next generation nclex ngn">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          What is Next Generation NCLEX (NGN) and how does it differ from the classic format?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          The <strong>Next Generation NCLEX (NGN)</strong>, launched in April 2023, introduces new question types designed to test <strong>clinical judgment</strong> more deeply, not just knowledge recall.<br><br>
+          <strong>New NGN question types include:</strong>
+          <ul>
+            <li>Extended Multiple Response (Select All That Apply — weighted scoring)</li>
+            <li>Extended Drag-and-Drop</li>
+            <li>Cloze (Drop-Down)</li>
+            <li>Enhanced Hot Spot (matrix-style)</li>
+            <li>Highlight Text</li>
+            <li>Case Studies (a cluster of 6 questions around one patient scenario)</li>
+          </ul>
+          <strong>The NCSBN Clinical Judgment Measurement Model (NCJMM)</strong> underlies all NGN questions, testing six cognitive skills: Recognize Cues, Analyze Cues, Prioritize Hypotheses, Generate Solutions, Take Action, and Evaluate Outcomes.
+        </div>
+      </div>
+
+      <div class="faq-item" data-q="how many questions nclex passing score">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          How many questions will I see on the real NCLEX-RN, and what is a passing score?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Under the <strong>NGN format</strong> (effective April 2023):
+          <ul>
+            <li><strong>Minimum:</strong> 85 questions (70 scored + 15 pretest)</li>
+            <li><strong>Maximum:</strong> 150 questions</li>
+            <li><strong>Time limit:</strong> 5 hours (includes an optional 10-minute break at question 50 and 85)</li>
+          </ul>
+          There is <strong>no single numeric passing score</strong> — the CAT algorithm determines pass/fail based on whether your demonstrated ability level consistently remains above the NCSBN passing standard by the end of the exam. A result of &ldquo;Near Passing&rdquo; means you were close but did not meet the standard.
+        </div>
+      </div>
+
+      <div class="faq-item" data-q="nclex client needs categories tested">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          What Client Needs categories are tested on the NCLEX-RN?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          The NCLEX-RN test plan is organized around <strong>four major Client Needs categories</strong>:
+          <ul>
+            <li><strong>Safe and Effective Care Environment</strong> (Management of Care; Safety &amp; Infection Control) — ~38%</li>
+            <li><strong>Health Promotion and Maintenance</strong> — ~9%</li>
+            <li><strong>Psychosocial Integrity</strong> — ~9%</li>
+            <li><strong>Physiological Integrity</strong> (Basic Care; Pharmacology; Reduction of Risk; Physiological Adaptation) — ~44%</li>
+          </ul>
+          High-yield areas include: <strong>Pharmacology, Prioritization, Delegation, Safety, Maternal/Child, Mental Health, and Medical-Surgical nursing</strong>.
+        </div>
+      </div>
+
+      <!-- SECTION 2 -->
+      <div class="faq-section-label" data-section>Using This Practice Tool</div>
+
+      <div class="faq-item" data-q="how many questions practice tool bank">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          How many practice questions are available in this tool?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          This practice tool currently contains <strong>85 questions</strong> spanning all major NCLEX-RN client needs categories. The bank includes:
+          <ul>
+            <li>Standalone single-answer and SATA (Select All That Apply) questions</li>
+            <li>Two full <strong>case studies</strong> (Sepsis — 5 questions; Acute Ischemic Stroke — 5 questions) in the NGN split-screen format</li>
+            <li>Topics: Pharmacology, Prioritization, Delegation, OB/Maternity, Pediatrics, Mental Health, Medical-Surgical, Leadership, Oncology, and more</li>
+          </ul>
+          New questions are added regularly. Use <strong>Learning Mode &rarr; Study by Topic</strong> to focus on specific content areas.
+        </div>
+      </div>
+
+      <div class="faq-item" data-q="difference learning mode readiness assessment">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          What is the difference between Learning Mode and Readiness Assessment?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          <strong>Learning Mode</strong> is designed for active studying:
+          <ul>
+            <li>No countdown timer — answer at your own pace</li>
+            <li>Immediately see whether your answer is correct after selecting &ldquo;Check Answer&rdquo;</li>
+            <li>Full evidence-based rationale for every question</li>
+            <li>Per-question time tracking (so you can identify where you slow down)</li>
+            <li>AI Insight panel with follow-up Q&amp;A per question</li>
+            <li>Flag questions for review; study by topic or shuffle all</li>
+          </ul>
+          <strong>Readiness Assessment</strong> simulates the real exam environment:
+          <ul>
+            <li><strong>Timed:</strong> 5-hour countdown with pause capability — no instant feedback until submission</li>
+            <li><strong>Untimed:</strong> No clock, but progress is saved to your browser so you can resume across sessions</li>
+            <li>Final score with pass/fail grade at the end</li>
+            <li>Question map for non-linear navigation</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item" data-q="how is score calculated pass fail">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          How is my score calculated? What counts as a pass?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          In <strong>Readiness Assessment mode</strong>, your score is the percentage of questions answered entirely correctly:
+          <ul>
+            <li><strong>Single-answer questions:</strong> 1 point for a correct selection</li>
+            <li><strong>SATA questions:</strong> Must select ALL correct options and NONE of the incorrect ones for full credit</li>
+            <li><strong>Pass threshold:</strong> &ge;70% is graded as PASS in this tool (the real NCLEX uses a different adaptive algorithm)</li>
+          </ul>
+          In <strong>Learning Mode</strong>, there is no final grade — focus is on understanding rationale, not scoring.
+        </div>
+      </div>
+
+      <div class="faq-item" data-q="save progress resume sessions browser">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          Does this tool save my progress?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Yes — in <strong>Untimed Readiness Assessment</strong> mode, your answers and current question position are automatically saved to your browser&rsquo;s <code>localStorage</code>. You can close the tab and resume from where you left off the next time you open the tool in the same browser.<br><br>
+          <strong>Note:</strong> Clearing browser data, using incognito/private mode, or switching browsers will erase saved progress. Learning Mode and Timed Readiness sessions are not persisted across page reloads.
+        </div>
+      </div>
+
+      <div class="faq-item" data-q="what does ai insight panel do follow up questions">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          What does the AI Insight panel do?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          The <strong>AI Insight panel</strong> appears after you check your answer in <strong>Learning Mode</strong>. It provides:
+          <ul>
+            <li>A contextual explanation of the concept being tested, tailored to the question topic</li>
+            <li>Key mnemonics, priority frameworks (ABCs, SATA strategy, delegation rules), and clinical pearls</li>
+            <li>A <strong>chat interface</strong> where you can ask follow-up questions such as:
+              <ul>
+                <li>&ldquo;Why is option C wrong?&rdquo;</li>
+                <li>&ldquo;Give me a mnemonic for this drug.&rdquo;</li>
+                <li>&ldquo;What happens next in patient care?&rdquo;</li>
+              </ul>
+            </li>
+          </ul>
+          The AI chat is built into the tool and does not require an internet connection to an external AI service.
+        </div>
+      </div>
+
+      <!-- SECTION 3 -->
+      <div class="faq-section-label" data-section>Study Strategy &amp; Tips</div>
+
+      <div class="faq-item" data-q="how to study for nclex best strategy tips">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          What is the best strategy for using this tool to prepare for the NCLEX-RN?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          A recommended 3-step approach:
+          <ul>
+            <li><strong>Step 1 — Learn:</strong> Start with <em>Learning Mode → Study by Topic</em> for your weakest areas. Read every rationale fully, even when you get the answer right.</li>
+            <li><strong>Step 2 — Identify Gaps:</strong> Use the AI Insight panel follow-up chat to ask &ldquo;why&rdquo; after every question. Understanding the reasoning builds clinical judgment — not just memorization.</li>
+            <li><strong>Step 3 — Simulate:</strong> Once comfortable with content, run a <em>Timed Readiness Assessment</em> to practice pacing and exam stamina. Review all missed questions in detail afterward.</li>
+          </ul>
+          <strong>Pro tips:</strong>
+          <ul>
+            <li>For SATA questions, treat each option as an independent True/False statement</li>
+            <li>For priority questions, use ABC (Airway &rarr; Breathing &rarr; Circulation) and &ldquo;Acute over Chronic&rdquo;</li>
+            <li>For pharmacology, learn drug <em>classes</em> before individual agents</li>
+            <li>Aim to understand &ldquo;why&rdquo; the wrong answers are wrong — distractors appear almost-correct by design</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item" data-q="sata select all that apply strategy how to answer">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          How should I approach Select All That Apply (SATA) questions?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          SATA questions are the most commonly missed question type on the NCLEX. Use this framework:
+          <ul>
+            <li><strong>Treat each option independently</strong> — ask yourself &ldquo;Is this statement TRUE or FALSE?&rdquo; for each option without considering the others</li>
+            <li><strong>Do not anchor on a number</strong> — there is no rule about how many options should be correct (could be 2 or 5)</li>
+            <li><strong>Beware of absolutes</strong> — options with &ldquo;always&rdquo; or &ldquo;never&rdquo; are often (not always) incorrect</li>
+            <li><strong>Use evidence-based standards</strong> — if an option reflects current clinical guidelines, it is likely correct</li>
+            <li><strong>Eliminate clearly wrong options first</strong>, then scrutinize the remaining ones</li>
+          </ul>
+          On the NGN NCLEX, SATA questions use <strong>partial credit scoring</strong> — you earn points for each correct option selected, minus points for incorrect selections.
+        </div>
+      </div>
+
+      <div class="faq-item" data-q="priority delegation nclex tips">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          How do I tackle prioritization and delegation questions?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          <strong>Prioritization Framework:</strong>
+          <ul>
+            <li><strong>ABC</strong> — Airway &rarr; Breathing &rarr; Circulation always comes first</li>
+            <li>Acute/new onset &gt; Chronic/expected</li>
+            <li>Actual problem &gt; Potential problem</li>
+            <li>Physiological &gt; Psychosocial (Maslow&rsquo;s Hierarchy)</li>
+            <li>Unstable &gt; Stable patient</li>
+          </ul>
+          <strong>Delegation Framework (5 Rights):</strong>
+          <ul>
+            <li><strong>RN only:</strong> Initial assessment, care planning, patient teaching, unstable clients, newly admitted clients</li>
+            <li><strong>LPN/LVN:</strong> Stable patients, routine medication administration, wound care, reinforcing (not initiating) teaching</li>
+            <li><strong>UAP/CNA:</strong> ADLs, vitals on stable clients, ambulation (after initial RN assessment), I&amp;O measurement</li>
+          </ul>
+          Remember: <strong>The RN delegates tasks — not accountability.</strong>
+        </div>
+      </div>
+
+      <div class="faq-item" data-q="pharmacology tips drugs high yield nclex">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          What are the highest-yield pharmacology topics on the NCLEX-RN?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Pharmacology accounts for approximately <strong>12–18% of the NCLEX-RN</strong>. High-yield focus areas:
+          <ul>
+            <li><strong>Anticoagulants:</strong> Warfarin (diet, INR, antidote: Vit K/FFP/4F-PCC), Heparin (aPTT, HIT, antidote: Protamine), DOACs (apixaban, rivaroxaban)</li>
+            <li><strong>Cardiac meds:</strong> Digoxin (hold if HR &lt;60, toxicity signs, hypokalemia risk), Nitrates (hypotension, avoid with PDE-5 inhibitors)</li>
+            <li><strong>Opioids:</strong> Respiratory monitoring, Naloxone (Narcan) for overdose</li>
+            <li><strong>Antibiotics:</strong> MRSA (vancomycin — nephrotoxicity, ototoxicity), Aminoglycosides (peak/trough), C. diff (use soap, not hand sanitizer)</li>
+            <li><strong>Psych meds:</strong> Lithium (0.6–1.2 mEq/L), MAOIs (tyramine diet), Antipsychotics (EPS — treat with Benadryl/Cogentin)</li>
+            <li><strong>Steroids:</strong> Never stop abruptly — risk adrenal crisis; taper required</li>
+            <li><strong>Insulin:</strong> Glargine (basal, peakless), Lispro (rapid — mealtime), hypoglycemia assessment before administration</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SECTION 4 -->
+      <div class="faq-section-label" data-section>Technical &amp; Support</div>
+
+      <div class="faq-item" data-q="browser compatible works on mobile tablet">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          Does this tool work on mobile devices and tablets?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Yes — the tool is fully responsive and works on <strong>desktop, tablet, and mobile browsers</strong>. It runs entirely in the browser with no installation required. For the best experience on case study questions (which use a split-panel layout), a <strong>tablet or larger screen</strong> is recommended.
+        </div>
+      </div>
+
+      <div class="faq-item" data-q="data privacy no login account needed">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          Do I need to create an account? Is my data private?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          <strong>No account or login is required.</strong> All data stays on your device:
+          <ul>
+            <li>No personal information is collected or transmitted</li>
+            <li>Progress is saved only in your local browser storage (<code>localStorage</code>) — it never leaves your device</li>
+            <li>Clearing browser cache or cookies will erase saved progress</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item" data-q="flag review questions skip come back">
+        <div class="faq-question" onclick="toggleFaqItem(this)">
+          Can I skip questions and come back to them?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Yes. In <strong>Readiness Assessment</strong> mode, use the <strong>Question Map</strong> (top-right button) to navigate to any question at any time. Skipped questions remain unanswered and can be revisited before submitting.<br><br>
+          In <strong>Learning Mode</strong>, you can additionally <strong>Flag questions for Review</strong> (yellow flag button) and use the Question Map to jump to flagged items. Unanswered questions at exam submission are scored as incorrect.
+        </div>
+      </div>
+
+      <div class="faq-no-results" id="faq-no-results">No questions match your search. Try different keywords.</div>
+    </div>
+    <div class="faq-footer">This tool is for educational purposes only and does not guarantee NCLEX-RN exam results. Always refer to the official NCSBN test plan for the most current exam specifications.</div>
   </div>
 </div>
 
@@ -2769,6 +3245,139 @@ const questions = [
       • <strong>D</strong> — Mild incisional erythema within 24 hours may indicate early <strong>SIRS response or surgical site infection</strong>; provider notification is warranted for assessment and possible culture.<br>
       • <strong>E</strong> — Early breastfeeding (ideally within 1 hour of birth per WHO/AAP) promotes milk supply establishment, oxytocin release (uterine involution), and infant bonding. At 24 hours, immediate initiation with lactation support is needed.<br><br>
       • <strong>C</strong> — Bilateral edema post-cesarean is <em>expected</em> due to IV fluid administration and the physiologic shifts of pregnancy resolving. While it should be monitored, moderate bilateral dependent edema alone at 24 hours post-op does not require immediate intervention beyond elevation and compression unless accompanied by signs of DVT (unilateral, warmth, pain).`
+  },
+
+  /* ── QUESTIONS 81–85 ── */
+  {
+    id: 81,
+    category: "Pharmacological and Parenteral Therapies",
+    type: "multiple",
+    stem: `A 72-year-old male patient with a history of <strong>atrial fibrillation</strong> and controlled hypertension has been initiated on <strong>warfarin therapy</strong>. Assessment of the patient's history also reveals a <strong>history of peptic ulcer disease</strong>. Which of the following instructions should the nurse <strong>prioritize</strong> when providing discharge teaching to this client?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Report incidents of diarrhea",
+      "Avoid foods high in vitamin K",
+      "Use a straight razor when shaving",
+      "Take aspirin for pain relief",
+      "Monitor for signs of bleeding, such as bruising or black tarry stools",
+      "Check blood pressure regularly at home",
+      "Inform all healthcare providers about the anticoagulant therapy"
+    ],
+    correct: [1, 4, 6],
+    rationale: `<strong>Correct: B, E, G.</strong><br><br>
+      • <strong>B — Avoid foods high in vitamin K:</strong> Vitamin K directly antagonizes warfarin's anticoagulant effect. Clients do not need to eliminate vitamin K–rich foods (e.g., leafy greens) entirely, but must maintain a <em>consistent</em> intake to keep INR stable. Sudden increases in vitamin K can reduce anticoagulation and increase clot risk.<br>
+      • <strong>E — Monitor for bleeding signs:</strong> Bruising, blood in urine/stool (black tarry stools = melena → GI bleed), prolonged oozing from cuts, or coughing up blood are signs of over-anticoagulation. This client's peptic ulcer history further elevates GI bleeding risk — early recognition is critical.<br>
+      • <strong>G — Inform all healthcare providers:</strong> Warfarin has extensive drug interactions (antibiotics, NSAIDs, antifungals). Every provider and dentist must know the client is anticoagulated to avoid dangerous interactions or prescribing contraindicated medications.<br><br>
+      <strong>Why the others are incorrect:</strong><br>
+      • <strong>A</strong> — While diarrhea can affect vitamin K absorption, it is not a priority discharge teaching point for warfarin.<br>
+      • <strong>C</strong> — Straight razors are <strong>contraindicated</strong> on warfarin due to laceration risk; an <em>electric razor</em> is the safe recommendation.<br>
+      • <strong>D</strong> — Aspirin is <strong>contraindicated</strong> with warfarin in a client with peptic ulcer disease: it inhibits platelet aggregation and causes gastric irritation, dramatically increasing the risk of life-threatening GI hemorrhage.<br>
+      • <strong>F</strong> — Regular BP monitoring is good practice for hypertension but is not a warfarin-specific priority.`
+  },
+  {
+    id: 82,
+    category: "Reduction of Risk Potential",
+    type: "single",
+    stem: `A nurse is preparing to insert an IV catheter in a <strong>33-year-old patient scheduled for elective surgery</strong>. The intended insertion site on the forearm has <strong>notable hair growth</strong>. The patient has a <strong>documented allergy to a variety of adhesives</strong> and has <strong>sensitive skin prone to irritation</strong>. How should the nurse best manage excess hair at the intended catheter insertion site prior to insertion?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Leave the hair intact to avoid any skin disruption",
+      "Shave the area with a disposable razor",
+      "Clip the hair in the area with scissors or clippers",
+      "Remove the hair with a topical depilatory cream",
+      "Apply a small amount of water-soluble gel to flatten the hair without cutting",
+      "Use a sterile surgical scalpel to trim the hair as close to the skin as possible"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — Clip the hair in the area.</strong><br><br>
+      Current evidence-based guidelines from the <strong>Infusion Nurses Society (INS)</strong> and <strong>CDC</strong> recommend <strong>clipping</strong> (not shaving) as the preferred method for hair removal prior to IV insertion when necessary.<br><br>
+      <strong>Why clipping is preferred:</strong><br>
+      • Clipping removes excess hair without disrupting skin integrity<br>
+      • Does NOT create micro-abrasions (unlike razors) that serve as portals for bacterial entry and infection<br><br>
+      <strong>Why the other options are incorrect:</strong><br>
+      • <strong>A</strong> — Excessive hair can interfere with catheter securement, dressing adherence, and visualization of the site; leaving it intact is not ideal.<br>
+      • <strong>B</strong> — <strong>Shaving is contraindicated</strong>: razor shaving creates micro-abrasions → increases infection risk at the IV site.<br>
+      • <strong>D</strong> — Depilatory creams contain harsh chemicals; with this patient's documented sensitive skin and adhesive allergies, depilatory use risks significant skin irritation and chemical reaction — contraindicated.<br>
+      • <strong>E</strong> — Gel does not adequately remove hair and could contaminate the insertion site.<br>
+      • <strong>F</strong> — A scalpel introduces significant risk of skin injury and is not indicated for this purpose.`
+  },
+  {
+    id: 83,
+    category: "Health Promotion and Maintenance",
+    type: "single",
+    stem: `A nurse is providing education to an <strong>elderly female patient recently diagnosed with osteoporosis</strong>. The patient leads a sedentary lifestyle, has a diet low in calcium, underwent menopause <strong>10 years prior</strong>, and has a visibly <strong>kyphotic posture</strong>. Which of the following complications should the nurse emphasize as the <strong>most significant risk</strong> associated with osteoporosis, given this patient's profile?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "Increased susceptibility to bone fractures from minimal trauma",
+      "Consequences of long-term estrogen deficiency post-menopause",
+      "The impact of sustained negative calcium balance on bone density",
+      "The progression of spinal deformities such as kyphotic curvature",
+      "Potential for height loss over time due to vertebral compression",
+      "Risk of developing chronic pain associated with skeletal weakness"
+    ],
+    correct: [0],
+    rationale: `<strong>Correct: A — Increased susceptibility to bone fractures from minimal trauma.</strong><br><br>
+      The <strong>primary and most clinically significant complication</strong> of osteoporosis is the dramatically increased risk of <strong>low-trauma (fragility) fractures</strong> — fractures caused by forces that would not normally break healthy bone (e.g., a fall from standing height, minor bump, or even coughing).<br><br>
+      <strong>Why this is the priority for this patient:</strong><br>
+      • An elderly, sedentary female with a kyphotic posture has elevated fall risk, poor balance, and muscle deconditioning — all contributing to fracture risk<br>
+      • Hip fractures in the elderly are associated with <strong>20–30% mortality within one year</strong> and significant loss of independence<br>
+      • Vertebral compression fractures cause the kyphosis already visible in this patient and can further compromise respiratory function<br><br>
+      <strong>Why the others, while related, are secondary:</strong><br>
+      • B & C — These are contributing <em>causes</em> of osteoporosis, not the primary complication to emphasize in patient education.<br>
+      • D & E — Kyphosis and height loss are important but are consequences of fractures already occurring — the nurse's goal is to prevent the fractures that lead to these outcomes.<br>
+      • F — Chronic pain is real but less immediately life-threatening than fracture risk.`
+  },
+  {
+    id: 84,
+    category: "Health Promotion and Maintenance",
+    type: "single",
+    stem: `A community health nurse is conducting a workshop on breast health for a diverse group of women, including those who have never performed a Breast Self-Examination (BSE) and those with prior benign breast conditions. The nurse emphasizes the importance of BSE for early detection of breast anomalies. What should the nurse identify as the <strong>primary goal</strong> for women performing regular BSE?`,
+    instruction: "Select the BEST answer.",
+    options: [
+      "To detect any cancerous lumps early in their development",
+      "To identify areas of thickness or fullness that differ from the rest of the breast tissue",
+      "To notice any changes in the breast tissue from what is normal for each individual",
+      "To differentiate between fibrocystic masses and other types of breast lumps",
+      "To promote self-awareness of breast health and encourage routine health screening",
+      "To understand the normal texture and appearance of their breast tissue for future comparison"
+    ],
+    correct: [2],
+    rationale: `<strong>Correct: C — To notice any changes in the breast tissue from what is normal for each individual.</strong><br><br>
+      The <strong>primary goal of BSE</strong> is to enable each woman to develop familiarity with her own "normal" breast tissue so that she can <strong>promptly recognize and report any changes</strong> to a healthcare provider. BSE is an individualized process — each woman's breasts are unique, and what matters is detecting a change from her personal baseline.<br><br>
+      <strong>Why C is the best answer:</strong><br>
+      • It encompasses the full scope of BSE — not just cancer detection, but any notable change (lump, dimpling, nipple discharge, skin changes, asymmetry)<br>
+      • It acknowledges individual variation in breast tissue (dense, fibrocystic, post-surgical, etc.)<br>
+      • It empowers women as active participants in their own surveillance<br><br>
+      <strong>Why the others are less complete:</strong><br>
+      • <strong>A</strong> — Too narrow; BSE is not just for cancer. Early-stage cancers may not yet be palpable via BSE.<br>
+      • <strong>B</strong> — Identifies one type of change but not the overarching goal.<br>
+      • <strong>D</strong> — Diagnosis (differentiating mass types) is outside the scope of BSE — that requires clinical evaluation and imaging.<br>
+      • <strong>E</strong> — Self-awareness and health screening are outcomes of BSE, not the primary BSE goal itself.<br>
+      • <strong>F</strong> — Understanding baseline is part of the process, but the goal is the detection of <em>changes</em> from that baseline.`
+  },
+  {
+    id: 85,
+    category: "Health Promotion and Maintenance",
+    type: "multiple",
+    stem: `A nurse is providing discharge education to a <strong>55-year-old client hospitalized with atherosclerosis</strong>. The client has a sedentary lifestyle, a high-stress job, and a diet high in saturated fats. As part of the comprehensive care plan to manage and reduce the progression of atherosclerosis, which of the following lifestyle modifications should the nurse emphasize?`,
+    instruction: "Select ALL that apply.",
+    options: [
+      "Emphasize the importance of not focusing solely on weight as a health measure, but rather on overall cardiovascular health",
+      "Recommend an incremental increase in physical activity, starting with low-intensity exercises such as walking or swimming",
+      "Advise adherence to a heart-healthy diet, rich in fruits, vegetables, whole grains, and lean proteins, while limiting saturated fats and cholesterol",
+      "Counsel on stress management techniques and the importance of incorporating relaxation activities into daily routines",
+      "Discuss smoking cessation strategies if applicable and avoidance of secondhand smoke exposure",
+      "Suggest regular monitoring of blood pressure and cholesterol levels with follow-up appointments to assess cardiovascular health"
+    ],
+    correct: [1, 2, 3, 4, 5],
+    rationale: `<strong>Correct: B, C, D, E, F.</strong><br><br>
+      These five interventions represent the <strong>evidence-based cornerstone lifestyle modifications</strong> for atherosclerosis management:<br><br>
+      • <strong>B — Incremental physical activity:</strong> Regular aerobic exercise improves lipid profiles (raises HDL, lowers LDL/triglycerides), reduces blood pressure, promotes weight management, and improves endothelial function. Starting low and progressing gradually reduces injury risk and improves adherence for previously sedentary clients.<br><br>
+      • <strong>C — Heart-healthy diet:</strong> Reducing saturated fats, trans fats, and dietary cholesterol directly addresses the pathophysiology of atherosclerosis (lipid plaque formation). The AHA endorses the Mediterranean-style diet for cardiovascular protection.<br><br>
+      • <strong>D — Stress management:</strong> Chronic psychological stress increases cortisol and catecholamines → hypertension, inflammation, platelet aggregation → atherosclerosis progression. Mindfulness, yoga, and relaxation techniques are effective adjuncts.<br><br>
+      • <strong>E — Smoking cessation:</strong> Smoking is one of the most potent modifiable risk factors for atherosclerosis — it damages endothelium, promotes oxidative LDL, increases platelet stickiness, and causes vasoconstriction. Cessation is mandatory in the care plan.<br><br>
+      • <strong>F — Regular monitoring:</strong> Hypertension and hyperlipidemia are major drivers of atherosclerosis progression; consistent follow-up enables treatment titration and early detection of complications.<br><br>
+      <strong>Why A is not prioritized:</strong> While framing cardiovascular health beyond weight is a valid patient-centered approach, options B–F represent concrete, actionable, guideline-endorsed interventions directly targeting atherosclerosis risk factors — these take precedence in discharge teaching.`
   }
 ];
 
@@ -3417,6 +4026,67 @@ function clearSavedProgress() {
   const el = document.getElementById('resume-notice');
   if (el) el.style.display = 'none';
 }
+
+/* ═══════════════════════════════════════════════
+   FAQ MODAL
+   ═══════════════════════════════════════════════ */
+function openFaq() {
+  document.getElementById('faq-overlay').classList.add('open');
+  document.getElementById('faq-search').value = '';
+  filterFaq('');
+  document.getElementById('faq-search').focus();
+}
+
+function closeFaq() {
+  document.getElementById('faq-overlay').classList.remove('open');
+}
+
+function closeFaqOnBg(e) {
+  if (e.target === document.getElementById('faq-overlay')) closeFaq();
+}
+
+function toggleFaqItem(questionEl) {
+  const item = questionEl.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  // Close all open items
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  // Open clicked item if it was closed
+  if (!isOpen) item.classList.add('open');
+}
+
+function filterFaq(query) {
+  const q = query.trim().toLowerCase();
+  const items = document.querySelectorAll('.faq-item');
+  const sections = document.querySelectorAll('[data-section]');
+  let anyVisible = false;
+
+  items.forEach(item => {
+    const text = (item.dataset.q || '') + ' ' + item.textContent.toLowerCase();
+    const match = !q || text.includes(q);
+    item.classList.toggle('hidden', !match);
+    if (match) anyVisible = true;
+  });
+
+  // Hide section labels if all items under them are hidden
+  sections.forEach(label => {
+    let next = label.nextElementSibling;
+    let sectionHasVisible = false;
+    while (next && !next.hasAttribute('data-section')) {
+      if (next.classList.contains('faq-item') && !next.classList.contains('hidden')) {
+        sectionHasVisible = true;
+      }
+      next = next.nextElementSibling;
+    }
+    label.style.display = sectionHasVisible ? '' : 'none';
+  });
+
+  document.getElementById('faq-no-results').style.display = anyVisible ? 'none' : 'block';
+}
+
+// Close FAQ on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeFaq();
+});
 
 /* ═══════════════════════════════════════════════
    INIT — exam starts after mode is selected via landing screen
